@@ -4,13 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DOS", "DOS\DOS.csproj", "{A0793E9A-38A6-4359-8DBE-316D9F77919E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D75A8DA5-00FF-4C6C-B7B4-00A5F48C7335} = {D75A8DA5-00FF-4C6C-B7B4-00A5F48C7335}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FB6EAFD1-B35D-45CE-BEC8-73B8F5D695E5}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DOS_DAL", "DOS_DAL\DOS_DAL.csproj", "{D75A8DA5-00FF-4C6C-B7B4-00A5F48C7335}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DOS_DAL", "DOS_DAL\DOS_DAL.csproj", "{D75A8DA5-00FF-4C6C-B7B4-00A5F48C7335}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
