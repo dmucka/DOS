@@ -5,6 +5,7 @@
   </PropertyGroup>
 
 <ItemGroup>
+      <PackageReference Include="LightInject.Microsoft.Hosting" Version="1.2.5" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -24,6 +25,7 @@
 </ItemGroup>
 
 <ItemGroup>
+  <ProjectReference Include="..\DOS_BL\DOS_BL.csproj" />
   <ProjectReference Include="..\DOS_DAL\DOS_DAL.csproj" />
 </ItemGroup>
 

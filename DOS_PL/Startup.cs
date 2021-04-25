@@ -1,4 +1,5 @@
 using DOS_PL.Data;
+using LightInject;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,14 @@ namespace DOS_PL
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+        }
+
+        // Use this method to add services directly to LightInject
+        // Important: This method must exist in order to replace the default provider.
+        public void ConfigureContainer(IServiceContainer container)
+        {
+            container.RegisterFrom<DOS_DAL.DataAccessLayerModule>();
+            container.RegisterFrom<DOS_BL.BusinessLayerModule>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
