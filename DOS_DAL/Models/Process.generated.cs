@@ -22,13 +22,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace DOS_DAL
+namespace DOS_DAL.Models
 {
    /// <summary>
    /// Model for Process.
    /// </summary>
    [System.ComponentModel.Description("Model for Process.")]
-   public partial class Process
+   public partial class Process: DOS_DAL.Interfaces.IBaseModel
    {
       partial void Init();
 
@@ -37,7 +37,7 @@ namespace DOS_DAL
       /// </summary>
       protected Process()
       {
-         Products = new System.Collections.Generic.HashSet<global::DOS_DAL.Product>();
+         Products = new System.Collections.Generic.HashSet<global::DOS_DAL.Models.Product>();
 
          Init();
       }
@@ -59,7 +59,7 @@ namespace DOS_DAL
          if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
          this.Name = name;
 
-         this.Products = new System.Collections.Generic.HashSet<global::DOS_DAL.Product>();
+         this.Products = new System.Collections.Generic.HashSet<global::DOS_DAL.Models.Product>();
          Init();
       }
 
@@ -103,7 +103,7 @@ namespace DOS_DAL
       /// Collection of Products
       /// </summary>
       [Description("Collection of Products")]
-      public virtual ICollection<global::DOS_DAL.Product> Products { get; private set; }
+      public virtual ICollection<global::DOS_DAL.Models.Product> Products { get; private set; }
 
    }
 }

@@ -6,7 +6,7 @@
 #><#@ include file="EFDesigner.ttinclude" once="true"
 #><#@ output extension=".cs" 
 #><#@ import namespace="System.Linq" 
-#><#@ import namespace="System" 
+#><#@ import namespace="System"
 #><#@ import namespace="System.Data.Entity.Design.PluralizationServices" 
 #><#@ import namespace="System.Globalization" 
 #><#@ import namespace="Sawczyn.EFDesigner.EFModel" 

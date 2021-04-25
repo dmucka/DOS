@@ -27,39 +27,39 @@ namespace DOS_DAL
       #region DbSets
 
       /// <summary>
-      /// Repository for global::DOS_DAL.ManufacturingStep - Model for ManufacturingStep,
+      /// Repository for global::DOS_DAL.Models.ManufacturingStep - Model for ManufacturingStep,
       /// </summary>
-      public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.ManufacturingStep> ManufacturingStep { get; set; }
+      public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.Models.ManufacturingStep> ManufacturingSteps { get; set; }
 
       /// <summary>
-      /// Repository for global::DOS_DAL.Order - Model for Order.
+      /// Repository for global::DOS_DAL.Models.Order - Model for Order.
       /// </summary>
-      public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.Order> Order { get; set; }
+      public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.Models.Order> Orders { get; set; }
 
       /// <summary>
-      /// Repository for global::DOS_DAL.Process - Model for Process.
+      /// Repository for global::DOS_DAL.Models.Process - Model for Process.
       /// </summary>
-      public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.Process> Process { get; set; }
+      public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.Models.Process> Processes { get; set; }
 
       /// <summary>
-      /// Repository for global::DOS_DAL.Product - Model for Product.
+      /// Repository for global::DOS_DAL.Models.Product - Model for Product.
       /// </summary>
-      public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.Product> Product { get; set; }
+      public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.Models.Product> Products { get; set; }
 
       /// <summary>
-      /// Repository for global::DOS_DAL.Role - Model for Role.
+      /// Repository for global::DOS_DAL.Models.Role - Model for Role.
       /// </summary>
-      public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.Role> Role { get; set; }
+      public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.Models.Role> Roles { get; set; }
 
       /// <summary>
-      /// Repository for global::DOS_DAL.Tolerance - Model for Tolerance.
+      /// Repository for global::DOS_DAL.Models.Tolerance - Model for Tolerance.
       /// </summary>
-      public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.Tolerance> Tolerance { get; set; }
+      public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.Models.Tolerance> Tolerances { get; set; }
 
       /// <summary>
-      /// Repository for global::DOS_DAL.User - Model for User.
+      /// Repository for global::DOS_DAL.Models.User - Model for User.
       /// </summary>
-      public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.User> User { get; set; }
+      public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.Models.User> Users { get; set; }
 
       #endregion DbSets
 
@@ -89,232 +89,232 @@ namespace DOS_DAL
 
          modelBuilder.HasDefaultSchema("dbo");
 
-         modelBuilder.Entity<global::DOS_DAL.ManufacturingStep>()
+         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
                      .ToTable("ManufacturingStep")
                      .HasKey(t => t.Id);
-         modelBuilder.Entity<global::DOS_DAL.ManufacturingStep>()
+         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
                      .Property(t => t.Id)
                      .ValueGeneratedOnAdd()
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.ManufacturingStep>()
+         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
                      .Property(t => t.Wavelength)
                      .HasColumnType("decimal(8,4)")
                      .IsRequired()
                      .HasDefaultValue(0);
-         modelBuilder.Entity<global::DOS_DAL.ManufacturingStep>()
+         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
                      .Property(t => t.Intensity)
                      .HasColumnType("decimal(8,4)")
                      .IsRequired()
                      .HasDefaultValue(0);
-         modelBuilder.Entity<global::DOS_DAL.ManufacturingStep>()
+         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
                      .Property(t => t.Temperature)
                      .HasColumnType("decimal(8,4)")
                      .IsRequired()
                      .HasDefaultValue(0);
-         modelBuilder.Entity<global::DOS_DAL.ManufacturingStep>()
+         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
                      .Property(t => t.Humidity)
                      .HasColumnType("decimal(8,4)")
                      .IsRequired()
                      .HasDefaultValue(0);
-         modelBuilder.Entity<global::DOS_DAL.ManufacturingStep>()
+         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
                      .Property(t => t.Edited)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.ManufacturingStep>()
-                     .HasOne<global::DOS_DAL.User>(p => p.EditedBy)
+         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
+                     .HasOne<global::DOS_DAL.Models.User>(p => p.EditedBy)
                      .WithMany()
                      .HasForeignKey("EditedById")
                      .OnDelete(DeleteBehavior.NoAction);
-         modelBuilder.Entity<global::DOS_DAL.ManufacturingStep>().Navigation(e => e.EditedBy).IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.ManufacturingStep>()
-                     .HasOne<global::DOS_DAL.Process>(p => p.Process)
+         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>().Navigation(e => e.EditedBy).IsRequired();
+         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
+                     .HasOne<global::DOS_DAL.Models.Process>(p => p.Process)
                      .WithMany()
                      .HasForeignKey("ProcessId")
                      .OnDelete(DeleteBehavior.NoAction);
-         modelBuilder.Entity<global::DOS_DAL.ManufacturingStep>().Navigation(e => e.Process).IsRequired();
+         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>().Navigation(e => e.Process).IsRequired();
 
-         modelBuilder.Entity<global::DOS_DAL.Order>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .ToTable("Order")
                      .HasKey(t => t.Id);
-         modelBuilder.Entity<global::DOS_DAL.Order>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.Id)
                      .ValueGeneratedOnAdd()
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Order>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.Status)
                      .HasMaxLength(255)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Order>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.SerialNumber)
                      .HasMaxLength(255)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Order>().HasIndex(t => t.SerialNumber)
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>().HasIndex(t => t.SerialNumber)
                      .IsUnique();
-         modelBuilder.Entity<global::DOS_DAL.Order>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.Customer)
                      .HasMaxLength(255)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Order>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.Notes)
                      .HasMaxLength(1023);
-         modelBuilder.Entity<global::DOS_DAL.Order>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.Created)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Order>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.Edited)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Order>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.IsDeleted)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Order>()
-                     .HasOne<global::DOS_DAL.User>(p => p.CreatedBy)
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>()
+                     .HasOne<global::DOS_DAL.Models.User>(p => p.CreatedBy)
                      .WithMany()
                      .HasForeignKey("CreatedById")
                      .OnDelete(DeleteBehavior.NoAction);
-         modelBuilder.Entity<global::DOS_DAL.Order>().Navigation(e => e.CreatedBy).IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Order>()
-                     .HasOne<global::DOS_DAL.User>(p => p.EditedBy)
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>().Navigation(e => e.CreatedBy).IsRequired();
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>()
+                     .HasOne<global::DOS_DAL.Models.User>(p => p.EditedBy)
                      .WithMany()
                      .HasForeignKey("EditedById")
                      .OnDelete(DeleteBehavior.NoAction);
-         modelBuilder.Entity<global::DOS_DAL.Order>().Navigation(e => e.EditedBy).IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Order>()
-                     .HasOne<global::DOS_DAL.Product>(p => p.Product)
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>().Navigation(e => e.EditedBy).IsRequired();
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>()
+                     .HasOne<global::DOS_DAL.Models.Product>(p => p.Product)
                      .WithMany()
                      .HasForeignKey("ProductId")
                      .OnDelete(DeleteBehavior.NoAction);
-         modelBuilder.Entity<global::DOS_DAL.Order>().Navigation(e => e.Product).IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Order>()
-                     .HasMany<global::DOS_DAL.ManufacturingStep>(p => p.ManufacturingSteps)
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>().Navigation(e => e.Product).IsRequired();
+         modelBuilder.Entity<global::DOS_DAL.Models.Order>()
+                     .HasMany<global::DOS_DAL.Models.ManufacturingStep>(p => p.ManufacturingSteps)
                      .WithOne(p => p.Order)
                      .HasForeignKey("OrderId")
                      .OnDelete(DeleteBehavior.Cascade);
-         modelBuilder.Entity<global::DOS_DAL.ManufacturingStep>().Navigation(e => e.Order).IsRequired();
+         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>().Navigation(e => e.Order).IsRequired();
 
-         modelBuilder.Entity<global::DOS_DAL.Process>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Process>()
                      .ToTable("Process")
                      .HasKey(t => t.Id);
-         modelBuilder.Entity<global::DOS_DAL.Process>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Process>()
                      .Property(t => t.Id)
                      .ValueGeneratedOnAdd()
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Process>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Process>()
                      .Property(t => t.Name)
                      .HasMaxLength(255)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Process>().HasIndex(t => t.Name)
+         modelBuilder.Entity<global::DOS_DAL.Models.Process>().HasIndex(t => t.Name)
                      .IsUnique();
 
-         modelBuilder.Entity<global::DOS_DAL.Product>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Product>()
                      .ToTable("Product")
                      .HasKey(t => t.Id);
-         modelBuilder.Entity<global::DOS_DAL.Product>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Product>()
                      .Property(t => t.Id)
                      .ValueGeneratedOnAdd()
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Product>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Product>()
                      .Property(t => t.Name)
                      .HasMaxLength(255)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Product>().HasIndex(t => t.Name)
+         modelBuilder.Entity<global::DOS_DAL.Models.Product>().HasIndex(t => t.Name)
                      .IsUnique();
-         modelBuilder.Entity<global::DOS_DAL.Product>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Product>()
                      .Property(t => t.Description)
                      .HasMaxLength(1023);
-         modelBuilder.Entity<global::DOS_DAL.Product>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Product>()
                      .Property(t => t.IsDeleted)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Product>()
-                     .HasMany<global::DOS_DAL.Process>(p => p.Processes)
+         modelBuilder.Entity<global::DOS_DAL.Models.Product>()
+                     .HasMany<global::DOS_DAL.Models.Process>(p => p.Processes)
                      .WithMany(p => p.Products)
                      .UsingEntity(x => x.ToTable("ProductProcess"));
 
-         modelBuilder.Entity<global::DOS_DAL.Role>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Role>()
                      .ToTable("Role")
                      .HasKey(t => t.Id);
-         modelBuilder.Entity<global::DOS_DAL.Role>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Role>()
                      .Property(t => t.Id)
                      .ValueGeneratedOnAdd()
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Role>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Role>()
                      .Property(t => t.Name)
                      .HasMaxLength(255)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Role>().HasIndex(t => t.Name)
+         modelBuilder.Entity<global::DOS_DAL.Models.Role>().HasIndex(t => t.Name)
                      .IsUnique();
 
-         modelBuilder.Entity<global::DOS_DAL.Tolerance>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Tolerance>()
                      .ToTable("Tolerance")
                      .HasKey(t => t.Id);
-         modelBuilder.Entity<global::DOS_DAL.Tolerance>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Tolerance>()
                      .Property(t => t.Id)
                      .ValueGeneratedOnAdd()
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Tolerance>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Tolerance>()
                      .Property(t => t.ValueName)
                      .HasMaxLength(255)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Tolerance>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Tolerance>()
                      .Property(t => t.MaxValue)
                      .HasColumnType("decimal(8,4)")
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Tolerance>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Tolerance>()
                      .Property(t => t.MinValue)
                      .HasColumnType("decimal(8,4)")
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Tolerance>()
+         modelBuilder.Entity<global::DOS_DAL.Models.Tolerance>()
                      .Property(t => t.Edited)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Tolerance>()
-                     .HasOne<global::DOS_DAL.User>(p => p.EditedBy)
+         modelBuilder.Entity<global::DOS_DAL.Models.Tolerance>()
+                     .HasOne<global::DOS_DAL.Models.User>(p => p.EditedBy)
                      .WithMany()
                      .HasForeignKey("EditedById")
                      .OnDelete(DeleteBehavior.NoAction);
-         modelBuilder.Entity<global::DOS_DAL.Tolerance>().Navigation(e => e.EditedBy).IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Tolerance>()
-                     .HasOne<global::DOS_DAL.Product>(p => p.Product)
+         modelBuilder.Entity<global::DOS_DAL.Models.Tolerance>().Navigation(e => e.EditedBy).IsRequired();
+         modelBuilder.Entity<global::DOS_DAL.Models.Tolerance>()
+                     .HasOne<global::DOS_DAL.Models.Product>(p => p.Product)
                      .WithMany()
                      .HasForeignKey("ProductId")
                      .OnDelete(DeleteBehavior.NoAction);
-         modelBuilder.Entity<global::DOS_DAL.Tolerance>().Navigation(e => e.Product).IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.Tolerance>()
-                     .HasOne<global::DOS_DAL.Process>(p => p.Process)
+         modelBuilder.Entity<global::DOS_DAL.Models.Tolerance>().Navigation(e => e.Product).IsRequired();
+         modelBuilder.Entity<global::DOS_DAL.Models.Tolerance>()
+                     .HasOne<global::DOS_DAL.Models.Process>(p => p.Process)
                      .WithMany()
                      .HasForeignKey("ProcessId")
                      .OnDelete(DeleteBehavior.NoAction);
-         modelBuilder.Entity<global::DOS_DAL.Tolerance>().Navigation(e => e.Process).IsRequired();
+         modelBuilder.Entity<global::DOS_DAL.Models.Tolerance>().Navigation(e => e.Process).IsRequired();
 
-         modelBuilder.Entity<global::DOS_DAL.User>()
+         modelBuilder.Entity<global::DOS_DAL.Models.User>()
                      .ToTable("User")
                      .HasKey(t => t.Id);
-         modelBuilder.Entity<global::DOS_DAL.User>()
+         modelBuilder.Entity<global::DOS_DAL.Models.User>()
                      .Property(t => t.Id)
                      .ValueGeneratedOnAdd()
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.User>()
+         modelBuilder.Entity<global::DOS_DAL.Models.User>()
                      .Property(t => t.Username)
                      .HasMaxLength(255)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.User>().HasIndex(t => t.Username)
+         modelBuilder.Entity<global::DOS_DAL.Models.User>().HasIndex(t => t.Username)
                      .IsUnique();
-         modelBuilder.Entity<global::DOS_DAL.User>()
+         modelBuilder.Entity<global::DOS_DAL.Models.User>()
                      .Property(t => t.Password)
                      .HasMaxLength(255)
                      .IsRequired();
-         modelBuilder.Entity<global::DOS_DAL.User>()
+         modelBuilder.Entity<global::DOS_DAL.Models.User>()
                      .Property(t => t.FirstName)
                      .HasMaxLength(255);
-         modelBuilder.Entity<global::DOS_DAL.User>()
+         modelBuilder.Entity<global::DOS_DAL.Models.User>()
                      .Property(t => t.LastName)
                      .HasMaxLength(255);
-         modelBuilder.Entity<global::DOS_DAL.User>()
+         modelBuilder.Entity<global::DOS_DAL.Models.User>()
                      .Property(t => t.Email)
                      .HasMaxLength(255);
-         modelBuilder.Entity<global::DOS_DAL.User>()
-                     .HasOne<global::DOS_DAL.Role>(p => p.Role)
+         modelBuilder.Entity<global::DOS_DAL.Models.User>()
+                     .HasOne<global::DOS_DAL.Models.Role>(p => p.Role)
                      .WithMany()
                      .HasForeignKey("RoleId")
                      .OnDelete(DeleteBehavior.NoAction);
-         modelBuilder.Entity<global::DOS_DAL.User>().Navigation(e => e.Role).IsRequired();
+         modelBuilder.Entity<global::DOS_DAL.Models.User>().Navigation(e => e.Role).IsRequired();
 
          OnModelCreatedImpl(modelBuilder);
       }

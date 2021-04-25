@@ -22,13 +22,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace DOS_DAL
+namespace DOS_DAL.Models
 {
    /// <summary>
    /// Model for User.
    /// </summary>
    [System.ComponentModel.Description("Model for User.")]
-   public partial class User
+   public partial class User: DOS_DAL.Interfaces.IBaseModel
    {
       partial void Init();
 
@@ -54,7 +54,7 @@ namespace DOS_DAL
       /// <param name="username">Username of User.</param>
       /// <param name="password">Password of User.</param>
       /// <param name="role">Role FK</param>
-      public User(string username, string password, global::DOS_DAL.Role role)
+      public User(string username, string password, global::DOS_DAL.Models.Role role)
       {
          if (string.IsNullOrEmpty(username)) throw new ArgumentNullException(nameof(username));
          this.Username = username;
@@ -74,7 +74,7 @@ namespace DOS_DAL
       /// <param name="username">Username of User.</param>
       /// <param name="password">Password of User.</param>
       /// <param name="role">Role FK</param>
-      public static User Create(string username, string password, global::DOS_DAL.Role role)
+      public static User Create(string username, string password, global::DOS_DAL.Models.Role role)
       {
          return new User(username, password, role);
       }
@@ -148,7 +148,7 @@ namespace DOS_DAL
       /// Role FK
       /// </summary>
       [Description("Role FK")]
-      public virtual global::DOS_DAL.Role Role { get; set; }
+      public virtual global::DOS_DAL.Models.Role Role { get; set; }
 
    }
 }

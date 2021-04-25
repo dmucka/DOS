@@ -22,13 +22,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace DOS_DAL
+namespace DOS_DAL.Models
 {
    /// <summary>
    /// Model for Tolerance.
    /// </summary>
    [System.ComponentModel.Description("Model for Tolerance.")]
-   public partial class Tolerance
+   public partial class Tolerance: DOS_DAL.Interfaces.IBaseModel
    {
       partial void Init();
 
@@ -58,7 +58,7 @@ namespace DOS_DAL
       /// <param name="editedby">User FK</param>
       /// <param name="product">Product FK</param>
       /// <param name="process">Process FK</param>
-      public Tolerance(string valuename, decimal maxvalue, decimal minvalue, DateTime edited, global::DOS_DAL.User editedby, global::DOS_DAL.Product product, global::DOS_DAL.Process process)
+      public Tolerance(string valuename, decimal maxvalue, decimal minvalue, DateTime edited, global::DOS_DAL.Models.User editedby, global::DOS_DAL.Models.Product product, global::DOS_DAL.Models.Process process)
       {
          if (string.IsNullOrEmpty(valuename)) throw new ArgumentNullException(nameof(valuename));
          this.ValueName = valuename;
@@ -91,7 +91,7 @@ namespace DOS_DAL
       /// <param name="editedby">User FK</param>
       /// <param name="product">Product FK</param>
       /// <param name="process">Process FK</param>
-      public static Tolerance Create(string valuename, decimal maxvalue, decimal minvalue, DateTime edited, global::DOS_DAL.User editedby, global::DOS_DAL.Product product, global::DOS_DAL.Process process)
+      public static Tolerance Create(string valuename, decimal maxvalue, decimal minvalue, DateTime edited, global::DOS_DAL.Models.User editedby, global::DOS_DAL.Models.Product product, global::DOS_DAL.Models.Process process)
       {
          return new Tolerance(valuename, maxvalue, minvalue, edited, editedby, product, process);
       }
@@ -152,21 +152,21 @@ namespace DOS_DAL
       /// User FK
       /// </summary>
       [Description("User FK")]
-      public virtual global::DOS_DAL.User EditedBy { get; set; }
+      public virtual global::DOS_DAL.Models.User EditedBy { get; set; }
 
       /// <summary>
       /// Required&lt;br/&gt;
       /// Product FK
       /// </summary>
       [Description("Product FK")]
-      public virtual global::DOS_DAL.Product Product { get; set; }
+      public virtual global::DOS_DAL.Models.Product Product { get; set; }
 
       /// <summary>
       /// Required&lt;br/&gt;
       /// Process FK
       /// </summary>
       [Description("Process FK")]
-      public virtual global::DOS_DAL.Process Process { get; set; }
+      public virtual global::DOS_DAL.Models.Process Process { get; set; }
 
    }
 }

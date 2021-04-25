@@ -22,13 +22,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace DOS_DAL
+namespace DOS_DAL.Models
 {
    /// <summary>
    /// Model for Order.
    /// </summary>
    [System.ComponentModel.Description("Model for Order.")]
-   public partial class Order
+   public partial class Order: DOS_DAL.Interfaces.IBaseModel
    {
       partial void Init();
 
@@ -37,7 +37,7 @@ namespace DOS_DAL
       /// </summary>
       protected Order()
       {
-         ManufacturingSteps = new System.Collections.Generic.HashSet<global::DOS_DAL.ManufacturingStep>();
+         ManufacturingSteps = new System.Collections.Generic.HashSet<global::DOS_DAL.Models.ManufacturingStep>();
 
          Init();
       }
@@ -62,7 +62,7 @@ namespace DOS_DAL
       /// <param name="createdby">User FK</param>
       /// <param name="editedby">User FK</param>
       /// <param name="product">Product FK</param>
-      public Order(string status, string serialnumber, string customer, DateTime created, DateTime edited, bool isdeleted, global::DOS_DAL.User createdby, global::DOS_DAL.User editedby, global::DOS_DAL.Product product)
+      public Order(string status, string serialnumber, string customer, DateTime created, DateTime edited, bool isdeleted, global::DOS_DAL.Models.User createdby, global::DOS_DAL.Models.User editedby, global::DOS_DAL.Models.Product product)
       {
          if (string.IsNullOrEmpty(status)) throw new ArgumentNullException(nameof(status));
          this.Status = status;
@@ -88,7 +88,7 @@ namespace DOS_DAL
          if (product == null) throw new ArgumentNullException(nameof(product));
          this.Product = product;
 
-         this.ManufacturingSteps = new System.Collections.Generic.HashSet<global::DOS_DAL.ManufacturingStep>();
+         this.ManufacturingSteps = new System.Collections.Generic.HashSet<global::DOS_DAL.Models.ManufacturingStep>();
          Init();
       }
 
@@ -104,7 +104,7 @@ namespace DOS_DAL
       /// <param name="createdby">User FK</param>
       /// <param name="editedby">User FK</param>
       /// <param name="product">Product FK</param>
-      public static Order Create(string status, string serialnumber, string customer, DateTime created, DateTime edited, bool isdeleted, global::DOS_DAL.User createdby, global::DOS_DAL.User editedby, global::DOS_DAL.Product product)
+      public static Order Create(string status, string serialnumber, string customer, DateTime created, DateTime edited, bool isdeleted, global::DOS_DAL.Models.User createdby, global::DOS_DAL.Models.User editedby, global::DOS_DAL.Models.Product product)
       {
          return new Order(status, serialnumber, customer, created, edited, isdeleted, createdby, editedby, product);
       }
@@ -194,27 +194,27 @@ namespace DOS_DAL
       /// User FK
       /// </summary>
       [Description("User FK")]
-      public virtual global::DOS_DAL.User CreatedBy { get; set; }
+      public virtual global::DOS_DAL.Models.User CreatedBy { get; set; }
 
       /// <summary>
       /// Required&lt;br/&gt;
       /// User FK
       /// </summary>
       [Description("User FK")]
-      public virtual global::DOS_DAL.User EditedBy { get; set; }
+      public virtual global::DOS_DAL.Models.User EditedBy { get; set; }
 
       /// <summary>
       /// Required&lt;br/&gt;
       /// Product FK
       /// </summary>
       [Description("Product FK")]
-      public virtual global::DOS_DAL.Product Product { get; set; }
+      public virtual global::DOS_DAL.Models.Product Product { get; set; }
 
       /// <summary>
       /// Collection of ManufacturingSteps
       /// </summary>
       [Description("Collection of ManufacturingSteps")]
-      public virtual ICollection<global::DOS_DAL.ManufacturingStep> ManufacturingSteps { get; private set; }
+      public virtual ICollection<global::DOS_DAL.Models.ManufacturingStep> ManufacturingSteps { get; private set; }
 
    }
 }

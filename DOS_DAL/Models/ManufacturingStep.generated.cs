@@ -22,13 +22,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace DOS_DAL
+namespace DOS_DAL.Models
 {
    /// <summary>
    /// Model for ManufacturingStep,
    /// </summary>
    [System.ComponentModel.Description("Model for ManufacturingStep,")]
-   public partial class ManufacturingStep
+   public partial class ManufacturingStep: DOS_DAL.Interfaces.IBaseModel
    {
       partial void Init();
 
@@ -64,7 +64,7 @@ namespace DOS_DAL
       /// <param name="editedby">User FK</param>
       /// <param name="process">Process FK</param>
       /// <param name="order">Order FK</param>
-      public ManufacturingStep(DateTime edited, global::DOS_DAL.User editedby, global::DOS_DAL.Process process, global::DOS_DAL.Order order, decimal wavelength = 0m, decimal intensity = 0m, decimal temperature = 0m, decimal humidity = 0m)
+      public ManufacturingStep(DateTime edited, global::DOS_DAL.Models.User editedby, global::DOS_DAL.Models.Process process, global::DOS_DAL.Models.Order order, decimal wavelength = 0m, decimal intensity = 0m, decimal temperature = 0m, decimal humidity = 0m)
       {
          this.Wavelength = wavelength;
 
@@ -100,7 +100,7 @@ namespace DOS_DAL
       /// <param name="editedby">User FK</param>
       /// <param name="process">Process FK</param>
       /// <param name="order">Order FK</param>
-      public static ManufacturingStep Create(DateTime edited, global::DOS_DAL.User editedby, global::DOS_DAL.Process process, global::DOS_DAL.Order order, decimal wavelength = 0m, decimal intensity = 0m, decimal temperature = 0m, decimal humidity = 0m)
+      public static ManufacturingStep Create(DateTime edited, global::DOS_DAL.Models.User editedby, global::DOS_DAL.Models.Process process, global::DOS_DAL.Models.Order order, decimal wavelength = 0m, decimal intensity = 0m, decimal temperature = 0m, decimal humidity = 0m)
       {
          return new ManufacturingStep(edited, editedby, process, order, wavelength, intensity, temperature, humidity);
       }
@@ -167,21 +167,21 @@ namespace DOS_DAL
       /// User FK
       /// </summary>
       [Description("User FK")]
-      public virtual global::DOS_DAL.User EditedBy { get; set; }
+      public virtual global::DOS_DAL.Models.User EditedBy { get; set; }
 
       /// <summary>
       /// Required&lt;br/&gt;
       /// Process FK
       /// </summary>
       [Description("Process FK")]
-      public virtual global::DOS_DAL.Process Process { get; set; }
+      public virtual global::DOS_DAL.Models.Process Process { get; set; }
 
       /// <summary>
       /// Required&lt;br/&gt;
       /// Order FK
       /// </summary>
       [Description("Order FK")]
-      public virtual global::DOS_DAL.Order Order { get; set; }
+      public virtual global::DOS_DAL.Models.Order Order { get; set; }
 
    }
 }

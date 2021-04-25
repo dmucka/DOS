@@ -22,13 +22,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace DOS_DAL
+namespace DOS_DAL.Models
 {
    /// <summary>
    /// Model for Role.
    /// </summary>
    [System.ComponentModel.Description("Model for Role.")]
-   public partial class Role
+   public partial class Role: DOS_DAL.Interfaces.IBaseModel
    {
       partial void Init();
 
