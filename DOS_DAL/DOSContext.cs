@@ -1,6 +1,8 @@
+using DOS_DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DOS_DAL
 {
@@ -13,6 +15,25 @@ namespace DOS_DAL
             // empty constructor for scaffolding
         }
 
+        /// <summary>
+        /// Commits changes to the database.
+        /// </summary>
+        /// <returns>True if no errors occured. False otherwise.</returns>
+        public async Task<bool> CommitAsync()
+        {
+            try
+            {
+                await base.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.Fail(ex.Message);
+            }
+
+            return false;
+        }
+
         partial void CustomInit(DbContextOptionsBuilder optionsBuilder)
         {
             // set default connection as MS SQL Server
@@ -22,8 +43,8 @@ namespace DOS_DAL
         partial void OnModelCreatedImpl(ModelBuilder modelBuilder)
         {
             // singularize column names
-            modelBuilder.Entity<global::DOS_DAL.Product>()
-                     .HasMany<global::DOS_DAL.Process>(p => p.Processes)
+            modelBuilder.Entity<Product>()
+                     .HasMany<Process>(p => p.Processes)
                      .WithMany(p => p.Products)
                      .UsingEntity<Dictionary<string, object>>(
                                 "ProductProcess",
