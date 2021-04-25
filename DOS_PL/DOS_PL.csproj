@@ -29,5 +29,11 @@
   <ProjectReference Include="..\DOS_DAL\DOS_DAL.csproj" />
 </ItemGroup>
 
+<ItemGroup>
+  <Folder Include="Pages\Tolerances\" />
+  <Folder Include="Pages\Products\" />
+  <Folder Include="Pages\Orders\" />
+</ItemGroup>
+
 
 </Project>

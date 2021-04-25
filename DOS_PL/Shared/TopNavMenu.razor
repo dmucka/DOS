@@ -1,0 +1,58 @@
+﻿<nav class="navbar navbar-expand-md navbar-dark dos-bg">
+    <div class="d-flex w-50 order-0">
+        <a class="navbar-brand mr-1" href="#">DOS</a>
+        <button class="navbar-toggler ml-2" type="button" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+
+    <div class="@HideClass navbar-animation navbar-collapse justify-content-center order-2" @onclick="ToggleNavMenu">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <NavLink Match="NavLinkMatch.All" class="nav-link" href="/">Orders</NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="#products">Products</NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="#tolerances">Tolerances</NavLink>
+            </li>
+            <li class="nav-item">
+                <NavLink class="nav-link" href="#users">Users</NavLink>
+            </li>
+        </ul>
+    </div>
+
+    <span class="navbar-text small text-truncate mt-1 w-50 text-right order-1 order-md-last">always show</span>
+</nav>
+
+<style>
+    .navbar-animation {
+        transition: max-height .5s ease-in-out;
+        max-height: 200px;
+    }
+
+    .navbar-animation-hide {
+        max-height: 0px;
+        overflow: hidden;
+    }
+
+    @@media (min-width: 768px) {
+        .navbar-animation-hide {
+            max-height: initial;
+            overflow: initial;
+        }
+    }
+</style>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    // https://medium.com/dailyjs/mimicking-bootstraps-collapse-with-vanilla-javascript-b3bb389040e7
+    private string HideClass => collapseNavMenu ? "navbar-animation-hide" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

@@ -37,7 +37,7 @@ namespace DOS_PL
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                     .AddCookie(options =>
                     {
-                        options.LoginPath = new PathString("/");
+                        options.LoginPath = new PathString("/auth");
                         options.Events.OnRedirectToLogin = context =>
                         {
                             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
