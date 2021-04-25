@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <PackageReference Include="LightInject.Microsoft.Hosting" Version="1.2.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LightInject.Microsoft.Hosting" Version="1.2.5" />
+    <ProjectReference Include="..\DOS_DAL\DOS_DAL.csproj" />
   </ItemGroup>
 
 </Project>
