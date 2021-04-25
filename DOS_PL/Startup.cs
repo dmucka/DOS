@@ -1,8 +1,10 @@
 using DOS_PL.Data;
 using LightInject;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +33,27 @@ namespace DOS_PL
             services.AddSyncfusionBlazor();
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie(options =>
+                    {
+                        options.LoginPath = new PathString("/");
+                        options.Events.OnRedirectToLogin = context =>
+                        {
+                            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                            return Task.CompletedTask;
+                        };
+                    });
+
+
+            // valid cookie timeout
+            // set it to 1 day because operators usually log in the morning and use it the whole day.
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.Name = ".AspNetCore.Cookies";
+                options.ExpireTimeSpan = TimeSpan.FromDays(1);
+                options.SlidingExpiration = false;
+            });
         }
 
         // Use this method to add services directly to LightInject
@@ -69,6 +91,9 @@ namespace DOS_PL
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
+            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict });
+            app.UseAuthentication();
         }
     }
 }
