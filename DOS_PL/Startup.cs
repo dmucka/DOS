@@ -35,16 +35,7 @@ namespace DOS_PL
             services.AddServerSideBlazor();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                    .AddCookie(options =>
-                    {
-                        options.LoginPath = new PathString("/auth");
-                        options.Events.OnRedirectToLogin = context =>
-                        {
-                            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                            return Task.CompletedTask;
-                        };
-                    });
-
+                    .AddCookie();
 
             // valid cookie timeout
             // set it to 1 day because operators usually log in the morning and use it the whole day.
@@ -86,14 +77,15 @@ namespace DOS_PL
 
             app.UseRouting();
 
+            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict });
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
-
-            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict });
-            app.UseAuthentication();
         }
     }
 }
