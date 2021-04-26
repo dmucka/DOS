@@ -1,4 +1,11 @@
-﻿
+﻿:root {
+    --dosgreen: #66B966;
+}
+
 .dos-bg {
-    background-color: #66B966;
+    background-color: var(--dosgreen);
+}
+
+.mw-label {
+    min-width: 130px;
 }

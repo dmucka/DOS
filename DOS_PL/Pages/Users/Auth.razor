@@ -2,8 +2,88 @@
 @layout EmptyLayout
 @attribute [AllowAnonymous]
 
-<h3>Login</h3>
+@using Syncfusion.Blazor.Buttons;
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+<div class="dos-loginform-main px-4 dos-bg">
+    <div class="card dos-loginform shadow">
+        <div class="card-header text-center">
+            Welcome, please log in
+        </div>
+        <div class="card-body">
+            <div class="input-group input-group-lg mb-2 w-100">
+                <div class="input-group-prepend">
+                    <span class="input-group-text mw-label">Username</span>
+                </div>
+                <input type="text" class="form-control" @bind-value="username" />
+            </div>
+            <div class="input-group input-group-lg mb-4 w-100">
+                <div class="input-group-prepend">
+                    <span class="input-group-text mw-label">Password</span>
+                </div>
+                <input type="text" class="form-control" @bind-value="password" />
+            </div>
+
+            <div style="color:red">@errorMessage</div>
+
+            <SfButton CssClass="w-100" Type="submit" IsPrimary=true>Log in</SfButton>
+        </div>
+    </div>
+</div>
+
+<style>
+    html, body, .dos-loginform-main {
+        height: 100%;
+        width: 100%;
+    }
+
+    .dos-loginform {
+        width: 500px;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+    }
+
+    .dos-loginform-main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
+    private string username;
+    private string password;
+    private string errorMessage;
+
+    public async Task PerformLogin()
+    {
+        errorMessage = "";
+        try
+        {
+            // ((CustomAuthenticationStateProvider)AuthenticationStateProvider).ValidateLogin(username, password);
+            username = "";
+            password = "";
+        }
+        catch (Exception e)
+        {
+            errorMessage = e.Message;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState = await AuthenticationStateTask;
+
+        if (authenticationState.User.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/", true);
+        }
+    }
 }

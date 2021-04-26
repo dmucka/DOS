@@ -1,5 +1,6 @@
-﻿@inject NavigationManager Navigation
+﻿@inject NavigationManager NavigationManager
 
+@* https://blog.vfrz.fr/blazor-redirect-non-authenticated-user/ *@
 @code {
     [CascadingParameter]
     private Task<AuthenticationState> AuthenticationStateTask { get; set; }
@@ -10,12 +11,12 @@
 
         if (authenticationState?.User?.Identity is null || !authenticationState.User.Identity.IsAuthenticated)
         {
-            var returnUrl = Navigation.ToBaseRelativePath(Navigation.Uri);
+            var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
 
             if (string.IsNullOrWhiteSpace(returnUrl))
-                Navigation.NavigateTo("/auth", true);
+                NavigationManager.NavigateTo("/auth", true);
             else
-                Navigation.NavigateTo($"/auth?returnUrl={returnUrl}", true);
+                NavigationManager.NavigateTo($"/auth?returnUrl={returnUrl}", true);
         }
     }
 }
