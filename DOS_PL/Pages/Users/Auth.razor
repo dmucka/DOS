@@ -6,7 +6,6 @@
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
-@inject IJSRuntime JS
 
 <div class="dos-loginform-main px-4 dos-bg">
     <div class="card dos-loginform shadow">
@@ -29,7 +28,7 @@
 
             <div style="color:red">@errorMessage</div>
 
-            <SfButton CssClass="w-100" Type="submit" IsPrimary=true @onclick="PeakLoggerTest">Log in</SfButton>
+            <SfButton CssClass="w-100" Type="submit" IsPrimary=true>Log in</SfButton>
         </div>
     </div>
 </div>
@@ -62,11 +61,6 @@
     private string username;
     private string password;
     private string errorMessage;
-
-    public async Task PeakLoggerTest()
-    {
-        await JS.InvokeVoidAsync("WebSocketTest");
-    }
 
     public async Task PerformLogin()
     {
