@@ -1,0 +1,126 @@
+﻿@page "/auth"
+@layout EmptyLayout
+@attribute [AllowAnonymous]
+
+@using DOS_BL.Services;
+@using DOS_PL.Auth;
+@using System.ComponentModel.DataAnnotations;
+
+@inject DOSAuthStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject UserService UserService;
+
+<div class="dos-loginform-main px-4 dos-bg">
+    <div class="card dos-loginform shadow">
+        <div class="card-header text-center">
+            Welcome, please log in
+        </div>
+        <div class="card-body">
+            <EditForm EditContext="@_editContext" OnSubmit="PerformLogin">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="input-group input-group-lg mb-2 w-100">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text mw-label">Username</span>
+                    </div>
+                    <InputText class="form-control" @bind-Value="@_loginData.Username" />
+                </div>
+                <div class="input-group input-group-lg mb-4 w-100">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text mw-label">Password</span>
+                    </div>
+                    <InputText class="form-control" @bind-Value="@_loginData.Password" Type="InputType.Password" />
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Log in</button>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+<style>
+    html, body, .dos-loginform-main {
+        height: 100%;
+        width: 100%;
+    }
+
+    .dos-loginform {
+        width: 500px;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+    }
+
+    .dos-loginform-main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    private class LoginData
+    {
+        [Required]
+        [StringLength(255, ErrorMessage = "Username is too long.")]
+        public string Username { get; set; }
+
+        [Required]
+        [StringLength(255, ErrorMessage = "Password is too long")]
+        public string Password { get; set; }
+
+        [Range(typeof(bool), "false", "false", ErrorMessage = "User not found.")]
+        public bool NotFound { get; set; }
+
+        [Range(typeof(bool), "false", "false", ErrorMessage = "Invalid password.")]
+        public bool InvalidPassword { get; set; }
+    }
+
+    private LoginData _loginData = new();
+    private EditContext _editContext;
+
+    private async Task PerformLogin()
+    {
+        if (!_editContext.Validate())
+            return;
+
+        var (authenticated, user) = UserService.AuthenticateUser(_loginData.Username, _loginData.Password);
+
+        if (user == null)
+        {
+            _loginData.NotFound = true;
+            _editContext.NotifyFieldChanged(_editContext.Field("NotFound"));
+            _loginData.NotFound = false;
+            return;
+        }
+
+        if (authenticated)
+        {
+            await AuthenticationStateProvider.LoginAsync(new AuthData(user.Id, user.Role.Name));
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            _loginData.InvalidPassword = true;
+            _editContext.NotifyFieldChanged(_editContext.Field("InvalidPassword"));
+            _loginData.InvalidPassword = false;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _editContext = new(_loginData);
+
+        var authenticationState = await AuthenticationStateTask;
+
+        if (authenticationState.User?.Identity?.IsAuthenticated == true)
+        {
+            NavigationManager.NavigateTo("/", true);
+        }
+    }
+}

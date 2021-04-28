@@ -1,8 +1,10 @@
+using DOS_PL.Auth;
 using DOS_PL.Data;
 using LightInject;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -34,17 +36,8 @@ namespace DOS_PL
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                    .AddCookie();
-
-            // valid cookie timeout
-            // set it to 1 day because operators usually log in the morning and use it the whole day.
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Cookie.Name = ".AspNetCore.Cookies";
-                options.ExpireTimeSpan = TimeSpan.FromDays(1);
-                options.SlidingExpiration = false;
-            });
+            // add base authentication
+            services.AddAuthenticationCore();
         }
 
         // Use this method to add services directly to LightInject
@@ -53,6 +46,10 @@ namespace DOS_PL
         {
             container.RegisterFrom<DOS_DAL.DataAccessLayerModule>();
             container.RegisterFrom<DOS_BL.BusinessLayerModule>();
+
+            // use custom auth provider
+            container.RegisterScoped<DOSAuthStateProvider>();
+            container.RegisterScoped<AuthenticationStateProvider>(s => s.GetInstance<DOSAuthStateProvider>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

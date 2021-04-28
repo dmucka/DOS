@@ -10,18 +10,18 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
-      <PackageReference Include="Syncfusion.Blazor.Grid" Version="19.1.0.57" />
-    <PackageReference Include="Syncfusion.Blazor.TreeGrid" Version="19.1.0.57" />
-    <PackageReference Include="Syncfusion.Blazor.Notifications" Version="19.1.0.57" />
-    <PackageReference Include="Syncfusion.Blazor.Spinner" Version="19.1.0.57" />
-    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="19.1.0.57" />
-    <PackageReference Include="Syncfusion.Blazor.SplitButtons" Version="19.1.0.57" />
-    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="19.1.0.57" />
-    <PackageReference Include="Syncfusion.Blazor.Popups" Version="19.1.0.57" />
-    <PackageReference Include="Syncfusion.Blazor.Lists" Version="19.1.0.57" />
-    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="19.1.0.57" />
-    <PackageReference Include="Syncfusion.Blazor.Calendars" Version="19.1.0.57" />
-    <PackageReference Include="Syncfusion.Licensing" Version="19.1.0.57" />
+      <PackageReference Include="Syncfusion.Blazor.Grid" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Blazor.TreeGrid" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Blazor.Notifications" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Blazor.Spinner" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Blazor.Buttons" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Blazor.SplitButtons" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Blazor.Inputs" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Blazor.Popups" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Blazor.Lists" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Blazor.DropDowns" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Blazor.Calendars" Version="19.1.0.58" />
+    <PackageReference Include="Syncfusion.Licensing" Version="19.1.0.58" />
 </ItemGroup>
 
 <ItemGroup>
@@ -30,9 +30,11 @@
 </ItemGroup>
 
 <ItemGroup>
+  <Folder Include="Validation\" />
   <Folder Include="Pages\Tolerances\" />
   <Folder Include="Pages\Products\" />
   <Folder Include="Pages\Orders\" />
+  <Folder Include="Pages\Users\" />
 </ItemGroup>
 
 
