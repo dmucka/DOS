@@ -3,7 +3,7 @@
 @attribute [AllowAnonymous]
 
 @using DOS_BL.Services;
-@using DOS_PL.Auth;
+@using DOS_PL.Validation;
 @using System.ComponentModel.DataAnnotations;
 
 @inject DOSAuthStateProvider AuthenticationStateProvider
@@ -19,6 +19,7 @@
             <EditForm EditContext="@_editContext" OnSubmit="PerformLogin">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
+                <ServerSideValidator @ref="_serverSideValidator" />
 
                 <div class="input-group input-group-lg mb-2 w-100">
                     <div class="input-group-prepend">
@@ -30,7 +31,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text mw-label">Password</span>
                     </div>
-                    <InputText class="form-control" @bind-Value="@_loginData.Password" Type="InputType.Password" />
+                    <InputText class="form-control" type="password" @bind-Value="@_loginData.Password" />
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">Log in</button>
@@ -73,16 +74,11 @@
         [Required]
         [StringLength(255, ErrorMessage = "Password is too long")]
         public string Password { get; set; }
-
-        [Range(typeof(bool), "false", "false", ErrorMessage = "User not found.")]
-        public bool NotFound { get; set; }
-
-        [Range(typeof(bool), "false", "false", ErrorMessage = "Invalid password.")]
-        public bool InvalidPassword { get; set; }
     }
 
     private LoginData _loginData = new();
     private EditContext _editContext;
+    private ServerSideValidator _serverSideValidator;
 
     private async Task PerformLogin()
     {
@@ -93,9 +89,7 @@
 
         if (user == null)
         {
-            _loginData.NotFound = true;
-            _editContext.NotifyFieldChanged(_editContext.Field("NotFound"));
-            _loginData.NotFound = false;
+            _serverSideValidator.DisplayError("Username", "User not found.");
             return;
         }
 
@@ -106,15 +100,14 @@
         }
         else
         {
-            _loginData.InvalidPassword = true;
-            _editContext.NotifyFieldChanged(_editContext.Field("InvalidPassword"));
-            _loginData.InvalidPassword = false;
+            _serverSideValidator.DisplayError("Password", "Invalid password.");
         }
     }
 
     protected override async Task OnInitializedAsync()
     {
         _editContext = new(_loginData);
+        _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
 
         var authenticationState = await AuthenticationStateTask;
 

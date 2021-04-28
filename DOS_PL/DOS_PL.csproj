@@ -30,7 +30,6 @@
 </ItemGroup>
 
 <ItemGroup>
-  <Folder Include="Validation\" />
   <Folder Include="Pages\Tolerances\" />
   <Folder Include="Pages\Products\" />
   <Folder Include="Pages\Orders\" />
