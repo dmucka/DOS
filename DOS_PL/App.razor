@@ -1,16 +1,17 @@
 <Router AppAssembly="@typeof(Program).Assembly">
     <Found Context="routeData">
-        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(EmptyLayout)">
+            <Authorizing>
+                @* hide spash screen *@
+            </Authorizing>
             <NotAuthorized>
-                <DOS_PL.Pages.Users.RedirectToAuth />
+                <DOS_PL.Auth.RedirectToAuth />
             </NotAuthorized>
         </AuthorizeRouteView>
     </Found>
     <NotFound>
-        <CascadingAuthenticationState>
-            <LayoutView Layout="@typeof(EmptyLayout)">
-                <p>Sorry, there's nothing at this address.</p>
-            </LayoutView>
-        </CascadingAuthenticationState>
+        <LayoutView Layout="@typeof(EmptyLayout)">
+            <p>Sorry, there's nothing at this address.</p>
+        </LayoutView>
     </NotFound>
 </Router>
