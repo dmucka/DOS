@@ -6,7 +6,7 @@ namespace DOS_DAL
     {
         public void Compose(IServiceRegistry serviceRegistry)
         {
-            serviceRegistry.Register<DOSContext>();
+            serviceRegistry.RegisterScoped<DOSContext>();
         }
     }
 }

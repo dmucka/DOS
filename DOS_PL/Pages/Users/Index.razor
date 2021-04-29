@@ -4,6 +4,8 @@
 @using Syncfusion.Blazor.Grids
 @using DOS_DAL.Models;
 @using DOS_BL.Services
+@using DOS_BL.Queries;
+@using DOS_PL.Data;
 
 @inject UserService UserService
 
@@ -17,12 +19,33 @@
     </div>
 </div>
 
-<SfGrid DataSource="@UserService.AsQueryable()">
+<SfGrid TValue="User" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true">
+
+    <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
+        <DOSServiceAdaptor DataSource="@UserService.AsQueryable().WithRoles()" />
+    </Syncfusion.Blazor.Data.SfDataManager>
+
     <GridEvents RowSelected="OnRowSelected" RowDeselected="OnRowDeselected" TValue="User" />
+    <GridPageSettings PageSizes="@PageSizes" PageSize="25" />
+    <GridSortSettings>
+        <GridSortColumns>
+            <GridSortColumn Field="Id" Direction="SortDirection.Ascending" />
+        </GridSortColumns>
+    </GridSortSettings>
+    <GridColumns>
+        <GridColumn Field="@nameof(User.Id)" />
+        <GridColumn Field="@nameof(User.Username)" />
+        <GridColumn Field="@nameof(User.FirstName)" />
+        <GridColumn Field="@nameof(User.LastName)" />
+        <GridColumn Field="@nameof(User.Email)" />
+        <GridColumn Field="Role.Name" HeaderText="Role" />
+    </GridColumns>
 </SfGrid>
 
 @code {
     private bool _itemSelected;
+
+    private int[] PageSizes => new[] { 25, 50, 100, 250 };
     private string AllowButtonClass => _itemSelected ? "" : "disabled";
 
     private void OnRowSelected(RowSelectEventArgs<User> args)

@@ -4,6 +4,11 @@
     --dosgreen: #66B966;
 }
 
+html, body, .main {
+    height: 100%;
+    width: 100%;
+}
+
 .dos-bg {
     /* background-color: var(--dosgreen); */
     background: linear-gradient( 159deg, var(--dosgreen) 0%, rgb(165 252 69) 100%);
@@ -15,6 +20,7 @@
 
 .content {
     padding-top: 2rem;
+    height: 75%;
 }
 
 /* Blazor Defaults  */

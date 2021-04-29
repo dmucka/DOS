@@ -1,0 +1,54 @@
+﻿@namespace DOS_PL.Data
+
+@using Syncfusion.Blazor;
+@using Syncfusion.Blazor.Data;
+@using DOS_DAL.Interfaces;
+
+@inherits DataAdaptor
+
+<CascadingValue Value="@this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public IQueryable<IBaseModel> DataSource { get; set; }
+
+    public override object Read(DataManagerRequest dm, string key = null)
+    {
+        var data = DataSource;
+
+        if (dm.Search != null && dm.Search.Count > 0)
+        {
+            // Searching
+            data = DataOperations.PerformSearching(data, dm.Search);
+        }
+        if (dm.Sorted != null && dm.Sorted.Count > 0)
+        {
+            // Sorting
+            data = DataOperations.PerformSorting(data, dm.Sorted);
+        }
+        if (dm.Where != null && dm.Where.Count > 0)
+        {
+            // Filtering
+            data = DataOperations.PerformFiltering(data, dm.Where, dm.Where[0].Operator);
+        }
+
+        if (dm.Skip != 0)
+        {
+            //Paging
+            data = DataOperations.PerformSkip(data, dm.Skip);
+        }
+        if (dm.Take != 0)
+        {
+            data = DataOperations.PerformTake(data, dm.Take);
+        }
+
+        var executed = data.ToList();
+
+        return dm.RequiresCounts ? new DataResult() { Result = executed, Count = executed.Count } : (object)data;
+    }
+}

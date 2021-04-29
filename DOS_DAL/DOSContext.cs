@@ -1,5 +1,6 @@
 using DOS_DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -38,6 +39,9 @@ namespace DOS_DAL
         {
             // set default connection as MS SQL Server
             optionsBuilder.UseSqlServer(_connectionString);
+
+            // enable logging
+            optionsBuilder.UseLoggerFactory(new LoggerFactory(new[] { new Microsoft.Extensions.Logging.Debug.DebugLoggerProvider() }));
         }
 
         partial void OnModelCreatedImpl(ModelBuilder modelBuilder)
