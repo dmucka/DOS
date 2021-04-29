@@ -66,7 +66,6 @@ namespace DOS_PL
 
             app.UseRouting();
 
-            app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Strict });
             app.UseAuthentication();
             app.UseAuthorization();
 

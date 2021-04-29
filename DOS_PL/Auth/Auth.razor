@@ -10,35 +10,42 @@
 @inject NavigationManager NavigationManager
 @inject UserService UserService;
 
-<div class="dos-loginform-main px-4 dos-bg">
-    <div class="card dos-loginform shadow">
-        <div class="card-header text-center">
-            Welcome, please log in
-        </div>
-        <div class="card-body">
-            <EditForm EditContext="@_editContext" OnSubmit="PerformLogin">
-                <DataAnnotationsValidator />
-                <ValidationSummary />
-                <ServerSideValidator @ref="_serverSideValidator" />
-
-                <div class="input-group input-group-lg mb-2 w-100">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text mw-label">Username</span>
-                    </div>
-                    <InputText class="form-control" @bind-Value="@_loginData.Username" />
+<AuthorizeView>
+    <Authorized>
+        @* do not render anything *@
+    </Authorized>
+    <NotAuthorized Context="Auth">
+        <div class="dos-loginform-main px-4 dos-bg">
+            <div class="card dos-loginform shadow">
+                <div class="card-header text-center">
+                    Welcome, please log in
                 </div>
-                <div class="input-group input-group-lg mb-4 w-100">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text mw-label">Password</span>
-                    </div>
-                    <InputText class="form-control" type="password" @bind-Value="@_loginData.Password" />
-                </div>
+                <div class="card-body">
+                    <EditForm EditContext="@_editContext" OnSubmit="PerformLogin">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary />
+                        <ServerSideValidator @ref="_serverSideValidator" />
 
-                <button type="submit" class="btn btn-primary w-100">Log in</button>
-            </EditForm>
+                        <div class="input-group input-group-lg mb-2 w-100">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text mw-label">Username</span>
+                            </div>
+                            <InputText class="form-control" @bind-Value="@_loginData.Username" />
+                        </div>
+                        <div class="input-group input-group-lg mb-4 w-100">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text mw-label">Password</span>
+                            </div>
+                            <InputText class="form-control" type="password" @bind-Value="@_loginData.Password" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Log in</button>
+                    </EditForm>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </NotAuthorized>
+</AuthorizeView>
 
 <style>
     html, body, .dos-loginform-main {

@@ -1,0 +1,22 @@
+﻿@page "/logout"
+@layout EmptyLayout
+
+@inject DOSAuthStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState = await AuthenticationStateTask;
+
+        if (authenticationState.User?.Identity?.IsAuthenticated == true)
+        {
+            await AuthenticationStateProvider.LogoutAsync();
+        }
+
+        NavigationManager.NavigateTo("/", true);
+    }
+}

@@ -1,6 +1,6 @@
 ﻿<nav class="navbar navbar-expand-md navbar-dark dos-bg">
     <div class="d-flex w-50 order-0">
-        <a class="navbar-brand mr-1" href="#">DOS</a>
+        <span class="navbar-brand mr-1">DOS</span>
         <button class="navbar-toggler ml-2" type="button" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -12,18 +12,24 @@
                 <NavLink Match="NavLinkMatch.All" class="nav-link" href="/">Orders</NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="#products">Products</NavLink>
+                <NavLink class="nav-link" href="/products">Products</NavLink>
             </li>
             <li class="nav-item">
-                <NavLink class="nav-link" href="#tolerances">Tolerances</NavLink>
+                <NavLink class="nav-link" href="/tolerances">Tolerances</NavLink>
             </li>
-            <li class="nav-item">
-                <NavLink class="nav-link" href="#users">Users</NavLink>
-            </li>
+            <AuthorizeView Roles="Admin">
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/users">Users</NavLink>
+                </li>
+            </AuthorizeView>
         </ul>
     </div>
 
-    <span class="navbar-text small text-truncate mt-1 w-50 text-right order-1 order-md-last">always show</span>
+    <span class="navbar-text small text-truncate mt-1 w-50 text-right order-1 order-md-last">
+        <span class="oi oi-person" />
+        @AccountSummary
+        <a class="oi oi-account-logout ml-1" href="/logout" />
+    </span>
 </nav>
 
 <style>
@@ -46,13 +52,29 @@
 </style>
 
 @code {
-    private bool collapseNavMenu = true;
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    private bool _collapseNavMenu = true;
 
     // https://medium.com/dailyjs/mimicking-bootstraps-collapse-with-vanilla-javascript-b3bb389040e7
-    private string HideClass => collapseNavMenu ? "navbar-animation-hide" : null;
+    private string HideClass => _collapseNavMenu ? "navbar-animation-hide" : null;
+
+    private string AccountSummary { get; set; }
 
     private void ToggleNavMenu()
     {
-        collapseNavMenu = !collapseNavMenu;
+        _collapseNavMenu = !_collapseNavMenu;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authenticationState = await AuthenticationStateTask;
+
+        if (authenticationState.User?.Identity?.IsAuthenticated == true)
+        {
+            var claims = authenticationState.User.Claims.ToList();
+            AccountSummary = claims[0].Value + ", " + claims[1].Value;
+        }
     }
 }
