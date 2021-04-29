@@ -1,11 +1,43 @@
-﻿:root {
+﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+:root {
     --dosgreen: #66B966;
 }
 
 .dos-bg {
-    background-color: var(--dosgreen);
+    /* background-color: var(--dosgreen); */
+    background: linear-gradient( 159deg, var(--dosgreen) 0%, rgb(165 252 69) 100%);
 }
 
 .mw-label {
     min-width: 130px;
 }
+
+.content {
+    padding-top: 2rem;
+}
+
+/* Blazor Defaults  */
+
+.validation-message {
+    color: red;
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1200;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }

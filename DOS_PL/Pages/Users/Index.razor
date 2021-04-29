@@ -1,7 +1,37 @@
 ﻿@page "/users"
 @layout MainLayout
-<h3>Users</h3>
+
+@using Syncfusion.Blazor.Grids
+@using DOS_DAL.Models;
+@using DOS_BL.Services
+
+@inject UserService UserService
+
+<h1 class="display-4 text-center">Users</h1>
+<hr />
+<div class="d-flex justify-content-center mb-3">
+    <div class="btn-group btn-group-lg" role="group">
+        <button type="button" class="btn btn-success">Add</button>
+        <button type="button" class="btn btn-danger @AllowButtonClass">Delete</button>
+        <button type="button" class="btn btn-warning @AllowButtonClass">Edit</button>
+    </div>
+</div>
+
+<SfGrid DataSource="@UserService.AsQueryable()">
+    <GridEvents RowSelected="OnRowSelected" RowDeselected="OnRowDeselected" TValue="User" />
+</SfGrid>
 
 @code {
+    private bool _itemSelected;
+    private string AllowButtonClass => _itemSelected ? "" : "disabled";
 
+    private void OnRowSelected(RowSelectEventArgs<User> args)
+    {
+        _itemSelected = true;
+    }
+
+    private void OnRowDeselected(RowDeselectEventArgs<User> args)
+    {
+        _itemSelected = false;
+    }
 }
