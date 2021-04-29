@@ -11,7 +11,7 @@ namespace DOS_BL.Services
         {
         }
 
-        public (bool Success, User user) AuthenticateUser(string username, string password)
+        public (bool Success, User User) AuthenticateUser(string username, string password)
         {
             var foundUser = AsQueryable().FirstOrDefault(user => user.Username == username);
             if (foundUser is null)
