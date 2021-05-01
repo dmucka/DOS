@@ -1,6 +1,7 @@
 ﻿@page "/users"
 @layout MainLayout
 
+@using Syncfusion.Blazor.Popups;
 @using Syncfusion.Blazor.Grids
 @using DOS_DAL.Models;
 @using DOS_BL.Services
@@ -14,12 +15,23 @@
 <div class="d-flex justify-content-center mb-3">
     <div class="btn-group btn-group-lg" role="group">
         <a href="/users/add" role="button" class="btn btn-success">Add</a>
-        <a href="#" role="button" class="btn btn-danger @AllowButtonClass">Delete</a>
-        <a href="#" role="button" class="btn btn-warning @AllowButtonClass">Edit</a>
+        <button class="btn btn-danger" @onclick="OpenDeleteDialog" disabled=@(_selectedUser is null)>Delete</button>
+        <a href="/users/edit/@_selectedUser?.Id" role="button" class="btn btn-warning @AllowButtonClass">Edit</a>
     </div>
 </div>
 
-<SfGrid TValue="User" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true">
+<SfDialog Width="350px" IsModal="true" @bind-Visible="@IsDeleting">
+    <DialogTemplates>
+        <Header> Delete </Header>
+        <Content> Are you sure you want to delete user @_selectedUser?.Username? </Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton Content="Yes" IsPrimary="true" OnClick="@PerformDeleteUser" />
+        <DialogButton Content="Cancel" OnClick="@CloseDeleteDialog" />
+    </DialogButtons>
+</SfDialog>
+
+<SfGrid @ref="_grid" TValue="User" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true">
 
     <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
         <DOSServiceAdaptor DataSource="@UserService.AsQueryable().WithRoles()" />
@@ -43,18 +55,44 @@
 </SfGrid>
 
 @code {
-    private bool _itemSelected;
+    private User _selectedUser;
+    private SfGrid<User> _grid;
 
     private int[] PageSizes => new[] { 25, 50, 100, 250 };
-    private string AllowButtonClass => _itemSelected ? "" : "disabled";
+    private string AllowButtonClass => _selectedUser is null ? "disabled" : "";
+    private bool IsDeleting { get; set; }
 
     private void OnRowSelected(RowSelectEventArgs<User> args)
     {
-        _itemSelected = true;
+        _selectedUser = args.Data;
     }
 
     private void OnRowDeselected(RowDeselectEventArgs<User> args)
     {
-        _itemSelected = false;
+        _selectedUser = null;
+    }
+
+    public async Task PerformDeleteUser()
+    {
+        if (_selectedUser is null)
+            return;
+
+        await UserService.DeleteAsync(_selectedUser);
+        CloseDeleteDialog();
+
+        _grid.Refresh();
+    }
+
+    public void OpenDeleteDialog()
+    {
+        if (_selectedUser is null)
+            return;
+
+        IsDeleting = true;
+    }
+
+    public void CloseDeleteDialog()
+    {
+        IsDeleting = false;
     }
 }

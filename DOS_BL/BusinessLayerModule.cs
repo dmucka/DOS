@@ -14,7 +14,18 @@ namespace DOS_BL
             // configure automapper
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<User, CreateUserDTO>().ReverseMap().ForPath(s => s.Role.Id, opt => opt.Ignore());
+                cfg
+                .CreateMap<User, CreateUserDTO>()
+                .ForPath(s => s.Password, opt => opt.Ignore())
+                .ReverseMap()
+                .ForPath(s => s.Role.Id, opt => opt.Ignore());
+
+                cfg
+                .CreateMap<User, EditUserDTO>()
+                .ForPath(s => s.Password, opt => opt.Ignore())
+                .ReverseMap()
+                .ForPath(s => s.Password, opt => opt.Ignore())
+                .ForPath(s => s.Role.Id, opt => opt.Ignore());
             });
 
             serviceRegistry.Register(c => config.CreateMapper());

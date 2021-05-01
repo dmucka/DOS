@@ -1,0 +1,126 @@
+﻿@page "/users/edit/{Id:int}"
+@layout MainLayout
+
+@using DOS_DAL.Constants;
+@using DOS_DAL.Models;
+@using DOS_BL.DataObjects;
+@using DOS_PL.Validation;
+@using DOS_BL.Services
+@using System.ComponentModel.DataAnnotations;
+@using Syncfusion.Blazor.DropDowns;
+@using Syncfusion.Blazor.Inputs;
+
+@inject UserService UserService
+@inject RoleService RoleService
+@inject NavigationManager NavigationManager
+
+<div class="d-flex align-items-center justify-content-center">
+    <a href="/users" class="btn btn-secondary dos-return-button">Return</a>
+    <span class="display-4">Edit user</span>
+</div>
+
+<hr />
+
+<div class="d-flex justify-content-center">
+    <EditForm EditContext="@_editContext" OnValidSubmit="PerformEditUser" class="p-4 mw-75 border rounded border-secondary">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <OptionalFieldValidator />
+        <ServerSideValidator @ref="_serverSideValidator" />
+
+        <div class="input-group input-group-lg mb-4 w-100">
+            <div class="input-group-prepend">
+                <span class="input-group-text mw-label">Username</span>
+            </div>
+            <InputText class="form-control" @bind-Value="@_editUserDTO.Username" />
+        </div>
+
+        <div class="input-group input-group-lg mb-4 w-100">
+            <div class="input-group-prepend">
+                <span class="input-group-text mw-label">Password</span>
+            </div>
+            <InputText class="form-control" type="password" @bind-Value="@_editUserDTO.Password" />
+        </div>
+
+        <div class="input-group input-group-lg mb-4 w-100">
+            <div class="input-group-prepend">
+                <span class="input-group-text mw-label">Email</span>
+            </div>
+
+            <InputText class="form-control" type="email" @bind-Value="@_editUserDTO.Email" />
+        </div>
+
+        <div class="d-flex mb-4 justify-content-around">
+            <div class="input-group input-group-lg w-50">
+                <div class="input-group-prepend">
+                    <span class="input-group-text mw-label">First name</span>
+                </div>
+                <InputText class="form-control" @bind-Value="@_editUserDTO.FirstName" />
+            </div>
+
+            <div class="input-group input-group-lg w-50 ml-2">
+                <div class="input-group-prepend">
+                    <span class="input-group-text mw-label">Last name</span>
+                </div>
+                <InputText class="form-control" @bind-Value="@_editUserDTO.LastName" />
+            </div>
+        </div>
+
+        <div class="input-group input-group-lg mb-4 w-100 d-flex justify-content-center">
+            <div class="input-group-prepend">
+                <span class="input-group-text mw-label">Role</span>
+            </div>
+            <SfDropDownList DataSource="@_roles" @bind-Value="@_editUserDTO.RoleId">
+                <DropDownListFieldSettings Value="Id" Text="Name" />
+            </SfDropDownList>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-5 mb-1 @DisabledClass">Edit</button>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private ServerSideValidator _serverSideValidator;
+    private bool _isFormValid;
+    private EditUserDTO _editUserDTO = new();
+    private EditContext _editContext;
+    private List<Role> _roles;
+
+    private string DisabledClass => _isFormValid ? "" : "disabled";
+
+    private async Task PerformEditUser()
+    {
+        var testUser = UserService.GetByName(_editUserDTO.Username);
+
+        if (testUser is not null && testUser.Id != _editUserDTO.Id)
+        {
+            _serverSideValidator.DisplayError("Username", "This username already exists.");
+            return;
+        }
+
+        if (!await UserService.UpdateAsync(_editUserDTO))
+        {
+            _serverSideValidator.DisplayError("Username", "An error occured while creating new user.");
+            return;
+        }
+
+        NavigationManager.NavigateTo("/users");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _editUserDTO = await UserService.GetSafeUserAsync(Id);
+        _editContext = new(_editUserDTO);
+        _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
+        _editContext.OnFieldChanged += (s, e) =>
+        {
+            _isFormValid = _editContext.Validate();
+            StateHasChanged();
+        };
+
+        _roles = await RoleService.GetAllAsync();
+    }
+}
