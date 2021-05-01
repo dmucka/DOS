@@ -14,6 +14,11 @@ html, body, .main {
     background: linear-gradient( 159deg, var(--dosgreen) 0%, rgb(165 252 69) 100%);
 }
 
+.dos-return-button {
+    margin-left: -192px;
+    margin-right: 120px;
+}
+
 .mw-label {
     min-width: 130px;
 }
@@ -23,10 +28,33 @@ html, body, .main {
     height: 75%;
 }
 
+.mw-75 {
+    max-width: 75%;
+}
+
+.input-group-text {
+    flex-direction: column;
+}
+
+/* Syncfusion */
+.e-ddl.e-input-group.e-control-wrapper .e-input {
+    font-size: 20px;
+    text-align: center;
+    height: 100%;
+}
+
+.e-ddl.e-input-group.e-control-wrapper {
+    width: auto !important;
+}
+
 /* Blazor Defaults  */
 
 .validation-message {
     color: red;
+}
+
+.validation-summary {
+
 }
 
 #blazor-error-ui {
