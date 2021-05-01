@@ -39,6 +39,7 @@ namespace DOS_PL.Validation
                 if (prop.GetValue(e.FieldIdentifier.Model) as string == "")
                 {
                     prop.SetValue(e.FieldIdentifier.Model, null);
+                    CurrentEditContext.NotifyFieldChanged(e.FieldIdentifier);
                     CurrentEditContext.MarkAsUnmodified(e.FieldIdentifier);
                     CurrentEditContext.Validate();
                     StateHasChanged();

@@ -7,16 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace DOS_BL.Services
 {
     public abstract class BaseService<T> : IBaseService<T> where T : class, DOS_DAL.Interfaces.IBaseModel
     {
         protected readonly DOSContext _dbContext;
+        protected readonly IMapper _mapper;
 
-        public BaseService(DOSContext dbcontext)
+        public BaseService(DOSContext dbcontext, IMapper mapper)
         {
             _dbContext = dbcontext;
+            _mapper = mapper;
         }
 
         public IQueryable<T> AsQueryable() => _dbContext.Set<T>().AsQueryable();

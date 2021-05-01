@@ -3,6 +3,7 @@
 
 @using DOS_DAL.Constants;
 @using DOS_DAL.Models;
+@using DOS_BL.DataObjects;
 @using DOS_PL.Validation;
 @using DOS_BL.Services
 @using System.ComponentModel.DataAnnotations;
@@ -11,6 +12,7 @@
 
 @inject UserService UserService
 @inject RoleService RoleService
+@inject NavigationManager NavigationManager
 
 <div class="d-flex align-items-center justify-content-center">
     <a href="/users" class="btn btn-secondary dos-return-button">Return</a>
@@ -30,14 +32,14 @@
             <div class="input-group-prepend">
                 <span class="input-group-text mw-label">Username</span>
             </div>
-            <InputText class="form-control" @bind-Value="@_addUserData.Username" />
+            <InputText class="form-control" @bind-Value="@_createUserDTO.Username" />
         </div>
 
         <div class="input-group input-group-lg mb-4 w-100">
             <div class="input-group-prepend">
                 <span class="input-group-text mw-label">Password</span>
             </div>
-            <InputText class="form-control" type="password" @bind-Value="@_addUserData.Password" />
+            <InputText class="form-control" type="password" @bind-Value="@_createUserDTO.Password" />
         </div>
 
         <div class="input-group input-group-lg mb-4 w-100">
@@ -45,7 +47,7 @@
                 <span class="input-group-text mw-label">Email</span>
             </div>
 
-            <InputText class="form-control" type="email" @bind-Value="@_addUserData.Email" />
+            <InputText class="form-control" type="email" @bind-Value="@_createUserDTO.Email" />
         </div>
 
         <div class="d-flex mb-4 justify-content-around">
@@ -53,14 +55,14 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text mw-label">First name</span>
                 </div>
-                <InputText class="form-control" @bind-Value="@_addUserData.FirstName" />
+                <InputText class="form-control" @bind-Value="@_createUserDTO.FirstName" />
             </div>
 
             <div class="input-group input-group-lg w-50 ml-2">
                 <div class="input-group-prepend">
                     <span class="input-group-text mw-label">Last name</span>
                 </div>
-                <InputText class="form-control" @bind-Value="@_addUserData.LastName" />
+                <InputText class="form-control" @bind-Value="@_createUserDTO.LastName" />
             </div>
         </div>
 
@@ -68,7 +70,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text mw-label">Role</span>
             </div>
-            <SfDropDownList DataSource="@_roles" @bind-Value="@_addUserData.RoleId">
+            <SfDropDownList DataSource="@_roles" @bind-Value="@_createUserDTO.RoleId">
                 <DropDownListFieldSettings Value="Id" Text="Name" />
             </SfDropDownList>
         </div>
@@ -78,34 +80,9 @@
 </div>
 
 @code {
-
-    private class AddUserData
-    {
-        [Required]
-        [StringLength(255, ErrorMessage = "Username is too long.")]
-        public string Username { get; set; }
-
-        [Required]
-        [StringLength(255, ErrorMessage = "Password is too long")]
-        public string Password { get; set; }
-
-        [StringLength(255, ErrorMessage = "First name is too long")]
-        public string FirstName { get; set; }
-
-        [StringLength(255, ErrorMessage = "Last name is too long")]
-        public string LastName { get; set; }
-
-        [EmailAddress]
-        [StringLength(255, ErrorMessage = "Email is too long")]
-        public string Email { get; set; }
-
-        [Required]
-        public int RoleId { get; set; }
-    }
-
     private ServerSideValidator _serverSideValidator;
     private bool _isFormValid;
-    private AddUserData _addUserData = new();
+    private CreateUserDTO _createUserDTO = new();
     private EditContext _editContext;
     private List<Role> _roles;
 
@@ -113,16 +90,24 @@
 
     private async Task PerformAddUser()
     {
-        if (UserService.GetByName(_addUserData.Username) is not null)
+        if (UserService.GetByName(_createUserDTO.Username) is not null)
         {
             _serverSideValidator.DisplayError("Username", "User already exists.");
             return;
         }
+
+        if (!await UserService.InsertAsync(_createUserDTO))
+        {
+            _serverSideValidator.DisplayError("Username", "An error occured while creating new user.");
+            return;
+        }
+
+        NavigationManager.NavigateTo("/users");
     }
 
     protected override async Task OnInitializedAsync()
     {
-        _editContext = new(_addUserData);
+        _editContext = new(_createUserDTO);
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
         _editContext.OnFieldChanged += (s, e) =>
         {
@@ -131,6 +116,6 @@
         };
 
         _roles = await RoleService.GetAllAsync();
-        _addUserData.RoleId = _roles.FirstOrDefault(x => x.Name == RoleConstants.Operator).Id;
+        _createUserDTO.RoleId = _roles.FirstOrDefault(x => x.Name == RoleConstants.Operator).Id;
     }
 }

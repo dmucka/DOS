@@ -4,7 +4,7 @@
 
 @using DOS_BL.Services;
 @using DOS_PL.Validation;
-@using System.ComponentModel.DataAnnotations;
+@using DOS_BL.DataObjects;
 
 @inject DOSAuthStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
@@ -30,13 +30,13 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text mw-label">Username</span>
                             </div>
-                            <InputText class="form-control" @bind-Value="@_loginData.Username" />
+                            <InputText class="form-control" @bind-Value="@_loginUserDTO.Username" />
                         </div>
                         <div class="input-group input-group-lg mb-4 w-100">
                             <div class="input-group-prepend">
                                 <span class="input-group-text mw-label">Password</span>
                             </div>
-                            <InputText class="form-control" type="password" @bind-Value="@_loginData.Password" />
+                            <InputText class="form-control" type="password" @bind-Value="@_loginUserDTO.Password" />
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100">Log in</button>
@@ -69,18 +69,7 @@
     [CascadingParameter]
     private Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
-    private class LoginData
-    {
-        [Required]
-        [StringLength(255, ErrorMessage = "Username is too long.")]
-        public string Username { get; set; }
-
-        [Required]
-        [StringLength(255, ErrorMessage = "Password is too long")]
-        public string Password { get; set; }
-    }
-
-    private LoginData _loginData = new();
+    private LoginUserDTO _loginUserDTO = new();
     private EditContext _editContext;
     private ServerSideValidator _serverSideValidator;
 
@@ -89,7 +78,7 @@
         if (!_editContext.Validate())
             return;
 
-        var (authenticated, user) = UserService.AuthenticateUser(_loginData.Username, _loginData.Password);
+        var (authenticated, user) = UserService.AuthenticateUser(_loginUserDTO.Username, _loginUserDTO.Password);
 
         if (user == null)
         {
@@ -110,7 +99,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _editContext = new(_loginData);
+        _editContext = new(_loginUserDTO);
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
 
         var authenticationState = await AuthenticationStateTask;

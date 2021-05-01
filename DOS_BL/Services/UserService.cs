@@ -3,12 +3,14 @@ using DOS_DAL.Models;
 using DOS_DAL.Hashing;
 using System.Linq;
 using System.Threading.Tasks;
+using DOS_BL.DataObjects;
+using AutoMapper;
 
 namespace DOS_BL.Services
 {
     public class UserService : BaseService<User>
     {
-        public UserService(DOSContext dbcontext) : base(dbcontext)
+        public UserService(DOSContext dbcontext, IMapper mapper) : base(dbcontext, mapper)
         {
         }
 
@@ -26,9 +28,13 @@ namespace DOS_BL.Services
             return (PasswordHasher.Check(foundUser.Password, password), foundUser);
         }
 
-        public Task<bool> CreateNewUser(User user)
+        public Task<bool> InsertAsync(CreateUserDTO user)
         {
-            //TODO: Add DTO mapping
+            var item = _mapper.Map<User>(user);
+            var role = _dbContext.Roles.FirstOrDefault(role => role.Id == user.RoleId);
+            item.Password = PasswordHasher.Hash(user.Password);
+            item.Role = role;
+            return InsertAsync(item);
         }
     }
 }

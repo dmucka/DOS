@@ -37,13 +37,13 @@ html, body, .main {
 }
 
 /* Syncfusion */
-.e-ddl.e-input-group.e-control-wrapper .e-input {
+form .e-ddl.e-input-group.e-control-wrapper .e-input {
     font-size: 20px;
     text-align: center;
     height: 100%;
 }
 
-.e-ddl.e-input-group.e-control-wrapper {
+form .e-ddl.e-input-group.e-control-wrapper {
     width: auto !important;
 }
 
