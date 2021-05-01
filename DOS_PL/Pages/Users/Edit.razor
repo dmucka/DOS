@@ -103,7 +103,7 @@
 
         if (!await UserService.UpdateAsync(_editUserDTO))
         {
-            _serverSideValidator.DisplayError("Username", "An error occured while creating new user.");
+            _serverSideValidator.DisplayError("Username", "An error occured while editing the user.");
             return;
         }
 

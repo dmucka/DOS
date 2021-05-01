@@ -13,9 +13,9 @@ namespace DOS_PL.Validation
             var isValid = !editContext.GetValidationMessages(fieldIdentifier).Any();
 
             if (editContext.IsModified(fieldIdentifier) && isValid)
-                return "is-valid";
+                return "is-valid e-success";
 
-            return isValid ? "" : "is-invalid";
+            return isValid ? "" : "is-invalid e-error";
         }
     }
 }

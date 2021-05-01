@@ -28,6 +28,6 @@ namespace DOS_BL.DataObjects
         public string Email { get; set; }
 
         [Required]
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
     }
 }

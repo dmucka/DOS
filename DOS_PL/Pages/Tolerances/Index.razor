@@ -1,7 +1,100 @@
 ﻿@page "/tolerances"
 @layout MainLayout
-<h3>Tolerances</h3>
+
+@using Syncfusion.Blazor.Popups;
+@using Syncfusion.Blazor.Grids
+@using DOS_DAL.Models;
+@using DOS_BL.Services
+@using DOS_BL.Queries;
+@using DOS_PL.Data;
+
+@inject ToleranceService ToleranceService
+
+<h1 class="display-4 text-center">Tolerances</h1>
+<hr />
+<div class="d-flex justify-content-center mb-3">
+    <div class="btn-group btn-group-lg" role="group">
+        <a href="/tolerance/add" role="button" class="btn btn-success">Add</a>
+        <button class="btn btn-danger" @onclick="OpenDeleteDialog" disabled=@(_selectedTolerance is null)>Delete</button>
+        <a href="/tolerance/edit/@_selectedTolerance?.Id" role="button" class="btn btn-warning @AllowButtonClass">Edit</a>
+    </div>
+</div>
+
+<SfDialog Width="350px" IsModal="true" @bind-Visible="@IsDeleting">
+    <DialogTemplates>
+        <Header> Delete </Header>
+        <Content> Are you sure you want to delete tolerance @_selectedTolerance?.ValueName? </Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton Content="Yes" IsPrimary="true" OnClick="@PerformDeleteTolerance" />
+        <DialogButton Content="Cancel" OnClick="@CloseDeleteDialog" />
+    </DialogButtons>
+</SfDialog>
+
+<SfGrid @ref="_grid" TValue="Tolerance" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true">
+
+    <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
+        <DOSServiceAdaptor DataSource="@ToleranceService.AsQueryable()" />
+    </Syncfusion.Blazor.Data.SfDataManager>
+
+    <GridEvents RowSelected="OnRowSelected" RowDeselected="OnRowDeselected" TValue="Tolerance" />
+    <GridPageSettings PageSizes="@PageSizes" PageSize="25" />
+    <GridSortSettings>
+        <GridSortColumns>
+            <GridSortColumn Field="Id" Direction="SortDirection.Ascending" />
+        </GridSortColumns>
+    </GridSortSettings>
+    <GridColumns>
+        <GridColumn Field="@nameof(Tolerance.Id)" />
+        <GridColumn Field="Product.Name" HeaderText="Product" />
+        <GridColumn Field="Process.Name" HeaderText="Process" />
+        <GridColumn Field="@nameof(Tolerance.ValueName)" />
+        <GridColumn Field="@nameof(Tolerance.MaxValue)" />
+        <GridColumn Field="@nameof(Tolerance.MinValue)" />
+        <GridColumn Field="@nameof(Tolerance.Edited)" />
+        <GridColumn Field="EditedBy.Username" HeaderText="Edited By" />
+    </GridColumns>
+</SfGrid>
 
 @code {
+    private Tolerance _selectedTolerance;
+    private SfGrid<Tolerance> _grid;
 
+    private int[] PageSizes => new[] { 25, 50, 100, 250 };
+    private string AllowButtonClass => _selectedTolerance is null ? "disabled" : "";
+    private bool IsDeleting { get; set; }
+
+    private void OnRowSelected(RowSelectEventArgs<Tolerance> args)
+    {
+        _selectedTolerance = args.Data;
+    }
+
+    private void OnRowDeselected(RowDeselectEventArgs<Tolerance> args)
+    {
+        _selectedTolerance = null;
+    }
+
+    public async Task PerformDeleteTolerance()
+    {
+        if (_selectedTolerance is null)
+            return;
+
+        await ToleranceService.DeleteAsync(_selectedTolerance);
+        CloseDeleteDialog();
+
+        _grid.Refresh();
+    }
+
+    public void OpenDeleteDialog()
+    {
+        if (_selectedTolerance is null)
+            return;
+
+        IsDeleting = true;
+    }
+
+    public void CloseDeleteDialog()
+    {
+        IsDeleting = false;
+    }
 }

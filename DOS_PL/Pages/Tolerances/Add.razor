@@ -1,0 +1,111 @@
+﻿@page "/tolerance/add"
+@layout MainLayout
+
+@using DOS_DAL.Models;
+@using DOS_BL.DataObjects;
+@using DOS_PL.Validation;
+@using DOS_BL.Services
+@using Syncfusion.Blazor.DropDowns;
+@using Syncfusion.Blazor.Inputs; 
+
+@inject ToleranceService ToleranceService
+@inject ProductService ProductService
+@inject ProcessService ProcessService
+
+@inject NavigationManager NavigationManager
+
+<div class="d-flex align-items-center justify-content-center">
+    <a href="/tolerances" class="btn btn-secondary dos-return-button">Return</a>
+    <span class="display-4">Add new tolerance</span>
+</div>
+
+<hr />
+
+<div class="d-flex justify-content-center">
+    <EditForm EditContext="@_editContext" OnValidSubmit="PerformAddTolerance" class="p-4 mw-75 border rounded border-secondary">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <OptionalFieldValidator />
+        <ServerSideValidator @ref="_serverSideValidator" />
+
+        <div class="input-group input-group-lg mb-4 w-100 d-flex justify-content-center">
+            <div class="input-group-prepend">
+                <span class="input-group-text mw-label">Product</span>
+            </div>
+            <SfDropDownList DataSource="@_products" @bind-Value="@_createToleranceDTO.ProductId">
+                <DropDownListFieldSettings Value="Id" Text="Name" />
+            </SfDropDownList>
+        </div>
+
+        <div class="input-group input-group-lg mb-4 w-100 d-flex justify-content-center">
+            <div class="input-group-prepend">
+                <span class="input-group-text mw-label">Process</span>
+            </div>
+            <SfDropDownList DataSource="@_processes" @bind-Value="@_createToleranceDTO.ProcessId">
+                <DropDownListFieldSettings Value="Id" Text="Name" />
+            </SfDropDownList>
+        </div>
+
+        <div class="input-group input-group-lg mb-4 w-100">
+            <div class="input-group-prepend">
+                <span class="input-group-text mw-label">Value Name</span>
+            </div>
+            <InputText class="form-control" @bind-Value="@_createToleranceDTO.ValueName" />
+        </div>
+
+        <div class="d-flex mb-4 justify-content-around">
+            <div class="input-group input-group-lg w-50">
+                <div class="input-group-prepend">
+                    <span class="input-group-text mw-label">Max Value</span>
+                </div>
+                <SfNumericTextBox TValue="decimal" Min="-9999.9999M" Max="9999.9999M" Step="0.0005M" Format="###0.####" @bind-Value="@_createToleranceDTO.MaxValue" />
+            </div>
+
+            <div class="input-group input-group-lg w-50 ml-2">
+                <div class="input-group-prepend">
+                    <span class="input-group-text mw-label">Min Value</span>
+                </div>
+                <SfNumericTextBox TValue="decimal" Min="-9999.9999M" Max="9999.9999M" Step="0.0005M" Format="###0.####" @bind-Value="@_createToleranceDTO.MinValue" />
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-5 mb-1 @DisabledClass">Add</button>
+    </EditForm>
+</div>
+
+@code {
+    private ServerSideValidator _serverSideValidator;
+    private bool _isFormValid;
+    private CreateToleranceDTO _createToleranceDTO = new();
+    private EditContext _editContext;
+    private List<Product> _products;
+    private List<Process> _processes;
+
+    private string DisabledClass => _isFormValid ? "" : "disabled";
+
+    private async Task PerformAddTolerance()
+    {
+
+        if (!await ToleranceService.InsertAsync(_createToleranceDTO))
+        {
+            _serverSideValidator.DisplayError("ValueName", "An error occured while creating new tolerance.");
+            return;
+        }
+
+        NavigationManager.NavigateTo("/tolerances");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _editContext = new(_createToleranceDTO);
+        _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
+        _editContext.OnFieldChanged += (s, e) =>
+        {
+            _isFormValid = _editContext.Validate();
+            StateHasChanged();
+        };
+
+        _products = await ProductService.GetAllAsync();
+        _processes = await ProcessService.GetAllAsync();
+    }
+}

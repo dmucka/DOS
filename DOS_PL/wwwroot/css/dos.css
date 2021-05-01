@@ -37,14 +37,21 @@ html, body, .main {
 }
 
 /* Syncfusion */
+
 form .e-ddl.e-input-group.e-control-wrapper .e-input {
     font-size: 20px;
     text-align: center;
     height: 100%;
 }
 
-form .e-ddl.e-input-group.e-control-wrapper {
+form .e-ddl.e-input-group.e-control-wrapper,
+form .e-input-group, .e-input-group.e-control-wrapper {
     width: auto !important;
+}
+
+form .e-control.e-numerictextbox {
+    text-align: center;
+    height: 100% !important;
 }
 
 /* Blazor Defaults  */
