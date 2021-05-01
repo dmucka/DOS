@@ -1,0 +1,91 @@
+﻿@page "/product/add"
+@layout MainLayout
+
+@using DOS_DAL.Models;
+@using DOS_BL.DataObjects;
+@using DOS_PL.Validation;
+@using DOS_BL.Services
+@using Syncfusion.Blazor.Lists;
+
+@inject ProductService ProductService
+@inject ProcessService ProcessService
+
+@inject NavigationManager NavigationManager
+
+<div class="d-flex align-items-center justify-content-center">
+    <a href="/products" class="btn btn-secondary dos-return-button">Return</a>
+    <span class="display-4">Add new product</span>
+</div>
+
+<hr />
+
+<div class="d-flex justify-content-center">
+    <EditForm EditContext="@_editContext" OnValidSubmit="PerformAddProduct" class="p-4 mw-75 border rounded border-secondary">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <OptionalFieldValidator />
+        <ServerSideValidator @ref="_serverSideValidator" />
+
+        <div class="input-group input-group-lg mb-4 w-100">
+            <div class="input-group-prepend">
+                <span class="input-group-text mw-label">Name</span>
+            </div>
+
+            <InputText class="form-control" @bind-Value="@_createProductDTO.Name" />
+        </div>
+
+        <div class="input-group input-group-lg mb-4 w-100">
+            <div class="input-group-prepend">
+                <span class="input-group-text mw-label">Description</span>
+            </div>
+
+            <InputText class="form-control" @bind-Value="@_createProductDTO.Description" />
+        </div>
+
+        <div class="card mb-4 w-100 d-flex justify-content-center">
+            <div class="card-header">
+                <span class="mw-label">Processes</span>
+            </div>
+
+            <SfListView DataSource="@_processes">
+                <ListViewFieldSettings TValue="Process" Id="Id" Text="Name" />
+            </SfListView>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-5 mb-1 @DisabledClass">Add</button>
+    </EditForm>
+</div>
+
+@code {
+    private ServerSideValidator _serverSideValidator;
+    private bool _isFormValid;
+    private Product _createProductDTO = Product.CreateProductUnsafe();
+    private EditContext _editContext;
+    private List<Process> _processes;
+
+    private string DisabledClass => _isFormValid ? "" : "disabled";
+
+    private async Task PerformAddProduct()
+    {
+        if (!await ProductService.InsertAsync(_createProductDTO))
+        {
+            _serverSideValidator.DisplayError("ValueName", "An error occured while creating new product.");
+            return;
+        }
+
+        NavigationManager.NavigateTo("/products");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _editContext = new(_createProductDTO);
+        _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
+        _editContext.OnFieldChanged += (s, e) =>
+        {
+            _isFormValid = _editContext.Validate();
+            StateHasChanged();
+        };
+
+        _processes = await ProcessService.GetAllAsync();
+    }
+}

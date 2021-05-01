@@ -1,0 +1,79 @@
+﻿@page "/product/edit/{Id:int}"
+@layout MainLayout
+
+@using DOS_DAL.Models;
+@using DOS_BL.DataObjects;
+@using DOS_PL.Validation;
+@using DOS_BL.Services
+
+@inject ProductService ProductService
+
+@inject NavigationManager NavigationManager
+
+<div class="d-flex align-items-center justify-content-center">
+    <a href="/products" class="btn btn-secondary dos-return-button">Return</a>
+    <span class="display-4">Edit product</span>
+</div>
+
+<hr />
+
+<div class="d-flex justify-content-center">
+    <EditForm EditContext="@_editContext" OnValidSubmit="PerformEditProduct" class="p-4 mw-75 border rounded border-secondary">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <OptionalFieldValidator />
+        <ServerSideValidator @ref="_serverSideValidator" />
+
+        <div class="input-group input-group-lg mb-4 w-100">
+            <div class="input-group-prepend">
+                <span class="input-group-text mw-label">Name</span>
+            </div>
+            <InputText class="form-control" @bind-Value="@_editProductDTO.Name" />
+        </div>
+
+        <div class="input-group input-group-lg mb-4 w-100">
+            <div class="input-group-prepend">
+                <span class="input-group-text mw-label">Description</span>
+            </div>
+            <InputText class="form-control" @bind-Value="@_editProductDTO.Description" />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-5 mb-1 @DisabledClass">Edit</button>
+    </EditForm>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private ServerSideValidator _serverSideValidator;
+    private bool _isFormValid;
+    private Product _editProductDTO = Product.CreateProductUnsafe();
+    private EditContext _editContext;
+
+    private string DisabledClass => _isFormValid ? "" : "disabled";
+
+    private async Task PerformEditProduct()
+    {
+        if (!await ProductService.UpdateAsync(_editProductDTO))
+        {
+            _serverSideValidator.DisplayError("ValueName", "An error occured while updating the product.");
+            return;
+        }
+
+        NavigationManager.NavigateTo("/products");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _editProductDTO = await ProductService.GetAsync(Id);
+
+        _editContext = new(_editProductDTO);
+        _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
+        _editContext.OnFieldChanged += (s, e) =>
+        {
+            _isFormValid = _editContext.Validate();
+            StateHasChanged();
+        };
+    }
+}

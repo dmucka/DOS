@@ -1,7 +1,95 @@
 ﻿@page "/products"
 @layout MainLayout
-<h3>Products</h3>
+
+@using Syncfusion.Blazor.Popups;
+@using Syncfusion.Blazor.Grids
+@using DOS_DAL.Models;
+@using DOS_BL.Services
+@using DOS_PL.Data;
+
+@inject ProductService ProductService
+
+<h1 class="display-4 text-center">Products</h1>
+<hr />
+<div class="d-flex justify-content-center mb-3">
+    <div class="btn-group btn-group-lg" role="group">
+        <a href="/product/add" role="button" class="btn btn-success">Add</a>
+        <button class="btn btn-danger" @onclick="OpenDeleteDialog" disabled=@(_selectedProduct is null)>Delete</button>
+        <a href="/product/edit/@_selectedProduct?.Id" role="button" class="btn btn-warning @AllowButtonClass">Edit</a>
+    </div>
+</div>
+
+<SfDialog Width="350px" IsModal="true" @bind-Visible="@IsDeleting">
+    <DialogTemplates>
+        <Header> Delete </Header>
+        <Content> Are you sure you want to delete product @_selectedProduct?.Name? </Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton Content="Yes" IsPrimary="true" OnClick="@PerformDeleteProduct" />
+        <DialogButton Content="Cancel" OnClick="@CloseDeleteDialog" />
+    </DialogButtons>
+</SfDialog>
+
+<SfGrid @ref="_grid" TValue="Product" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true">
+
+    <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
+        <DOSServiceAdaptor DataSource="@ProductService.AsQueryable()" />
+    </Syncfusion.Blazor.Data.SfDataManager>
+
+    <GridEvents RowSelected="OnRowSelected" RowDeselected="OnRowDeselected" TValue="Product" />
+    <GridPageSettings PageSizes="@PageSizes" PageSize="25" />
+    <GridSortSettings>
+        <GridSortColumns>
+            <GridSortColumn Field="Id" Direction="SortDirection.Ascending" />
+        </GridSortColumns>
+    </GridSortSettings>
+    <GridColumns>
+        <GridColumn Field="@nameof(Product.Id)" />
+        <GridColumn Field="@nameof(Product.Name)" />
+        <GridColumn Field="@nameof(Product.Description)" />
+        <GridColumn Field="@nameof(Product.IsDeleted)" /> @* TODO: soft delete *@
+    </GridColumns>
+</SfGrid>
 
 @code {
+    private Product _selectedProduct;
+    private SfGrid<Product> _grid;
 
+    private int[] PageSizes => new[] { 25, 50, 100, 250 };
+    private string AllowButtonClass => _selectedProduct is null ? "disabled" : "";
+    private bool IsDeleting { get; set; }
+
+    private void OnRowSelected(RowSelectEventArgs<Product> args)
+    {
+        _selectedProduct = args.Data;
+    }
+
+    private void OnRowDeselected(RowDeselectEventArgs<Product> args)
+    {
+        _selectedProduct = null;
+    }
+
+    public async Task PerformDeleteProduct()
+    {
+        if (_selectedProduct is null)
+            return;
+
+        await ProductService.DeleteAsync(_selectedProduct);
+        CloseDeleteDialog();
+
+        _grid.Refresh();
+    }
+
+    public void OpenDeleteDialog()
+    {
+        if (_selectedProduct is null)
+            return;
+
+        IsDeleting = true;
+    }
+
+    public void CloseDeleteDialog()
+    {
+        IsDeleting = false;
+    }
 }
