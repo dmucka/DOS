@@ -124,7 +124,6 @@ namespace DOS_DAL
                      .WithMany()
                      .HasForeignKey("EditedById")
                      .OnDelete(DeleteBehavior.NoAction);
-         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>().Navigation(e => e.EditedBy).IsRequired();
          modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
                      .HasOne<global::DOS_DAL.Models.Process>(p => p.Process)
                      .WithMany()
@@ -170,13 +169,11 @@ namespace DOS_DAL
                      .WithMany()
                      .HasForeignKey("CreatedById")
                      .OnDelete(DeleteBehavior.NoAction);
-         modelBuilder.Entity<global::DOS_DAL.Models.Order>().Navigation(e => e.CreatedBy).IsRequired();
          modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .HasOne<global::DOS_DAL.Models.User>(p => p.EditedBy)
                      .WithMany()
                      .HasForeignKey("EditedById")
                      .OnDelete(DeleteBehavior.NoAction);
-         modelBuilder.Entity<global::DOS_DAL.Models.Order>().Navigation(e => e.EditedBy).IsRequired();
          modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .HasOne<global::DOS_DAL.Models.Product>(p => p.Product)
                      .WithMany()
@@ -269,7 +266,6 @@ namespace DOS_DAL
                      .WithMany()
                      .HasForeignKey("EditedById")
                      .OnDelete(DeleteBehavior.NoAction);
-         modelBuilder.Entity<global::DOS_DAL.Models.Tolerance>().Navigation(e => e.EditedBy).IsRequired();
          modelBuilder.Entity<global::DOS_DAL.Models.Tolerance>()
                      .HasOne<global::DOS_DAL.Models.Product>(p => p.Product)
                      .WithMany()

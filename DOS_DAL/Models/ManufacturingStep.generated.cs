@@ -61,10 +61,9 @@ namespace DOS_DAL.Models
       /// <param name="temperature">Temperature value.</param>
       /// <param name="humidity">Humidity value.</param>
       /// <param name="edited">When was ManufacturingStep last Edited.</param>
-      /// <param name="editedby">User FK</param>
       /// <param name="process">Process FK</param>
       /// <param name="order">Order FK</param>
-      public ManufacturingStep(DateTime edited, global::DOS_DAL.Models.User editedby, global::DOS_DAL.Models.Process process, global::DOS_DAL.Models.Order order, decimal wavelength = 0m, decimal intensity = 0m, decimal temperature = 0m, decimal humidity = 0m)
+      public ManufacturingStep(DateTime edited, global::DOS_DAL.Models.Process process, global::DOS_DAL.Models.Order order, decimal wavelength = 0m, decimal intensity = 0m, decimal temperature = 0m, decimal humidity = 0m)
       {
          this.Wavelength = wavelength;
 
@@ -75,9 +74,6 @@ namespace DOS_DAL.Models
          this.Humidity = humidity;
 
          this.Edited = edited;
-
-         if (editedby == null) throw new ArgumentNullException(nameof(editedby));
-         this.EditedBy = editedby;
 
          if (process == null) throw new ArgumentNullException(nameof(process));
          this.Process = process;
@@ -97,12 +93,11 @@ namespace DOS_DAL.Models
       /// <param name="temperature">Temperature value.</param>
       /// <param name="humidity">Humidity value.</param>
       /// <param name="edited">When was ManufacturingStep last Edited.</param>
-      /// <param name="editedby">User FK</param>
       /// <param name="process">Process FK</param>
       /// <param name="order">Order FK</param>
-      public static ManufacturingStep Create(DateTime edited, global::DOS_DAL.Models.User editedby, global::DOS_DAL.Models.Process process, global::DOS_DAL.Models.Order order, decimal wavelength = 0m, decimal intensity = 0m, decimal temperature = 0m, decimal humidity = 0m)
+      public static ManufacturingStep Create(DateTime edited, global::DOS_DAL.Models.Process process, global::DOS_DAL.Models.Order order, decimal wavelength = 0m, decimal intensity = 0m, decimal temperature = 0m, decimal humidity = 0m)
       {
-         return new ManufacturingStep(edited, editedby, process, order, wavelength, intensity, temperature, humidity);
+         return new ManufacturingStep(edited, process, order, wavelength, intensity, temperature, humidity);
       }
 
       /*************************************************************************
@@ -163,7 +158,6 @@ namespace DOS_DAL.Models
        *************************************************************************/
 
       /// <summary>
-      /// Required&lt;br/&gt;
       /// User FK
       /// </summary>
       [Description("User FK")]

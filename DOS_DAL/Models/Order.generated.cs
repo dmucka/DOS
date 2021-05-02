@@ -59,10 +59,8 @@ namespace DOS_DAL.Models
       /// <param name="created">When was Order Created.</param>
       /// <param name="edited">When was Order last Edited.</param>
       /// <param name="isdeleted">Soft deleted flag.</param>
-      /// <param name="createdby">User FK</param>
-      /// <param name="editedby">User FK</param>
       /// <param name="product">Product FK</param>
-      public Order(string status, string serialnumber, string customer, DateTime created, DateTime edited, bool isdeleted, global::DOS_DAL.Models.User createdby, global::DOS_DAL.Models.User editedby, global::DOS_DAL.Models.Product product)
+      public Order(string status, string serialnumber, string customer, DateTime created, DateTime edited, bool isdeleted, global::DOS_DAL.Models.Product product)
       {
          if (string.IsNullOrEmpty(status)) throw new ArgumentNullException(nameof(status));
          this.Status = status;
@@ -78,12 +76,6 @@ namespace DOS_DAL.Models
          this.Edited = edited;
 
          this.IsDeleted = isdeleted;
-
-         if (createdby == null) throw new ArgumentNullException(nameof(createdby));
-         this.CreatedBy = createdby;
-
-         if (editedby == null) throw new ArgumentNullException(nameof(editedby));
-         this.EditedBy = editedby;
 
          if (product == null) throw new ArgumentNullException(nameof(product));
          this.Product = product;
@@ -101,12 +93,10 @@ namespace DOS_DAL.Models
       /// <param name="created">When was Order Created.</param>
       /// <param name="edited">When was Order last Edited.</param>
       /// <param name="isdeleted">Soft deleted flag.</param>
-      /// <param name="createdby">User FK</param>
-      /// <param name="editedby">User FK</param>
       /// <param name="product">Product FK</param>
-      public static Order Create(string status, string serialnumber, string customer, DateTime created, DateTime edited, bool isdeleted, global::DOS_DAL.Models.User createdby, global::DOS_DAL.Models.User editedby, global::DOS_DAL.Models.Product product)
+      public static Order Create(string status, string serialnumber, string customer, DateTime created, DateTime edited, bool isdeleted, global::DOS_DAL.Models.Product product)
       {
-         return new Order(status, serialnumber, customer, created, edited, isdeleted, createdby, editedby, product);
+         return new Order(status, serialnumber, customer, created, edited, isdeleted, product);
       }
 
       /*************************************************************************
@@ -190,14 +180,12 @@ namespace DOS_DAL.Models
        *************************************************************************/
 
       /// <summary>
-      /// Required&lt;br/&gt;
       /// User FK
       /// </summary>
       [Description("User FK")]
       public virtual global::DOS_DAL.Models.User CreatedBy { get; set; }
 
       /// <summary>
-      /// Required&lt;br/&gt;
       /// User FK
       /// </summary>
       [Description("User FK")]

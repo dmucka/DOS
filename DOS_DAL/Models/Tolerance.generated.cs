@@ -55,10 +55,9 @@ namespace DOS_DAL.Models
       /// <param name="maxvalue">Target Max Value.</param>
       /// <param name="minvalue">Target Min Value.</param>
       /// <param name="edited">When was Tolerance last edited.</param>
-      /// <param name="editedby">User FK</param>
       /// <param name="product">Product FK</param>
       /// <param name="process">Process FK</param>
-      public Tolerance(string valuename, decimal maxvalue, decimal minvalue, DateTime edited, global::DOS_DAL.Models.User editedby, global::DOS_DAL.Models.Product product, global::DOS_DAL.Models.Process process)
+      public Tolerance(string valuename, decimal maxvalue, decimal minvalue, DateTime edited, global::DOS_DAL.Models.Product product, global::DOS_DAL.Models.Process process)
       {
          if (string.IsNullOrEmpty(valuename)) throw new ArgumentNullException(nameof(valuename));
          this.ValueName = valuename;
@@ -68,9 +67,6 @@ namespace DOS_DAL.Models
          this.MinValue = minvalue;
 
          this.Edited = edited;
-
-         if (editedby == null) throw new ArgumentNullException(nameof(editedby));
-         this.EditedBy = editedby;
 
          if (product == null) throw new ArgumentNullException(nameof(product));
          this.Product = product;
@@ -88,12 +84,11 @@ namespace DOS_DAL.Models
       /// <param name="maxvalue">Target Max Value.</param>
       /// <param name="minvalue">Target Min Value.</param>
       /// <param name="edited">When was Tolerance last edited.</param>
-      /// <param name="editedby">User FK</param>
       /// <param name="product">Product FK</param>
       /// <param name="process">Process FK</param>
-      public static Tolerance Create(string valuename, decimal maxvalue, decimal minvalue, DateTime edited, global::DOS_DAL.Models.User editedby, global::DOS_DAL.Models.Product product, global::DOS_DAL.Models.Process process)
+      public static Tolerance Create(string valuename, decimal maxvalue, decimal minvalue, DateTime edited, global::DOS_DAL.Models.Product product, global::DOS_DAL.Models.Process process)
       {
-         return new Tolerance(valuename, maxvalue, minvalue, edited, editedby, product, process);
+         return new Tolerance(valuename, maxvalue, minvalue, edited, product, process);
       }
 
       /*************************************************************************
@@ -148,7 +143,6 @@ namespace DOS_DAL.Models
        *************************************************************************/
 
       /// <summary>
-      /// Required&lt;br/&gt;
       /// User FK
       /// </summary>
       [Description("User FK")]
