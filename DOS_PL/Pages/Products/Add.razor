@@ -42,13 +42,14 @@
             <InputText class="form-control" @bind-Value="@_createProductDTO.Description" />
         </div>
 
-        <div class="card mb-4 w-100 d-flex justify-content-center">
+        <div class="card @ProcessErrorClass mb-4 w-100 d-flex justify-content-center">
             <div class="card-header">
-                <span class="mw-label">Processes</span>
+                <span class="mw-label">Select processes</span>
             </div>
 
-            <SfListView DataSource="@_processes">
-                <ListViewFieldSettings TValue="Process" Id="Id" Text="Name" />
+            <SfListView DataSource="@_processes" ShowCheckBox="true">
+                <ListViewEvents TValue="CheckedProcess" Clicked="OnListViewClicked" />
+                <ListViewFieldSettings TValue="CheckedProcess" Id="Id" Text="Name" IsChecked="IsChecked" />
             </SfListView>
         </div>
 
@@ -57,19 +58,66 @@
 </div>
 
 @code {
+
+    public class CheckedProcess : Process
+    {
+        public CheckedProcess(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        public bool IsChecked { get; set; }
+    }
+
     private ServerSideValidator _serverSideValidator;
     private bool _isFormValid;
-    private Product _createProductDTO = Product.CreateProductUnsafe();
+    private bool _isProcessCollectionValid = true;
+    private CreateProductDTO _createProductDTO = new();
     private EditContext _editContext;
-    private List<Process> _processes;
+    private List<CheckedProcess> _processes = new();
 
     private string DisabledClass => _isFormValid ? "" : "disabled";
+    private string ProcessErrorClass => _isProcessCollectionValid ? "" : "is-invalid";
+
+    private void OnListViewClicked(ClickEventArgs<CheckedProcess> args)
+    {
+        _serverSideValidator.ClearErrors();
+        args.ItemData.IsChecked = args.IsChecked;
+
+        if (!_processes.Any(x => x.IsChecked))
+        {
+            _serverSideValidator.DisplayError("ProcessIds", "At least one process must be selected.");
+            _isProcessCollectionValid = false;
+        }
+        else
+        {
+            _isProcessCollectionValid = true;
+        }
+    }
+
 
     private async Task PerformAddProduct()
     {
+        if (!_processes.Any(x => x.IsChecked))
+        {
+            _serverSideValidator.ClearErrors();
+            _serverSideValidator.DisplayError("ProcessIds", "At least one process must be selected.");
+            _isProcessCollectionValid = false;
+            return;
+        }
+
+        if (ProductService.GetByName(_createProductDTO.Name) is not null)
+        {
+            _serverSideValidator.DisplayError("Name", "Product already exists.");
+            return;
+        }
+
+        _createProductDTO.ProcessIds.AddRange(_processes.Where(x => x.IsChecked).Select(x => x.Id).OrderBy(x => x).ToList());
+
         if (!await ProductService.InsertAsync(_createProductDTO))
         {
-            _serverSideValidator.DisplayError("ValueName", "An error occured while creating new product.");
+            _serverSideValidator.DisplayError("Name", "An error occured while creating new product.");
             return;
         }
 
@@ -86,6 +134,10 @@
             StateHasChanged();
         };
 
-        _processes = await ProcessService.GetAllAsync();
+        foreach (var process in await ProcessService.GetAllAsync())
+        {
+            var checkedProcess = new CheckedProcess(process.Id, process.Name);
+            _processes.Add(checkedProcess);
+        }
     }
 }

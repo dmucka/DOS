@@ -26,6 +26,23 @@ namespace DOS_BL
                 .ReverseMap()
                 .ForPath(s => s.Password, opt => opt.Ignore())
                 .ForPath(s => s.Role.Id, opt => opt.Ignore());
+
+                cfg
+                .CreateMap<Tolerance, CreateToleranceDTO>()
+                .ReverseMap()
+                .ForPath(s => s.Process.Id, opt => opt.Ignore())
+                .ForPath(s => s.Product.Id, opt => opt.Ignore());
+
+                cfg
+                .CreateMap<Tolerance, EditToleranceDTO>()
+                .ReverseMap()
+                .ForPath(s => s.Process.Id, opt => opt.Ignore())
+                .ForPath(s => s.Product.Id, opt => opt.Ignore());
+
+                cfg
+                .CreateMap<Product, CreateProductDTO>()
+                .ReverseMap()
+                .ForPath(s => s.Processes, opt => opt.Ignore());
             });
 
             serviceRegistry.Register(c => config.CreateMapper());

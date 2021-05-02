@@ -24,6 +24,7 @@ namespace DOS_DAL
         {
             try
             {
+                // TODO: https://www.entityframeworktutorial.net/faq/set-created-and-modified-date-in-efcore.aspx
                 await base.SaveChangesAsync();
                 return true;
             }

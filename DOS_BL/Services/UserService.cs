@@ -28,13 +28,16 @@ namespace DOS_BL.Services
             return (PasswordHasher.Check(foundUser.Password, password), foundUser);
         }
 
-        public Task<bool> InsertAsync(CreateUserDTO dto)
+        public async Task<bool> InsertAsync(CreateUserDTO dto)
         {
             var item = _mapper.Map<User>(dto);
-            var role = _dbContext.Roles.FirstOrDefault(role => role.Id == dto.RoleId);
+
             item.Password = PasswordHasher.Hash(dto.Password);
+
+            var role = await _dbContext.Roles.FindAsync(dto.RoleId);
             item.Role = role;
-            return InsertAsync(item);
+
+            return await InsertAsync(item);
         }
 
         public async Task<bool> UpdateAsync(EditUserDTO dto)
@@ -50,7 +53,7 @@ namespace DOS_BL.Services
             // do not change the entity if we didnt change the role
             if (dto.RoleId != user.Role.Id)
             {
-                var role = _dbContext.Roles.FirstOrDefault(role => role.Id == dto.RoleId);
+                var role = await _dbContext.Roles.FindAsync(dto.RoleId);
                 user.Role = role;
             }
 

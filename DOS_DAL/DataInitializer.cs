@@ -25,6 +25,23 @@ namespace DOS_DAL
 
             // use anonymous class so we can do not need to expose the RoleId property
             modelBuilder.Entity<User>().HasData(new { Id = 1, Username = "admin", Password = PasswordHasher.Hash("admin"), RoleId = adminRole.Id });
+
+            var processes = new[] 
+            {
+                new Process("Vstupná kontrola"),
+                new Process("Medzioperaèná kontrola"),
+                new Process("Napínací test"),
+                new Process("Kalibrácia"),
+                new Process("Výstupná kontrola")
+            };
+
+            // set index of each process
+            var c = 1;
+            foreach (var p in processes)
+            {
+                p.Id = c++;
+                modelBuilder.Entity<Process>().HasData(p);
+            }
         }
     }
 }

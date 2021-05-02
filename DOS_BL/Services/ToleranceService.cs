@@ -13,22 +13,37 @@ namespace DOS_BL.Services
         {
         }
 
-        public Task<bool> InsertAsync(CreateToleranceDTO dto)
+        public async Task<bool> InsertAsync(CreateToleranceDTO dto)
         {
             var item = _mapper.Map<Tolerance>(dto);
-            var product = _dbContext.Products.FirstOrDefault(product => product.Id == dto.ProductId);
-            var process = _dbContext.Processes.FirstOrDefault(process => process.Id == dto.ProcessId);
+            var product = await _dbContext.Products.FindAsync(dto.ProductId);
+            var process = await _dbContext.Processes.FindAsync(dto.ProcessId);
 
             item.Process = process;
             item.Product = product;
 
-            return InsertAsync(item);
+            return await InsertAsync(item);
         }
 
         public async Task<bool> UpdateAsync(EditToleranceDTO dto)
         {
             var tolerance = await GetAsync(dto.Id);
             tolerance = _mapper.Map(dto, tolerance);
+
+            // do not change the entity if we didnt change the id
+            if (dto.ProcessId != tolerance.Process.Id)
+            {
+                var process = await _dbContext.Processes.FindAsync(dto.ProcessId);
+                tolerance.Process = process;
+            }
+
+            // do not change the entity if we didnt change the id
+            if (dto.ProductId != tolerance.Product.Id)
+            {
+                var product = await _dbContext.Products.FindAsync(dto.ProductId);
+                tolerance.Product = product;
+            }
+
             return await UpdateAsync(tolerance);
         }
 

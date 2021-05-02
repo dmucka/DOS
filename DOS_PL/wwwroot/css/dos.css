@@ -36,6 +36,10 @@ html, body, .main {
     flex-direction: column;
 }
 
+.card.is-invalid {
+    border-color: #dc3545;
+}
+
 /* Syncfusion */
 
 form .e-ddl.e-input-group.e-control-wrapper .e-input {
