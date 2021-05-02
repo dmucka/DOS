@@ -67,6 +67,24 @@
         <GridColumn Field="EditedBy.Username" HeaderText="Edited By" />
         <GridColumn Field="@nameof(Order.IsDeleted)" Visible="@ShowDeleted" DisplayAsCheckBox="true" />
     </GridColumns>
+    <GridTemplates>
+        <DetailTemplate>
+            @{
+                var order = (context as Order);
+                <SfGrid TValue="ManufacturingStep" DataSource="@order.ManufacturingSteps">
+                    <GridColumns>
+                        <GridColumn Field="Process.Name" HeaderText="Process" />
+                        <GridColumn Field="@nameof(ManufacturingStep.Wavelength)" />
+                        <GridColumn Field="@nameof(ManufacturingStep.Intensity)" />
+                        <GridColumn Field="@nameof(ManufacturingStep.Temperature)" />
+                        <GridColumn Field="@nameof(ManufacturingStep.Humidity)" />
+                        <GridColumn Field="@nameof(Order.Edited)" />
+                        <GridColumn Field="EditedBy.Username" HeaderText="Edited By" />
+                    </GridColumns>
+                </SfGrid>
+            }
+        </DetailTemplate>
+    </GridTemplates>
 </SfGrid>
 
 @code {

@@ -52,6 +52,18 @@
         <GridColumn Field="@nameof(Product.Description)" />
         <GridColumn Field="@nameof(Product.IsDeleted)" Visible="@ShowDeleted" DisplayAsCheckBox="true" />
     </GridColumns>
+    <GridTemplates>
+        <DetailTemplate>
+            @{
+                var product = (context as Product);
+                <SfGrid TValue="Process" DataSource="@product.Processes">
+                    <GridColumns>
+                        <GridColumn Field="@nameof(Process.Name)" />
+                    </GridColumns>
+                </SfGrid>
+            }
+        </DetailTemplate>
+    </GridTemplates>
 </SfGrid>
 
 @code {
