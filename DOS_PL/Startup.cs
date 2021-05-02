@@ -41,8 +41,9 @@ namespace DOS_PL
             container.RegisterScoped<AuthenticationStateProvider>(s => s.GetInstance<DOSAuthStateProvider>());
 
             // register DbContext
+            // transient to avoid concurrency issues
             // container.RegisterFrom<DOS_DAL.DataAccessLayerModule>();
-            container.RegisterScoped(s =>
+            container.RegisterTransient(s =>
             {
                 var authProvider = s.GetInstance<DOSAuthStateProvider>();
                 return new DOS_DAL.DOSContext(authProvider.GetAuthorizedUser);

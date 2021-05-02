@@ -14,12 +14,12 @@
 <h1 class="display-4 text-center">Products</h1>
 <hr />
 <div class="d-flex justify-content-center align-items-center mb-3">
-    <div class="btn-group btn-group-lg" role="group">
+    <div class="btn-group btn-group-lg mr-5 ml-5rem" role="group">
         <a href="/product/add" role="button" class="btn btn-success">Add</a>
         <button class="btn btn-danger" @onclick="OpenDeleteDialog" disabled=@IsSelectionInvalid>Delete</button>
         <a href="/product/edit/@_selectedProduct?.Id" role="button" class="btn btn-warning @AllowButtonClass">Edit</a>
     </div>
-    <SfCheckBox CssClass="ml-5" @bind-Checked="@ShowDeleted" Label="Show deleted" @onchange="OnShowDeletedChanged"/>
+    <SfCheckBox CssClass="dos-m-offset-right-n" @bind-Checked="@ShowDeleted" Label="Show deleted" @onchange="OnShowDeletedChanged"/>
 </div>
 
 <SfDialog Width="350px" IsModal="true" @bind-Visible="@IsDeleting">

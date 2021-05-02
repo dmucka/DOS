@@ -1,9 +1,134 @@
 ﻿@page "/orders"
-@page "/"
- 
 @layout MainLayout
-<h3>Orders</h3>
+
+@using Syncfusion.Blazor.DropDowns;
+@using Syncfusion.Blazor.Buttons;
+@using Syncfusion.Blazor.Popups;
+@using Syncfusion.Blazor.Grids
+@using DOS_DAL.Models;
+@using DOS_BL.Services
+@using DOS_PL.Data;
+@using DOS_BL.Queries;
+
+@inject OrderService OrderService
+@inject ProductService ProductService
+
+<h1 class="display-4 text-center">Orders</h1>
+<hr />
+<div class="d-flex justify-content-center align-items-center mb-3">
+    <SfDropDownList TItem="Product" TValue="int?" DataSource="@_products" @bind-Value="@SelectedProductId">
+        <DropDownListEvents TItem="Product" TValue="int?" Closed="OnDropDownClosed" />
+        <DropDownListFieldSettings Value="Id" Text="Name" />
+    </SfDropDownList>
+
+    <div class="btn-group btn-group-lg mx-5" role="group">
+        <a href="/order/add" role="button" class="btn btn-success">Add</a>
+        <button class="btn btn-danger" @onclick="OpenDeleteDialog" disabled=@IsSelectionInvalid>Delete</button>
+        <button class="btn btn-secondary">Generate report</button>
+    </div>
+
+    <SfCheckBox CssClass="dos-m-offset-right-p" @bind-Checked="@ShowDeleted" Label="Show deleted" @onchange="OnShowDeletedChanged" />
+</div>
+
+<SfDialog Width="350px" IsModal="true" @bind-Visible="@IsDeleting">
+    <DialogTemplates>
+        <Header> Delete </Header>
+        <Content> Are you sure you want to delete order @_selectedOrder?.Id? </Content>
+    </DialogTemplates>
+    <DialogButtons>
+        <DialogButton Content="Yes" IsPrimary="true" OnClick="@PerformDeleteProduct" />
+        <DialogButton Content="Cancel" OnClick="@CloseDeleteDialog" />
+    </DialogButtons>
+</SfDialog>
+
+<SfGrid @ref="_grid" TValue="Order" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true">
+
+    <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
+        <DOSServiceAdaptor DataSource="@OrderService.AsQueryable().ProductOnly(SelectedProductId).WithDeleted(ShowDeleted)" />
+    </Syncfusion.Blazor.Data.SfDataManager>
+
+    <GridEvents RowSelected="OnRowSelected" RowDeselected="OnRowDeselected" TValue="Order" />
+    <GridPageSettings PageSizes="@PageSizes" PageSize="25" />
+    <GridSortSettings>
+        <GridSortColumns>
+            <GridSortColumn Field="Id" Direction="SortDirection.Ascending" />
+        </GridSortColumns>
+    </GridSortSettings>
+    <GridColumns>
+        <GridColumn Field="@nameof(Order.Id)" />
+        <GridColumn Field="Product.Name" HeaderText="Product" />
+        <GridColumn Field="@nameof(Order.Status)" />
+        <GridColumn Field="@nameof(Order.SerialNumber)" />
+        <GridColumn Field="@nameof(Order.Customer)" />
+        <GridColumn Field="@nameof(Order.Notes)" />
+        <GridColumn Field="@nameof(Order.Created)" />
+        <GridColumn Field="CreatedBy.Username" HeaderText="Created By" />
+        <GridColumn Field="@nameof(Order.Edited)" />
+        <GridColumn Field="EditedBy.Username" HeaderText="Edited By" />
+        <GridColumn Field="@nameof(Order.IsDeleted)" Visible="@ShowDeleted" DisplayAsCheckBox="true" />
+    </GridColumns>
+</SfGrid>
 
 @code {
+    private Order _selectedOrder;
+    private SfGrid<Order> _grid;
+    private List<Product> _products;
 
+    private int[] PageSizes => new[] { 25, 50, 100, 250 };
+    private bool IsSelectionInvalid => _selectedOrder is null || _selectedOrder.IsDeleted;
+    private string AllowButtonClass => IsSelectionInvalid ? "disabled" : "";
+    private bool IsDeleting { get; set; }
+    private bool ShowDeleted { get; set; }
+
+    private int? SelectedProductId { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _products = ProductService.AsQueryable().ToList();
+        SelectedProductId = _products.FirstOrDefault().Id;
+    }
+
+    private void OnRowSelected(RowSelectEventArgs<Order> args)
+    {
+        _selectedOrder = args.Data;
+    }
+
+    private void OnRowDeselected(RowDeselectEventArgs<Order> args)
+    {
+        _selectedOrder = null;
+    }
+
+    public async Task PerformDeleteProduct()
+    {
+        if (_selectedOrder is null)
+            return;
+
+        await OrderService.SoftDeleteAsync(_selectedOrder);
+        CloseDeleteDialog();
+
+        _grid.Refresh();
+    }
+
+    public void OpenDeleteDialog()
+    {
+        if (_selectedOrder is null)
+            return;
+
+        IsDeleting = true;
+    }
+
+    public void CloseDeleteDialog()
+    {
+        IsDeleting = false;
+    }
+
+    public void OnShowDeletedChanged(ChangeEventArgs args)
+    {
+        _grid.Refresh();
+    }
+
+    public void OnDropDownClosed(ClosedEventArgs args)
+    {
+        _grid.Refresh();
+    }
 }

@@ -40,6 +40,27 @@ html, body, .main {
     border-color: #dc3545;
 }
 
+
+.dos-m-offset-left-n {
+    margin: 0 0 0 -5rem !important;
+}
+
+.dos-m-offset-left-p {
+    margin: 0 0 0 5rem !important;
+}
+
+.dos-m-offset-right-n {
+    margin: 0 -5rem 0 0 !important;
+}
+
+.dos-m-offset-right-p {
+    margin: 0 5rem 0 0 !important;
+}
+
+.ml-5rem {
+    margin-left: 5rem !important;
+}
+
 /* Syncfusion */
 
 form .e-ddl.e-input-group.e-control-wrapper .e-input {
