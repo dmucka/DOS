@@ -11,6 +11,6 @@ namespace DOS_BL.Queries
     public static class SoftDeleteQuery
     {
         public static IQueryable<T> WithDeleted<T>(this IQueryable<T> query, bool withDeleted) where T : IBaseModel, ISoftDelete
-            => query.Where(x => withDeleted || x.IsDeleted == false).Cast<T>().AsQueryable();
+            => query.Where(x => withDeleted || x.IsDeleted == false).AsQueryable();
     }
 }
