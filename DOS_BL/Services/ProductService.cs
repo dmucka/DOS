@@ -43,5 +43,11 @@ namespace DOS_BL.Services
         {
             return _mapper.Map<EditProductDTO>(await GetAsync(id));
         }
+
+        public Task<bool> SoftDeleteAsync(Product product)
+        {
+            product.IsDeleted = true;
+            return UpdateAsync(product);
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace DOS_DAL.Models
    /// Model for Order.
    /// </summary>
    [System.ComponentModel.Description("Model for Order.")]
-   public partial class Order: DOS_DAL.Interfaces.IBaseModel, DOS_DAL.Interfaces.ITrackEdit, DOS_DAL.Interfaces.ITrackCreate
+   public partial class Order: DOS_DAL.Interfaces.IBaseModel, DOS_DAL.Interfaces.ITrackEdit, DOS_DAL.Interfaces.ITrackCreate, DOS_DAL.Interfaces.ISoftDelete
    {
       partial void Init();
 

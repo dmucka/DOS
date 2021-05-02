@@ -1,22 +1,25 @@
 ﻿@page "/products"
 @layout MainLayout
 
+@using Syncfusion.Blazor.Buttons;
 @using Syncfusion.Blazor.Popups;
 @using Syncfusion.Blazor.Grids
 @using DOS_DAL.Models;
 @using DOS_BL.Services
 @using DOS_PL.Data;
+@using DOS_BL.Queries;
 
 @inject ProductService ProductService
 
 <h1 class="display-4 text-center">Products</h1>
 <hr />
-<div class="d-flex justify-content-center mb-3">
+<div class="d-flex justify-content-center align-items-center mb-3">
     <div class="btn-group btn-group-lg" role="group">
         <a href="/product/add" role="button" class="btn btn-success">Add</a>
-        <button class="btn btn-danger" @onclick="OpenDeleteDialog" disabled=@(_selectedProduct is null)>Delete</button>
+        <button class="btn btn-danger" @onclick="OpenDeleteDialog" disabled=@IsSelectionInvalid>Delete</button>
         <a href="/product/edit/@_selectedProduct?.Id" role="button" class="btn btn-warning @AllowButtonClass">Edit</a>
     </div>
+    <SfCheckBox CssClass="ml-5" @bind-Checked="@ShowDeleted" Label="Show deleted" @onchange="OnShowDeletedChanged"/>
 </div>
 
 <SfDialog Width="350px" IsModal="true" @bind-Visible="@IsDeleting">
@@ -33,7 +36,7 @@
 <SfGrid @ref="_grid" TValue="Product" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true">
 
     <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
-        <DOSServiceAdaptor DataSource="@ProductService.AsQueryable()" />
+        <DOSServiceAdaptor DataSource="@ProductService.AsQueryable().WithDeleted(ShowDeleted)" />
     </Syncfusion.Blazor.Data.SfDataManager>
 
     <GridEvents RowSelected="OnRowSelected" RowDeselected="OnRowDeselected" TValue="Product" />
@@ -47,7 +50,7 @@
         <GridColumn Field="@nameof(Product.Id)" />
         <GridColumn Field="@nameof(Product.Name)" />
         <GridColumn Field="@nameof(Product.Description)" />
-        <GridColumn Field="@nameof(Product.IsDeleted)" /> @* TODO: soft delete *@
+        <GridColumn Field="@nameof(Product.IsDeleted)" Visible="@ShowDeleted" DisplayAsCheckBox="true" />
     </GridColumns>
 </SfGrid>
 
@@ -56,8 +59,11 @@
     private SfGrid<Product> _grid;
 
     private int[] PageSizes => new[] { 25, 50, 100, 250 };
-    private string AllowButtonClass => _selectedProduct is null ? "disabled" : "";
+    private bool IsSelectionInvalid => _selectedProduct is null || _selectedProduct.IsDeleted;
+    private string AllowButtonClass => IsSelectionInvalid ? "disabled" : "";
     private bool IsDeleting { get; set; }
+    private bool ShowDeleted { get; set; }
+
 
     private void OnRowSelected(RowSelectEventArgs<Product> args)
     {
@@ -74,7 +80,7 @@
         if (_selectedProduct is null)
             return;
 
-        await ProductService.DeleteAsync(_selectedProduct);
+        await ProductService.SoftDeleteAsync(_selectedProduct);
         CloseDeleteDialog();
 
         _grid.Refresh();
@@ -91,5 +97,10 @@
     public void CloseDeleteDialog()
     {
         IsDeleting = false;
+    }
+
+    public void OnShowDeletedChanged(ChangeEventArgs args)
+    {
+        _grid.Refresh();
     }
 }

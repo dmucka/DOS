@@ -28,7 +28,7 @@ namespace DOS_DAL.Models
    /// Model for Product.
    /// </summary>
    [System.ComponentModel.Description("Model for Product.")]
-   public partial class Product: DOS_DAL.Interfaces.IBaseModel
+   public partial class Product: DOS_DAL.Interfaces.IBaseModel, DOS_DAL.Interfaces.ISoftDelete
    {
       partial void Init();
 
