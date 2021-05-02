@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
-using DOS_DAL.Models;
 using System.Security.Claims;
 using System.Text.Json;
 
@@ -62,6 +61,16 @@ namespace DOS_PL.Auth
 
             // notify the authentication state provider.
             NotifyAuthenticationStateChanged(GenerateEmptyAuthenticationState());
+        }
+
+        public async Task<int?> GetAuthorizedUser()
+        {
+            var session = await GetUserSession();
+
+            if (session is null)
+                return null;
+
+            return session.UserId;
         }
 
         public async Task<AuthData> GetUserSession()

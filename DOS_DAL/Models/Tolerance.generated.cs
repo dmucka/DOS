@@ -28,7 +28,7 @@ namespace DOS_DAL.Models
    /// Model for Tolerance.
    /// </summary>
    [System.ComponentModel.Description("Model for Tolerance.")]
-   public partial class Tolerance: DOS_DAL.Interfaces.IBaseModel
+   public partial class Tolerance: DOS_DAL.Interfaces.IBaseModel, DOS_DAL.Interfaces.ITrackEdit
    {
       partial void Init();
 

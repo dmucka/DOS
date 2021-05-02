@@ -36,12 +36,20 @@ namespace DOS_PL
         // Important: This method must exist in order to replace the default provider.
         public void ConfigureContainer(IServiceContainer container)
         {
-            container.RegisterFrom<DOS_DAL.DataAccessLayerModule>();
-            container.RegisterFrom<DOS_BL.BusinessLayerModule>();
-
             // use custom auth provider
             container.RegisterScoped<DOSAuthStateProvider>();
             container.RegisterScoped<AuthenticationStateProvider>(s => s.GetInstance<DOSAuthStateProvider>());
+
+            // register DbContext
+            // container.RegisterFrom<DOS_DAL.DataAccessLayerModule>();
+            container.RegisterScoped(s =>
+            {
+                var authProvider = s.GetInstance<DOSAuthStateProvider>();
+                return new DOS_DAL.DOSContext(authProvider.GetAuthorizedUser);
+            });
+
+            // register services
+            container.RegisterFrom<DOS_BL.BusinessLayerModule>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

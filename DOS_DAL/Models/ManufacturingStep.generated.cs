@@ -28,7 +28,7 @@ namespace DOS_DAL.Models
    /// Model for ManufacturingStep,
    /// </summary>
    [System.ComponentModel.Description("Model for ManufacturingStep,")]
-   public partial class ManufacturingStep: DOS_DAL.Interfaces.IBaseModel
+   public partial class ManufacturingStep: DOS_DAL.Interfaces.IBaseModel, DOS_DAL.Interfaces.ITrackEdit
    {
       partial void Init();
 

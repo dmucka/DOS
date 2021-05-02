@@ -1,8 +1,10 @@
+using DOS_DAL.Interfaces;
 using DOS_DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DOS_DAL
@@ -11,9 +13,19 @@ namespace DOS_DAL
     {
         private const string _connectionString = "Server=(localdb)\\mssqllocaldb;Integrated Security=True;MultipleActiveResultSets=True;Database=DOSDB;Trusted_Connection=True;";
 
+        public Func<Task<int?>> GetAuthentication { get; private set; }
+
         public DOSContext() : base()
         {
             // empty constructor for scaffolding
+        }
+
+        /// <summary>
+        /// Constructor used for authorized commits to the database.
+        /// </summary>
+        public DOSContext(Func<Task<int?>> authFunction) : base()
+        {
+            GetAuthentication = authFunction;
         }
 
         /// <summary>
@@ -24,7 +36,39 @@ namespace DOS_DAL
         {
             try
             {
-                // TODO: https://www.entityframeworktutorial.net/faq/set-created-and-modified-date-in-efcore.aspx
+                if (GetAuthentication is null)
+                    throw new ArgumentNullException(nameof(GetAuthentication));
+
+                var userId = await GetAuthentication();
+                if (userId is null)
+                    throw new Exception("You must be logged in to commit to the database.");
+
+                var user = await Users.FindAsync(userId);
+                if (user is null)
+                    throw new Exception("Your user id is not valid.");
+
+                // implement tracking of timestamps and who edited the records
+                // https://www.entityframeworktutorial.net/faq/set-created-and-modified-date-in-efcore.aspx
+                var createdEntities = ChangeTracker
+                    .Entries()
+                    .Where(e => e.Entity is ITrackCreate && e.State == EntityState.Added);
+
+                var editedEntities = ChangeTracker
+                    .Entries()
+                    .Where(e => e.Entity is ITrackEdit && (e.State == EntityState.Modified || e.State == EntityState.Added));
+
+                foreach (var entry in createdEntities)
+                {
+                    ((ITrackCreate)entry.Entity).Created = DateTime.Now;
+                    ((ITrackCreate)entry.Entity).CreatedBy = user;
+                }
+
+                foreach (var entry in editedEntities)
+                {
+                    ((ITrackEdit)entry.Entity).Edited = DateTime.Now;
+                    ((ITrackEdit)entry.Entity).EditedBy = user;
+                }
+
                 await base.SaveChangesAsync();
                 return true;
             }
