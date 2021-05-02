@@ -85,27 +85,36 @@
 
     private async Task PerformAddTolerance()
     {
+        if (_createToleranceDTO.MaxValue < _createToleranceDTO.MinValue)
+        {
+            _serverSideValidator.DisplayError("MaxValue", "Max value is smaller than min value.");
+            return;
+        }
 
         if (!await ToleranceService.InsertAsync(_createToleranceDTO))
         {
-            _serverSideValidator.DisplayError("ValueName", "An error occured while creating new tolerance.");
+            _serverSideValidator.DisplayError("", "An error occured while creating new tolerance.");
             return;
         }
 
         NavigationManager.NavigateTo("/tolerances");
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         _editContext = new(_createToleranceDTO);
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
+
+        _products = ProductService.AsQueryable().ToList();
+        _processes = ProcessService.AsQueryable().ToList();
+
+        _createToleranceDTO.ProcessId = _processes.FirstOrDefault().Id;
+        _createToleranceDTO.ProductId = _products.FirstOrDefault().Id;
+
         _editContext.OnFieldChanged += (s, e) =>
         {
             _isFormValid = _editContext.Validate();
             StateHasChanged();
         };
-
-        _products = await ProductService.GetAllAsync();
-        _processes = await ProcessService.GetAllAsync();
     }
 }

@@ -43,6 +43,11 @@ namespace DOS_BL
                 .CreateMap<Product, CreateProductDTO>()
                 .ReverseMap()
                 .ForPath(s => s.Processes, opt => opt.Ignore());
+
+                cfg
+                .CreateMap<Product, EditProductDTO>()
+                .ReverseMap()
+                .ForPath(s => s.Processes, opt => opt.Ignore());
             });
 
             serviceRegistry.Register(c => config.CreateMapper());

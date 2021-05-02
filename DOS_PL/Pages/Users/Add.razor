@@ -98,24 +98,25 @@
 
         if (!await UserService.InsertAsync(_createUserDTO))
         {
-            _serverSideValidator.DisplayError("Username", "An error occured while creating new user.");
+            _serverSideValidator.DisplayError("", "An error occured while creating new user.");
             return;
         }
 
         NavigationManager.NavigateTo("/users");
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         _editContext = new(_createUserDTO);
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
+
+        _roles = RoleService.AsQueryable().ToList();
+        _createUserDTO.RoleId = _roles.FirstOrDefault(x => x.Name == RoleConstants.Operator).Id;
+
         _editContext.OnFieldChanged += (s, e) =>
         {
             _isFormValid = _editContext.Validate();
             StateHasChanged();
         };
-
-        _roles = await RoleService.GetAllAsync();
-        _createUserDTO.RoleId = _roles.FirstOrDefault(x => x.Name == RoleConstants.Operator).Id;
     }
 }

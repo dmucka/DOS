@@ -103,7 +103,7 @@
 
         if (!await UserService.UpdateAsync(_editUserDTO))
         {
-            _serverSideValidator.DisplayError("Username", "An error occured while editing the user.");
+            _serverSideValidator.DisplayError("", "An error occured while editing the user.");
             return;
         }
 
@@ -115,12 +115,13 @@
         _editUserDTO = await UserService.GetSafeUserAsync(Id);
         _editContext = new(_editUserDTO);
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
+
+        _roles = RoleService.AsQueryable().ToList();
+
         _editContext.OnFieldChanged += (s, e) =>
         {
             _isFormValid = _editContext.Validate();
             StateHasChanged();
         };
-
-        _roles = await RoleService.GetAllAsync();
     }
 }

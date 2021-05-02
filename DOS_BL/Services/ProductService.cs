@@ -30,5 +30,18 @@ namespace DOS_BL.Services
 
             return await InsertAsync(item);
         }
+
+        public async Task<bool> UpdateAsync(EditProductDTO dto)
+        {
+            var product = await GetAsync(dto.Id);
+            product = _mapper.Map(dto, product);
+
+            return await UpdateAsync(product);
+        }
+
+        public async Task<EditProductDTO> GetSafeProductAsync(int id)
+        {
+            return _mapper.Map<EditProductDTO>(await GetAsync(id));
+        }
     }
 }

@@ -117,14 +117,14 @@
 
         if (!await ProductService.InsertAsync(_createProductDTO))
         {
-            _serverSideValidator.DisplayError("Name", "An error occured while creating new product.");
+            _serverSideValidator.DisplayError("", "An error occured while creating new product.");
             return;
         }
 
         NavigationManager.NavigateTo("/products");
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         _editContext = new(_createProductDTO);
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
@@ -134,7 +134,7 @@
             StateHasChanged();
         };
 
-        foreach (var process in await ProcessService.GetAllAsync())
+        foreach (var process in ProcessService.AsQueryable().ToList())
         {
             var checkedProcess = new CheckedProcess(process.Id, process.Name);
             _processes.Add(checkedProcess);
