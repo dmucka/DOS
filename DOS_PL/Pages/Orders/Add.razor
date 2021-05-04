@@ -89,7 +89,7 @@
         _editContext = new(_createOrderDTO);
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
 
-        _products = ProductService.AsQueryable().OrderById().ToList();
+        _products = ProductService.AsQueryable().WithDeleted(false).OrderById().ToList();
         _createOrderDTO.ProductId = _products.FirstOrDefault().Id;
 
         _editContext.OnFieldChanged += (s, e) =>
