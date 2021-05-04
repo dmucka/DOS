@@ -34,7 +34,7 @@
 <SfGrid @ref="_grid" TValue="Tolerance" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true">
 
     <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
-        <DOSServiceAdaptor DataSource="@ToleranceService.AsQueryable(true)" />
+        <DOSServiceAdaptor TModel="Tolerance" DataSource="@ToleranceService.AsQueryable(true)" />
     </Syncfusion.Blazor.Data.SfDataManager>
 
     <GridEvents RowSelected="OnRowSelected" RowDeselected="OnRowDeselected" TValue="Tolerance" />

@@ -40,7 +40,7 @@ namespace DOS_BL.Services
 
         public async Task<bool> UpdateAsync(EditUserDTO dto)
         {
-            var user = await GetAsync(dto.Id);
+            var user = await AsQueryable().WithRoles().GetByIdAsync(dto.Id);
 
             user = _mapper.Map(dto, user);
             
@@ -60,7 +60,7 @@ namespace DOS_BL.Services
 
         public async Task<EditUserDTO> GetSafeUserAsync(int id)
         {
-            return _mapper.Map<EditUserDTO>(await GetAsync(id));
+            return _mapper.Map<EditUserDTO>(await AsQueryable().WithRoles().GetByIdAsync(id));
         }
     }
 }

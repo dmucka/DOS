@@ -64,6 +64,11 @@
         NavigationManager.NavigateTo("/products");
     }
 
+    protected override void OnInitialized()
+    {
+        _editContext = new(_editProductDTO);
+    }
+
     protected override async Task OnInitializedAsync()
     {
         _editProductDTO = await ProductService.GetSafeProductAsync(Id);

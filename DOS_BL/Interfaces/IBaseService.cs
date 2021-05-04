@@ -10,7 +10,7 @@ namespace DOS_BL.Interfaces
 {
     public interface IBaseService<T> where T : class, DOS_DAL.Interfaces.IBaseModel
     {
-        IQueryable<T> AsQueryable(bool loadAll = false, params string[] explicitTypes);
+        IQueryable<T> AsQueryable(bool loadAll = false, bool disableTracking = false, params string[] explicitTypes);
         Task<List<T>> GetAllAsync();
         Task<T> GetAsync(int id);
         Task<bool> InsertAsync(T item);

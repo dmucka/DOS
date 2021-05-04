@@ -25,7 +25,7 @@ namespace DOS_BL.Services
         }
 
 
-        public IQueryable<T> AsQueryable(bool loadAll = false, params string[] explicitTypes)
+        public IQueryable<T> AsQueryable(bool loadAll = false, bool disableTracking = false, params string[] explicitTypes)
         {
             var query = _dbContext.Set<T>().AsQueryable();
 
@@ -44,10 +44,13 @@ namespace DOS_BL.Services
                 }
             }
 
+            if (disableTracking)
+                query = query.AsNoTracking();
+
             return query;
         }
 
-        public Task<List<T>> GetAllAsync() => _dbContext.Set<T>().ToListAsync();
+        public Task<List<T>> GetAllAsync() => EntityFrameworkQueryableExtensions.ToListAsync(_dbContext.Set<T>());
 
         public async Task<T> GetAsync(int id) => await _dbContext.Set<T>().FindAsync(id);
 

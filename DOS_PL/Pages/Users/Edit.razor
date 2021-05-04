@@ -111,9 +111,15 @@
         NavigationManager.NavigateTo("/users");
     }
 
+    protected override void OnInitialized()
+    {
+        _editContext = new(_editUserDTO);
+    }
+
     protected override async Task OnInitializedAsync()
     {
         _editUserDTO = await UserService.GetSafeUserAsync(Id);
+
         _editContext = new(_editUserDTO);
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
 

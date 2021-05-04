@@ -104,20 +104,24 @@
         NavigationManager.NavigateTo("/tolerances");
     }
 
+    protected override void OnInitialized()
+    {
+        _editContext = new(_editToleranceDTO);
+    }
+
     protected override async Task OnInitializedAsync()
     {
         _editToleranceDTO = await ToleranceService.GetSafeToleranceAsync(Id);
 
         _editContext = new(_editToleranceDTO);
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
-
-        _products = ProductService.AsQueryable().OrderById().ToList();
-        _processes = ProcessService.AsQueryable().OrderById().ToList();
-
         _editContext.OnFieldChanged += (s, e) =>
         {
             _isFormValid = _editContext.Validate();
             StateHasChanged();
         };
+
+        _products = ProductService.AsQueryable().OrderById().ToList();
+        _processes = ProcessService.AsQueryable().OrderById().ToList();
     }
 }

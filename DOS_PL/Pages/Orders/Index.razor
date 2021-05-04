@@ -42,9 +42,9 @@
 </SfDialog>
 
 <SfGrid @ref="_grid" TValue="Order" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true">
-
+    <GridEditSettings AllowEditing="true"/>
     <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
-        <DOSServiceAdaptor DataSource="@OrderService.AsQueryable(true, "ManufacturingSteps.Process").ProductOnly(SelectedProductId).WithDeleted(ShowDeleted)" />
+        <DOSServiceAdaptor TModel="Order" DataSource="@OrderService.AsQueryable(true, true, "ManufacturingSteps.Process").ProductOnly(SelectedProductId).WithDeleted(ShowDeleted)" />
     </Syncfusion.Blazor.Data.SfDataManager>
 
     <GridEvents RowSelected="OnRowSelected" RowDeselected="OnRowDeselected" TValue="Order" />

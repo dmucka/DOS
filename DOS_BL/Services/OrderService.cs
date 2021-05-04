@@ -20,7 +20,7 @@ namespace DOS_BL.Services
         {
             var item = _mapper.Map<Order>(dto);
 
-            var product = await _dbContext.Products.WithProcesses().FirstOrDefaultAsync(x => x.Id == dto.ProductId);
+            var product = await _dbContext.Products.WithProcesses().GetByIdAsync(dto.ProductId.Value);
             item.Product = product;
 
             foreach (var process in product.Processes)

@@ -34,7 +34,7 @@
 <SfGrid @ref="_grid" TValue="User" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true">
 
     <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
-        <DOSServiceAdaptor DataSource="@UserService.AsQueryable().WithRoles()" />
+        <DOSServiceAdaptor TModel="User" DataSource="@UserService.AsQueryable().WithRoles()" />
     </Syncfusion.Blazor.Data.SfDataManager>
 
     <GridEvents RowSelected="OnRowSelected" RowDeselected="OnRowDeselected" TValue="User" />

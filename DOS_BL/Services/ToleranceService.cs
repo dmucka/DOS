@@ -29,7 +29,7 @@ namespace DOS_BL.Services
 
         public async Task<bool> UpdateAsync(EditToleranceDTO dto)
         {
-            var tolerance = await _dbContext.Tolerances.WithProcesses().WithProducts().FirstOrDefaultAsync(x => x.Id == dto.Id);
+            var tolerance = await AsQueryable().WithProcesses().WithProducts().GetByIdAsync(dto.Id);
             tolerance = _mapper.Map(dto, tolerance);
 
             // do not change the entity if we didnt change the id
@@ -51,7 +51,7 @@ namespace DOS_BL.Services
 
         public async Task<EditToleranceDTO> GetSafeToleranceAsync(int id)
         {
-            return _mapper.Map<EditToleranceDTO>(await GetAsync(id));
+            return _mapper.Map<EditToleranceDTO>(await AsQueryable().WithProcesses().WithProducts().GetByIdAsync(id));
         }
     }
 }

@@ -29,7 +29,7 @@ namespace DOS_BL.Services
 
         public async Task<bool> UpdateAsync(EditProductDTO dto)
         {
-            var product = await GetAsync(dto.Id);
+            var product = await AsQueryable().WithProcesses().GetByIdAsync(dto.Id);
             product = _mapper.Map(dto, product);
 
             return await UpdateAsync(product);
@@ -37,7 +37,7 @@ namespace DOS_BL.Services
 
         public async Task<EditProductDTO> GetSafeProductAsync(int id)
         {
-            return _mapper.Map<EditProductDTO>(await GetAsync(id));
+            return _mapper.Map<EditProductDTO>(await AsQueryable().WithProcesses().GetByIdAsync(id));
         }
 
         public Task<bool> SoftDeleteAsync(Product product)
