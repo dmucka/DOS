@@ -6,8 +6,10 @@
 @using DOS_BL.Interfaces;
 @using Syncfusion.Blazor;
 @using Syncfusion.Blazor.Data;
+@using Syncfusion.Blazor.Grids;
 @using DOS_DAL.Interfaces;
 @using System.Collections;
+@using System.Collections.ObjectModel; 
 
 @inherits DataAdaptor<TModel>
 @inject DOSContext DOSContext
@@ -25,18 +27,33 @@
 
     private System.Threading.SemaphoreSlim _semaphore = new(1, 1);
 
-    public override object Update(DataManager dataManager, object data, string keyField, string key)
-    {
-        throw new NotImplementedException();
-    }
-
     public override async Task<object> UpdateAsync(DataManager dataManager, object data, string keyField, string key)
     {
         if (data is TModel model)
         {
-            // TODO
-            DOSContext.Set<TModel>().Update(model);
+            // TODO: refactor using DTO
+
+            // syncfusion sfgrid handles the updates by making an identical copy of the objects
+            // we need to check if this object is tracked, and set the flags accordingly
+            var entry = DOSContext.Entry(model).Entity;
+            var tracked = await DOSContext.Set<TModel>().FindAsync(model.Id);
+            if (tracked is not null)
+            {
+                DOSContext.Entry<TModel>(tracked).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+                DOSContext.Entry<TModel>(model).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            }
+
+            //DOSContext.Set<TModel>().Update(model);
             await DOSContext.CommitAsync();
+
+            // cleanup
+            if (tracked is not null)
+            {
+                DOSContext.Entry<TModel>(tracked).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+                DOSContext.Entry<TModel>(model).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+                DOSContext.SaveChanges();
+            }
+
             return data;
         }
 
@@ -45,6 +62,10 @@
 
     public override async Task<object> ReadAsync(DataManagerRequest dm, string key = null)
     {
+        // TODO remove
+        if (DataSource is not IAsyncEnumerable<TModel>)
+            return dm.RequiresCounts ? new DataResult() { Result = DataSource, Count = DataSource.Count() } : DataSource;
+
         var data = DataSource;
 
         // Filtering
@@ -82,7 +103,9 @@
         if (dm.Sorted != null && dm.Sorted.Count > 0)
             executed = DataOperations.PerformSorting(executed.AsQueryable(), dm.Sorted).ToList();
 
-        return dm.RequiresCounts ? new DataResult() { Result = executed, Count = executed.Count } : executed;
+        var observable = new ObservableCollection<TModel>(executed);
+
+        return dm.RequiresCounts ? new DataResult() { Result = observable, Count = executed.Count } : observable;
     }
 
     public override object Read(DataManagerRequest dm, string key = null)

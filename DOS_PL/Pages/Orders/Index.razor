@@ -42,9 +42,9 @@
 </SfDialog>
 
 <SfGrid @ref="_grid" TValue="Order" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true">
-    <GridEditSettings AllowEditing="true"/>
+    <GridEditSettings AllowEditing="true" />
     <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
-        <DOSServiceAdaptor TModel="Order" DataSource="@OrderService.AsQueryable(true, true, "ManufacturingSteps.Process").ProductOnly(SelectedProductId).WithDeleted(ShowDeleted)" />
+        <DOSServiceAdaptor TModel="Order" DataSource="@OrderService.AsQueryable(true, true, "ManufacturingSteps.Process", "ManufacturingSteps.EditedBy").ProductOnly(SelectedProductId).WithDeleted(ShowDeleted)" />
     </Syncfusion.Blazor.Data.SfDataManager>
 
     <GridEvents RowSelected="OnRowSelected" RowDeselected="OnRowDeselected" TValue="Order" />
@@ -55,31 +55,36 @@
         </GridSortColumns>
     </GridSortSettings>
     <GridColumns>
-        <GridColumn Field="@nameof(Order.Id)" />
-        <GridColumn Field="Product.Name" HeaderText="Product" />
+        <GridColumn Field="@nameof(Order.Id)" AllowEditing="false" />
+        <GridColumn Field="Product.Name" HeaderText="Product" AllowEditing="false" />
         <GridColumn Field="@nameof(Order.Status)" />
-        <GridColumn Field="@nameof(Order.SerialNumber)" />
-        <GridColumn Field="@nameof(Order.Customer)" />
+        <GridColumn Field="@nameof(Order.SerialNumber)" AllowEditing="false" />
+        <GridColumn Field="@nameof(Order.Customer)" AllowEditing="false" />
         <GridColumn Field="@nameof(Order.Notes)" />
-        <GridColumn Field="@nameof(Order.Created)" />
-        <GridColumn Field="CreatedBy.Username" HeaderText="Created By" />
-        <GridColumn Field="@nameof(Order.Edited)" />
-        <GridColumn Field="EditedBy.Username" HeaderText="Edited By" />
+        <GridColumn Field="@nameof(Order.Created)" AllowEditing="false" />
+        <GridColumn Field="CreatedBy.Username" HeaderText="Created By" AllowEditing="false" />
+        <GridColumn Field="@nameof(Order.Edited)" AllowEditing="false" />
+        <GridColumn Field="EditedBy.Username" HeaderText="Edited By" AllowEditing="false" />
         <GridColumn Field="@nameof(Order.IsDeleted)" Visible="@ShowDeleted" DisplayAsCheckBox="true" />
     </GridColumns>
     <GridTemplates>
         <DetailTemplate>
             @{
                 var order = (context as Order);
-                <SfGrid TValue="ManufacturingStep" DataSource="@order.ManufacturingSteps">
+                <SfGrid TValue="ManufacturingStep">
+                    <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
+                        <DOSServiceAdaptor TModel="ManufacturingStep" DataSource="@order.ManufacturingSteps.AsQueryable()" />
+                    </Syncfusion.Blazor.Data.SfDataManager>
+                    <GridEditSettings AllowEditing="true" />
                     <GridColumns>
-                        <GridColumn Field="Process.Name" HeaderText="Process" />
+                        <GridColumn Field="@nameof(ManufacturingStep.Id)" AllowEditing="false" Visible="false" />
+                        <GridColumn Field="Process.Name" HeaderText="Process" AllowEditing="false" />
                         <GridColumn Field="@nameof(ManufacturingStep.Wavelength)" />
                         <GridColumn Field="@nameof(ManufacturingStep.Intensity)" />
                         <GridColumn Field="@nameof(ManufacturingStep.Temperature)" />
                         <GridColumn Field="@nameof(ManufacturingStep.Humidity)" />
-                        <GridColumn Field="@nameof(Order.Edited)" />
-                        <GridColumn Field="EditedBy.Username" HeaderText="Edited By" />
+                        <GridColumn Field="@nameof(Order.Edited)" AllowEditing="false" />
+                        <GridColumn Field="EditedBy.Username" HeaderText="Edited By" AllowEditing="false" />
                     </GridColumns>
                 </SfGrid>
             }

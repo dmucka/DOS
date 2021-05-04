@@ -33,21 +33,13 @@ namespace DOS_DAL.Models
       partial void Init();
 
       /// <summary>
-      /// Default constructor. Protected due to required properties, but present because EF needs it.
+      /// Default constructor
       /// </summary>
-      protected Product()
+      public Product()
       {
          Processes = new System.Collections.Generic.HashSet<global::DOS_DAL.Models.Process>();
 
          Init();
-      }
-
-      /// <summary>
-      /// Replaces default constructor, since it's protected. Caller assumes responsibility for setting all required values before saving.
-      /// </summary>
-      public static Product CreateProductUnsafe()
-      {
-         return new Product();
       }
 
       /// <summary>

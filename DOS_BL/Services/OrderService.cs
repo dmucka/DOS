@@ -33,10 +33,29 @@ namespace DOS_BL.Services
             return await InsertAsync(item);
         }
 
-        public Task<bool> SoftDeleteAsync(Order order)
+        public async Task<bool> SoftDeleteAsync(Order order)
         {
             order.IsDeleted = true;
-            return UpdateAsync(order);
+
+            // TODO: refactor using DTO
+            var tracked = await AsQueryable().GetByIdAsync(order.Id);
+            if (tracked is not null)
+            {
+                _dbContext.Entry(tracked).State = EntityState.Detached;
+                _dbContext.Entry(order).State = EntityState.Modified;
+                var ok = await _dbContext.CommitAsync();
+
+                if (tracked is not null)
+                {
+                    _dbContext.Entry(tracked).State = EntityState.Detached;
+                    _dbContext.Entry(order).State = EntityState.Detached;
+                    _dbContext.SaveChanges();
+                }
+
+                return ok;
+            }
+
+            return false;
         }
     }
 }
