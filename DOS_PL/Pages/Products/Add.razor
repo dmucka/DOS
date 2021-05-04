@@ -1,6 +1,7 @@
 ﻿@page "/product/add"
 @layout MainLayout
 
+@using DOS_BL.Queries; 
 @using DOS_DAL.Models;
 @using DOS_BL.DataObjects;
 @using DOS_PL.Validation;
@@ -107,7 +108,7 @@
             return;
         }
 
-        if (ProductService.GetByName(_createProductDTO.Name) is not null)
+        if (await ProductService.AsQueryable().GetByNameAsync(_createProductDTO.Name) is not null)
         {
             _serverSideValidator.DisplayError("Name", "Product already exists.");
             return;
@@ -134,7 +135,7 @@
             StateHasChanged();
         };
 
-        foreach (var process in ProcessService.AsQueryable().ToList())
+        foreach (var process in ProcessService.AsQueryable().OrderById().ToList())
         {
             var checkedProcess = new CheckedProcess(process.Id, process.Name);
             _processes.Add(checkedProcess);

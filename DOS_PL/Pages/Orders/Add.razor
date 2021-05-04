@@ -1,6 +1,7 @@
 ﻿@page "/order/add"
 @layout MainLayout
 
+@using DOS_BL.Queries; 
 @using DOS_DAL.Models;
 @using DOS_BL.DataObjects;
 @using DOS_PL.Validation;
@@ -88,7 +89,7 @@
         _editContext = new(_createOrderDTO);
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
 
-        _products = ProductService.AsQueryable().ToList();
+        _products = ProductService.AsQueryable().OrderById().ToList();
         _createOrderDTO.ProductId = _products.FirstOrDefault().Id;
 
         _editContext.OnFieldChanged += (s, e) =>

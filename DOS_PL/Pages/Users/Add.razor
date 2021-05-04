@@ -1,6 +1,7 @@
 ﻿@page "/users/add"
 @layout MainLayout
 
+@using DOS_BL.Queries; 
 @using DOS_DAL.Constants;
 @using DOS_DAL.Models;
 @using DOS_BL.DataObjects;
@@ -90,7 +91,7 @@
 
     private async Task PerformAddUser()
     {
-        if (UserService.GetByName(_createUserDTO.Username) is not null)
+        if (await UserService.AsQueryable().GetByNameAsync(_createUserDTO.Username) is not null)
         {
             _serverSideValidator.DisplayError("Username", "User already exists.");
             return;
@@ -110,7 +111,7 @@
         _editContext = new(_createUserDTO);
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
 
-        _roles = RoleService.AsQueryable().ToList();
+        _roles = RoleService.AsQueryable().OrderById().ToList();
         _createUserDTO.RoleId = _roles.FirstOrDefault(x => x.Name == RoleConstants.Operator).Id;
 
         _editContext.OnFieldChanged += (s, e) =>

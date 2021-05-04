@@ -78,7 +78,7 @@
         if (!_editContext.Validate())
             return;
 
-        var (authenticated, user) = UserService.AuthenticateUser(_loginUserDTO.Username, _loginUserDTO.Password);
+        var (authenticated, user) = await UserService.AuthenticateUser(_loginUserDTO.Username, _loginUserDTO.Password);
 
         if (user == null)
         {

@@ -1,6 +1,7 @@
 ﻿@page "/users/edit/{Id:int}"
 @layout MainLayout
 
+@using DOS_BL.Queries;
 @using DOS_DAL.Constants;
 @using DOS_DAL.Models;
 @using DOS_BL.DataObjects;
@@ -93,7 +94,7 @@
 
     private async Task PerformEditUser()
     {
-        var testUser = UserService.GetByName(_editUserDTO.Username);
+        var testUser = await UserService.AsQueryable().GetByNameAsync(_editUserDTO.Username);
 
         if (testUser is not null && testUser.Id != _editUserDTO.Id)
         {
@@ -116,7 +117,7 @@
         _editContext = new(_editUserDTO);
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
 
-        _roles = RoleService.AsQueryable().ToList();
+        _roles = RoleService.AsQueryable().OrderById().ToList();
 
         _editContext.OnFieldChanged += (s, e) =>
         {

@@ -1,6 +1,7 @@
 ﻿using DOS_DAL.Models;
 using DOS_DAL;
 using DOS_BL.Interfaces;
+using DOS_BL.Queries;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using System.Linq.Expressions;
 
 namespace DOS_BL.Services
 {
@@ -22,7 +24,28 @@ namespace DOS_BL.Services
             _mapper = mapper;
         }
 
-        public IQueryable<T> AsQueryable() => _dbContext.Set<T>().AsQueryable();
+
+        public IQueryable<T> AsQueryable(bool loadAll = false, params string[] explicitTypes)
+        {
+            var query = _dbContext.Set<T>().AsQueryable();
+
+            // https://stackoverflow.com/questions/44682555/include-all-navigation-properties-using-reflection-in-generic-repository-using-e
+            if (loadAll)
+            {
+                foreach (var property in _dbContext.Model.FindEntityType(typeof(T)).GetNavigations())
+                    query = query.Include(property.Name);
+            }
+
+            if (explicitTypes is not null)
+            {
+                foreach (var type in explicitTypes)
+                {
+                    query = query.Include(type);
+                }
+            }
+
+            return query;
+        }
 
         public Task<List<T>> GetAllAsync() => _dbContext.Set<T>().ToListAsync();
 

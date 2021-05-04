@@ -1,6 +1,7 @@
 ﻿@page "/tolerance/edit/{Id:int}"
 @layout MainLayout
 
+@using DOS_BL.Queries; 
 @using DOS_DAL.Models;
 @using DOS_BL.DataObjects;
 @using DOS_PL.Validation;
@@ -110,8 +111,8 @@
         _editContext = new(_editToleranceDTO);
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
 
-        _products = ProductService.AsQueryable().ToList();
-        _processes = ProcessService.AsQueryable().ToList();
+        _products = ProductService.AsQueryable().OrderById().ToList();
+        _processes = ProcessService.AsQueryable().OrderById().ToList();
 
         _editContext.OnFieldChanged += (s, e) =>
         {

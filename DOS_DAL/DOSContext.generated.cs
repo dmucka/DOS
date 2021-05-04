@@ -73,8 +73,6 @@ namespace DOS_DAL
       /// <inheritdoc />
       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
       {
-         optionsBuilder.UseLazyLoadingProxies();
-
          CustomInit(optionsBuilder);
       }
 

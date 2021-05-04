@@ -1,9 +1,11 @@
 ﻿using DOS_DAL;
 using DOS_DAL.Models;
+using DOS_BL.Queries;
 using AutoMapper;
 using DOS_BL.DataObjects;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace DOS_BL.Services
 {
@@ -27,7 +29,7 @@ namespace DOS_BL.Services
 
         public async Task<bool> UpdateAsync(EditToleranceDTO dto)
         {
-            var tolerance = await GetAsync(dto.Id);
+            var tolerance = await _dbContext.Tolerances.WithProcesses().WithProducts().FirstOrDefaultAsync(x => x.Id == dto.Id);
             tolerance = _mapper.Map(dto, tolerance);
 
             // do not change the entity if we didnt change the id

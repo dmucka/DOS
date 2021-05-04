@@ -98,16 +98,16 @@ namespace DOS_PL.Auth
             }
         }
 
-        private async Task SetUserSession(AuthData user)
+        private async Task SetUserSession(AuthData authData)
         {
             // buffer the current session into the user object,
             // in order to avoid fetching the user object from JS.
-            RefreshUserSession(user);
+            RefreshUserSession(authData);
 
-            await _protectedSessionStore.SetAsync(USER_SESSION_OBJECT_KEY, JsonSerializer.Serialize(user));
+            await _protectedSessionStore.SetAsync(USER_SESSION_OBJECT_KEY, JsonSerializer.Serialize(authData));
         }
 
-        private AuthData RefreshUserSession(AuthData user) => _cachedAuthData = user;
+        private AuthData RefreshUserSession(AuthData authData) => _cachedAuthData = authData;
 
         private Task<AuthenticationState> GenerateAuthenticationState(AuthData authData)
         {

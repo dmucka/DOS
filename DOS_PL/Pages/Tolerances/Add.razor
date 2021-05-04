@@ -1,12 +1,13 @@
 ﻿@page "/tolerance/add"
 @layout MainLayout
 
+@using DOS_BL.Queries;
 @using DOS_DAL.Models;
 @using DOS_BL.DataObjects;
 @using DOS_PL.Validation;
 @using DOS_BL.Services
 @using Syncfusion.Blazor.DropDowns;
-@using Syncfusion.Blazor.Inputs; 
+@using Syncfusion.Blazor.Inputs;
 
 @inject ToleranceService ToleranceService
 @inject ProductService ProductService
@@ -105,8 +106,8 @@
         _editContext = new(_createToleranceDTO);
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
 
-        _products = ProductService.AsQueryable().ToList();
-        _processes = ProcessService.AsQueryable().ToList();
+        _products = ProductService.AsQueryable().OrderById().ToList();
+        _processes = ProcessService.AsQueryable().OrderById().ToList();
 
         _createToleranceDTO.ProcessId = _processes.FirstOrDefault().Id;
         _createToleranceDTO.ProductId = _products.FirstOrDefault().Id;

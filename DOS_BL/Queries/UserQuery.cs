@@ -10,6 +10,11 @@ namespace DOS_BL.Queries
 {
     public static class UserQuery
     {
-        public static IQueryable<User> WithRoles(this IQueryable<User> query) => query.Include(x => x.Role).AsQueryable();
+        public static IQueryable<User> WithRoles(this IQueryable<User> query) 
+            => query.Include(x => x.Role)
+                    .AsQueryable();
+
+        public static Task<User> GetByNameAsync(this IQueryable<User> query, string username)
+            => query.FirstOrDefaultAsync(x => x.Username == username);
     }
 }

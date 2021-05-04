@@ -44,7 +44,7 @@
 <SfGrid @ref="_grid" TValue="Order" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true">
 
     <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
-        <DOSServiceAdaptor DataSource="@OrderService.AsQueryable().ProductOnly(SelectedProductId).WithDeleted(ShowDeleted)" />
+        <DOSServiceAdaptor DataSource="@OrderService.AsQueryable(true, "ManufacturingSteps.Process").ProductOnly(SelectedProductId).WithDeleted(ShowDeleted)" />
     </Syncfusion.Blazor.Data.SfDataManager>
 
     <GridEvents RowSelected="OnRowSelected" RowDeselected="OnRowDeselected" TValue="Order" />
@@ -102,7 +102,7 @@
 
     protected override void OnInitialized()
     {
-        _products = ProductService.AsQueryable().ToList();
+        _products = ProductService.AsQueryable().WithDeleted(false).ToList();
         SelectedProductId = _products.FirstOrDefault().Id;
     }
 

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using DOS_BL.DataObjects;
 using System;
 using System.Linq;
+using DOS_BL.Queries;
+using Microsoft.EntityFrameworkCore;
 
 namespace DOS_BL.Services
 {
@@ -18,7 +20,7 @@ namespace DOS_BL.Services
         {
             var item = _mapper.Map<Order>(dto);
 
-            var product = await _dbContext.Products.FindAsync(dto.ProductId);
+            var product = await _dbContext.Products.WithProcesses().FirstOrDefaultAsync(x => x.Id == dto.ProductId);
             item.Product = product;
 
             foreach (var process in product.Processes)

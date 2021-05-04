@@ -4,7 +4,10 @@ using DOS_DAL.Hashing;
 using System.Linq;
 using System.Threading.Tasks;
 using DOS_BL.DataObjects;
+using DOS_BL.Queries;
 using AutoMapper;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace DOS_BL.Services
 {
@@ -14,14 +17,9 @@ namespace DOS_BL.Services
         {
         }
 
-        public User GetByName(string username)
+        public async Task<(bool Success, User User)> AuthenticateUser(string username, string password)
         {
-            return AsQueryable().FirstOrDefault(user => user.Username == username);
-        }
-
-        public (bool Success, User User) AuthenticateUser(string username, string password)
-        {
-            var foundUser = GetByName(username);
+            var foundUser = await AsQueryable().WithRoles().GetByNameAsync(username);
             if (foundUser is null)
                 return (false, null);
 
