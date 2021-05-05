@@ -25,9 +25,9 @@ using System.Runtime.CompilerServices;
 namespace DOS_DAL.Models
 {
    /// <summary>
-   /// Model for ManufacturingStep,
+   /// Model for ManufacturingStep.
    /// </summary>
-   [System.ComponentModel.Description("Model for ManufacturingStep,")]
+   [System.ComponentModel.Description("Model for ManufacturingStep.")]
    public partial class ManufacturingStep: DOS_DAL.Interfaces.IBaseModel, DOS_DAL.Interfaces.ITrackEdit
    {
       partial void Init();

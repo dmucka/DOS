@@ -27,7 +27,7 @@ namespace DOS_DAL
       #region DbSets
 
       /// <summary>
-      /// Repository for global::DOS_DAL.Models.ManufacturingStep - Model for ManufacturingStep,
+      /// Repository for global::DOS_DAL.Models.ManufacturingStep - Model for ManufacturingStep.
       /// </summary>
       public virtual Microsoft.EntityFrameworkCore.DbSet<global::DOS_DAL.Models.ManufacturingStep> ManufacturingSteps { get; set; }
 

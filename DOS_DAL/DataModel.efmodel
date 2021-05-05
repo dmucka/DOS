@@ -69,7 +69,7 @@
       </modelClass>
     </modelRootHasClasses>
     <modelRootHasClasses Id="b3d94117-b094-4b43-871d-52dbfe0d73c5">
-      <modelClass Id="3a0f936b-bb2a-491e-a187-19d249fcd4c1" tableName="ManufacturingStep" databaseSchema="dbo" namespace="DOS_DAL.Models" isNamespaceTracking="false" dbSetName="ManufacturingSteps" name="ManufacturingStep" customInterfaces="DOS_DAL.Interfaces.IBaseModel,DOS_DAL.Interfaces.ITrackEdit" outputDirectory="Models" isOutputDirectoryTracking="false" summary="Model for ManufacturingStep," autoPropertyDefault="true" excludeFromMigrations="false" defaultConstructorVisibility="Public" isDefaultConstructorVisibilityTracking="false">
+      <modelClass Id="3a0f936b-bb2a-491e-a187-19d249fcd4c1" tableName="ManufacturingStep" databaseSchema="dbo" namespace="DOS_DAL.Models" isNamespaceTracking="false" dbSetName="ManufacturingSteps" name="ManufacturingStep" customInterfaces="DOS_DAL.Interfaces.IBaseModel,DOS_DAL.Interfaces.ITrackEdit" outputDirectory="Models" isOutputDirectoryTracking="false" summary="Model for ManufacturingStep." autoPropertyDefault="true" excludeFromMigrations="false" defaultConstructorVisibility="Public" isDefaultConstructorVisibilityTracking="false">
         <unidirectionalTargets>
           <unidirectionalAssociation Id="a5fc00be-6080-4dd8-a338-e2a666c02839" sourceMultiplicity="ZeroMany" targetMultiplicity="ZeroOne" targetPropertyName="EditedBy" targetDeleteAction="None" collectionClass="HashSet" targetSummary="User FK" sourceRole="Dependent" targetRole="Principal" foreignKeyLocation="None" targetImplementNotify="false" targetBackingFieldName="_editedBy" targetAutoProperty="true" isTargetAbstract="false" targetAutoInclude="false">
             <modelClassMoniker Id="2ea44685-429d-4aee-bb3e-adc0760d265f" />
