@@ -10,8 +10,8 @@ html, body, .main {
 }
 
 .dos-bg {
-    /* background-color: var(--dosgreen); */
     background: linear-gradient( 159deg, var(--dosgreen) 0%, rgb(165 252 69) 100%);
+    /* background-color: var(--dosgreen); */
 }
 
 .dos-return-button {
@@ -19,17 +19,9 @@ html, body, .main {
     margin-right: 120px;
 }
 
-.mw-label {
-    min-width: 130px;
-}
-
 .content {
     padding-top: 2rem;
     height: 75%;
-}
-
-.mw-75 {
-    max-width: 75%;
 }
 
 .input-group-text {
@@ -40,6 +32,15 @@ html, body, .main {
     border-color: #dc3545;
 }
 
+/* Convenience classes */
+
+.mw-label {
+    min-width: 130px;
+}
+
+.mw-75 {
+    max-width: 75%;
+}
 
 .dos-m-offset-left-n {
     margin: 0 0 0 -5rem !important;
