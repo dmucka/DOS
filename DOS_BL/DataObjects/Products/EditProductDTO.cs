@@ -9,6 +9,7 @@ namespace DOS_BL.DataObjects
 {
     public class EditProductDTO
     {
+        [Key]
         [Required]
         public int Id { get; set; }
 

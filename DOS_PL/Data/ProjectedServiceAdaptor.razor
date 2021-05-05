@@ -1,11 +1,18 @@
 ﻿@namespace DOS_PL.Data
 @typeparam TModel
+@typeparam TProject
 
+@using DOS_DAL.Interfaces;
+@using DOS_BL.DataObjects;
+@using DOS_BL.Interfaces;
 @using DOS_BL.Queries;
 @using Syncfusion.Blazor;
 @using Syncfusion.Blazor.Data;
+@using AutoMapper;
 
-@inherits DataAdaptor<TModel>
+@inherits DataAdaptor<TProject>
+@inject IMapper Mapper
+@inject IBaseService<TModel> Service
 
 <CascadingValue Value="@this">
     @ChildContent
@@ -19,6 +26,20 @@
     public IQueryable<TModel> DataSource { get; set; }
 
     private System.Threading.SemaphoreSlim _semaphore = new(1, 1);
+
+    public override async Task<object> UpdateAsync(DataManager dataManager, object data, string keyField, string key)
+    {
+        var item = (TProject)data;
+        var dbItem = await Service.GetAsync((item as dynamic).Id);
+        if (dbItem is null)
+            return null;
+
+        dbItem = Mapper.Map<TProject, TModel>(item, dbItem);
+
+        await Service.UpdateAsync(dbItem);
+
+        return item;
+    }
 
     public override async Task<object> ReadAsync(DataManagerRequest dm, string key = null)
     {
@@ -59,7 +80,9 @@
         if (dm.Sorted != null && dm.Sorted.Count > 0)
             executed = DataOperations.PerformSorting(executed.AsQueryable(), dm.Sorted).ToList();
 
-        return dm.RequiresCounts ? new DataResult() { Result = executed, Count = executed.Count } : executed;
+        var projected = Mapper.Map<List<TProject>>(executed);
+
+        return dm.RequiresCounts ? new DataResult() { Result = projected, Count = projected.Count } : projected;
     }
 
     public override object Read(DataManagerRequest dm, string key = null)
@@ -87,6 +110,8 @@
         if (dm.Sorted != null && dm.Sorted.Count > 0)
             executed = DataOperations.PerformSorting(executed.AsQueryable(), dm.Sorted).ToList();
 
-        return dm.RequiresCounts ? new DataResult() { Result = executed, Count = executed.Count } : executed;
+        var projected = Mapper.Map<List<TProject>>(executed);
+
+        return dm.RequiresCounts ? new DataResult() { Result = projected, Count = projected.Count } : projected;
     }
 }

@@ -96,37 +96,31 @@ namespace DOS_DAL
                      .IsRequired();
          modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
                      .Property(t => t.Wavelength)
-                     .HasField("_wavelength")
-                     .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction)
                      .HasColumnType("decimal(8,4)")
                      .IsRequired()
                      .HasDefaultValue(0);
          modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
                      .Property(t => t.Intensity)
-                     .HasField("_intensity")
-                     .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction)
                      .HasColumnType("decimal(8,4)")
                      .IsRequired()
                      .HasDefaultValue(0);
          modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
                      .Property(t => t.Temperature)
-                     .HasField("_temperature")
-                     .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction)
                      .HasColumnType("decimal(8,4)")
                      .IsRequired()
                      .HasDefaultValue(0);
          modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
                      .Property(t => t.Humidity)
-                     .HasField("_humidity")
-                     .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction)
                      .HasColumnType("decimal(8,4)")
                      .IsRequired()
                      .HasDefaultValue(0);
          modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
                      .Property(t => t.Edited)
-                     .HasField("_edited")
-                     .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction)
                      .IsRequired();
+         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
+                     .Property(t => t.OrderId)
+                     .IsRequired();
+         modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>().HasIndex(t => t.OrderId);
          modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>()
                      .HasOne<global::DOS_DAL.Models.User>(p => p.EditedBy)
                      .WithMany()
@@ -149,42 +143,28 @@ namespace DOS_DAL
          modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.Status)
                      .HasMaxLength(255)
-                     .HasField("_status")
-                     .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction)
                      .IsRequired();
          modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.SerialNumber)
                      .HasMaxLength(255)
-                     .HasField("_serialNumber")
-                     .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction)
                      .IsRequired();
          modelBuilder.Entity<global::DOS_DAL.Models.Order>().HasIndex(t => t.SerialNumber)
                      .IsUnique();
          modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.Customer)
                      .HasMaxLength(255)
-                     .HasField("_customer")
-                     .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction)
                      .IsRequired();
          modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.Notes)
-                     .HasMaxLength(1023)
-                     .HasField("_notes")
-                     .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction);
+                     .HasMaxLength(1023);
          modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.Created)
-                     .HasField("_created")
-                     .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction)
                      .IsRequired();
          modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.Edited)
-                     .HasField("_edited")
-                     .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction)
                      .IsRequired();
          modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .Property(t => t.IsDeleted)
-                     .HasField("_isDeleted")
-                     .UsePropertyAccessMode(PropertyAccessMode.FieldDuringConstruction)
                      .IsRequired();
          modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .HasOne<global::DOS_DAL.Models.User>(p => p.CreatedBy)
@@ -205,7 +185,7 @@ namespace DOS_DAL
          modelBuilder.Entity<global::DOS_DAL.Models.Order>()
                      .HasMany<global::DOS_DAL.Models.ManufacturingStep>(p => p.ManufacturingSteps)
                      .WithOne(p => p.Order)
-                     .HasForeignKey("OrderId")
+                     .HasForeignKey(k => k.OrderId)
                      .OnDelete(DeleteBehavior.Cascade);
          modelBuilder.Entity<global::DOS_DAL.Models.ManufacturingStep>().Navigation(e => e.Order).IsRequired();
 

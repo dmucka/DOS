@@ -79,6 +79,10 @@ form .e-control.e-numerictextbox {
     height: 100% !important;
 }
 
+.e-grid input.e-input {
+    margin: auto !important;
+}
+
 /* Blazor Defaults  */
 
 .validation-message {

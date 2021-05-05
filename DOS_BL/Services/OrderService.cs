@@ -25,7 +25,7 @@ namespace DOS_BL.Services
 
             foreach (var process in product.Processes)
             {
-                item.ManufacturingSteps.Add(new ManufacturingStep(DateTime.Now, process, item));
+                item.ManufacturingSteps.Add(new ManufacturingStep(DateTime.Now, item.Id, process, item));
             }
 
             item.Status = product.Processes.FirstOrDefault()?.Name;

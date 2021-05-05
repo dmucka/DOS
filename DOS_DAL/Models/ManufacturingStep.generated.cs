@@ -53,9 +53,10 @@ namespace DOS_DAL.Models
       /// <param name="temperature">Temperature value.</param>
       /// <param name="humidity">Humidity value.</param>
       /// <param name="edited">When was ManufacturingStep last Edited.</param>
+      /// <param name="orderid">Foreign key for Order.ManufacturingSteps &lt;--&gt; ManufacturingStep.Order. </param>
       /// <param name="process">Process FK</param>
       /// <param name="order">Order FK</param>
-      public ManufacturingStep(DateTime edited, global::DOS_DAL.Models.Process process, global::DOS_DAL.Models.Order order, decimal wavelength = 0m, decimal intensity = 0m, decimal temperature = 0m, decimal humidity = 0m)
+      public ManufacturingStep(DateTime edited, int orderid, global::DOS_DAL.Models.Process process, global::DOS_DAL.Models.Order order, decimal wavelength = 0m, decimal intensity = 0m, decimal temperature = 0m, decimal humidity = 0m)
       {
          this.Wavelength = wavelength;
 
@@ -66,6 +67,8 @@ namespace DOS_DAL.Models
          this.Humidity = humidity;
 
          this.Edited = edited;
+
+         this.OrderId = orderid;
 
          if (process == null) throw new ArgumentNullException(nameof(process));
          this.Process = process;
@@ -85,11 +88,12 @@ namespace DOS_DAL.Models
       /// <param name="temperature">Temperature value.</param>
       /// <param name="humidity">Humidity value.</param>
       /// <param name="edited">When was ManufacturingStep last Edited.</param>
+      /// <param name="orderid">Foreign key for Order.ManufacturingSteps &lt;--&gt; ManufacturingStep.Order. </param>
       /// <param name="process">Process FK</param>
       /// <param name="order">Order FK</param>
-      public static ManufacturingStep Create(DateTime edited, global::DOS_DAL.Models.Process process, global::DOS_DAL.Models.Order order, decimal wavelength = 0m, decimal intensity = 0m, decimal temperature = 0m, decimal humidity = 0m)
+      public static ManufacturingStep Create(DateTime edited, int orderid, global::DOS_DAL.Models.Process process, global::DOS_DAL.Models.Order order, decimal wavelength = 0m, decimal intensity = 0m, decimal temperature = 0m, decimal humidity = 0m)
       {
-         return new ManufacturingStep(edited, process, order, wavelength, intensity, temperature, humidity);
+         return new ManufacturingStep(edited, orderid, process, order, wavelength, intensity, temperature, humidity);
       }
 
       /*************************************************************************
@@ -106,56 +110,12 @@ namespace DOS_DAL.Models
       public int Id { get; set; }
 
       /// <summary>
-      /// Backing field for Wavelength
-      /// </summary>
-      protected decimal _wavelength;
-      /// <summary>
-      /// When provided in a partial class, allows value of Wavelength to be changed before setting.
-      /// </summary>
-      partial void SetWavelength(decimal oldValue, ref decimal newValue);
-      /// <summary>
-      /// When provided in a partial class, allows value of Wavelength to be changed before returning.
-      /// </summary>
-      partial void GetWavelength(ref decimal result);
-
-      /// <summary>
       /// Required, Default value = 0
       /// Wavelength value.
       /// </summary>
       [Required]
       [System.ComponentModel.Description("Wavelength value.")]
-      public decimal Wavelength
-      {
-         get
-         {
-            decimal value = _wavelength;
-            GetWavelength(ref value);
-            return (_wavelength = value);
-         }
-         set
-         {
-            decimal oldValue = _wavelength;
-            SetWavelength(oldValue, ref value);
-            if (oldValue != value)
-            {
-               _wavelength = value;
-               OnPropertyChanged();
-            }
-         }
-      }
-
-      /// <summary>
-      /// Backing field for Intensity
-      /// </summary>
-      protected decimal _intensity;
-      /// <summary>
-      /// When provided in a partial class, allows value of Intensity to be changed before setting.
-      /// </summary>
-      partial void SetIntensity(decimal oldValue, ref decimal newValue);
-      /// <summary>
-      /// When provided in a partial class, allows value of Intensity to be changed before returning.
-      /// </summary>
-      partial void GetIntensity(ref decimal result);
+      public decimal Wavelength { get; set; }
 
       /// <summary>
       /// Required, Default value = 0
@@ -163,38 +123,7 @@ namespace DOS_DAL.Models
       /// </summary>
       [Required]
       [System.ComponentModel.Description("Intensity value.")]
-      public decimal Intensity
-      {
-         get
-         {
-            decimal value = _intensity;
-            GetIntensity(ref value);
-            return (_intensity = value);
-         }
-         set
-         {
-            decimal oldValue = _intensity;
-            SetIntensity(oldValue, ref value);
-            if (oldValue != value)
-            {
-               _intensity = value;
-               OnPropertyChanged();
-            }
-         }
-      }
-
-      /// <summary>
-      /// Backing field for Temperature
-      /// </summary>
-      protected decimal _temperature;
-      /// <summary>
-      /// When provided in a partial class, allows value of Temperature to be changed before setting.
-      /// </summary>
-      partial void SetTemperature(decimal oldValue, ref decimal newValue);
-      /// <summary>
-      /// When provided in a partial class, allows value of Temperature to be changed before returning.
-      /// </summary>
-      partial void GetTemperature(ref decimal result);
+      public decimal Intensity { get; set; }
 
       /// <summary>
       /// Required, Default value = 0
@@ -202,38 +131,7 @@ namespace DOS_DAL.Models
       /// </summary>
       [Required]
       [System.ComponentModel.Description("Temperature value.")]
-      public decimal Temperature
-      {
-         get
-         {
-            decimal value = _temperature;
-            GetTemperature(ref value);
-            return (_temperature = value);
-         }
-         set
-         {
-            decimal oldValue = _temperature;
-            SetTemperature(oldValue, ref value);
-            if (oldValue != value)
-            {
-               _temperature = value;
-               OnPropertyChanged();
-            }
-         }
-      }
-
-      /// <summary>
-      /// Backing field for Humidity
-      /// </summary>
-      protected decimal _humidity;
-      /// <summary>
-      /// When provided in a partial class, allows value of Humidity to be changed before setting.
-      /// </summary>
-      partial void SetHumidity(decimal oldValue, ref decimal newValue);
-      /// <summary>
-      /// When provided in a partial class, allows value of Humidity to be changed before returning.
-      /// </summary>
-      partial void GetHumidity(ref decimal result);
+      public decimal Temperature { get; set; }
 
       /// <summary>
       /// Required, Default value = 0
@@ -241,38 +139,7 @@ namespace DOS_DAL.Models
       /// </summary>
       [Required]
       [System.ComponentModel.Description("Humidity value.")]
-      public decimal Humidity
-      {
-         get
-         {
-            decimal value = _humidity;
-            GetHumidity(ref value);
-            return (_humidity = value);
-         }
-         set
-         {
-            decimal oldValue = _humidity;
-            SetHumidity(oldValue, ref value);
-            if (oldValue != value)
-            {
-               _humidity = value;
-               OnPropertyChanged();
-            }
-         }
-      }
-
-      /// <summary>
-      /// Backing field for Edited
-      /// </summary>
-      protected DateTime _edited;
-      /// <summary>
-      /// When provided in a partial class, allows value of Edited to be changed before setting.
-      /// </summary>
-      partial void SetEdited(DateTime oldValue, ref DateTime newValue);
-      /// <summary>
-      /// When provided in a partial class, allows value of Edited to be changed before returning.
-      /// </summary>
-      partial void GetEdited(ref DateTime result);
+      public decimal Humidity { get; set; }
 
       /// <summary>
       /// Required
@@ -280,25 +147,15 @@ namespace DOS_DAL.Models
       /// </summary>
       [Required]
       [System.ComponentModel.Description("When was ManufacturingStep last Edited.")]
-      public DateTime Edited
-      {
-         get
-         {
-            DateTime value = _edited;
-            GetEdited(ref value);
-            return (_edited = value);
-         }
-         set
-         {
-            DateTime oldValue = _edited;
-            SetEdited(oldValue, ref value);
-            if (oldValue != value)
-            {
-               _edited = value;
-               OnPropertyChanged();
-            }
-         }
-      }
+      public DateTime Edited { get; set; }
+
+      /// <summary>
+      /// Indexed, Required
+      /// Foreign key for Order.ManufacturingSteps &lt;--&gt; ManufacturingStep.Order. 
+      /// </summary>
+      [Required]
+      [System.ComponentModel.Description("Foreign key for Order.ManufacturingSteps <--> ManufacturingStep.Order. ")]
+      public int OrderId { get; set; }
 
       /*************************************************************************
        * Navigation properties

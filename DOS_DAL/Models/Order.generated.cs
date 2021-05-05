@@ -37,7 +37,7 @@ namespace DOS_DAL.Models
       /// </summary>
       public Order()
       {
-         ManufacturingSteps = new System.Collections.ObjectModel.ObservableCollection<global::DOS_DAL.Models.ManufacturingStep>();
+         ManufacturingSteps = new System.Collections.Generic.HashSet<global::DOS_DAL.Models.ManufacturingStep>();
 
          Init();
       }
@@ -72,7 +72,7 @@ namespace DOS_DAL.Models
          if (product == null) throw new ArgumentNullException(nameof(product));
          this.Product = product;
 
-         this.ManufacturingSteps = new System.Collections.ObjectModel.ObservableCollection<global::DOS_DAL.Models.ManufacturingStep>();
+         this.ManufacturingSteps = new System.Collections.Generic.HashSet<global::DOS_DAL.Models.ManufacturingStep>();
          Init();
       }
 
@@ -105,19 +105,6 @@ namespace DOS_DAL.Models
       public int Id { get; set; }
 
       /// <summary>
-      /// Backing field for Status
-      /// </summary>
-      protected string _status;
-      /// <summary>
-      /// When provided in a partial class, allows value of Status to be changed before setting.
-      /// </summary>
-      partial void SetStatus(string oldValue, ref string newValue);
-      /// <summary>
-      /// When provided in a partial class, allows value of Status to be changed before returning.
-      /// </summary>
-      partial void GetStatus(ref string result);
-
-      /// <summary>
       /// Required, Max length = 255
       /// Status of order.
       /// </summary>
@@ -125,38 +112,7 @@ namespace DOS_DAL.Models
       [MaxLength(255)]
       [StringLength(255)]
       [System.ComponentModel.Description("Status of order.")]
-      public string Status
-      {
-         get
-         {
-            string value = _status;
-            GetStatus(ref value);
-            return (_status = value);
-         }
-         set
-         {
-            string oldValue = _status;
-            SetStatus(oldValue, ref value);
-            if (oldValue != value)
-            {
-               _status = value;
-               OnPropertyChanged();
-            }
-         }
-      }
-
-      /// <summary>
-      /// Backing field for SerialNumber
-      /// </summary>
-      internal string _serialNumber;
-      /// <summary>
-      /// When provided in a partial class, allows value of SerialNumber to be changed before setting.
-      /// </summary>
-      partial void SetSerialNumber(string oldValue, ref string newValue);
-      /// <summary>
-      /// When provided in a partial class, allows value of SerialNumber to be changed before returning.
-      /// </summary>
-      partial void GetSerialNumber(ref string result);
+      public string Status { get; set; }
 
       /// <summary>
       /// Indexed, Required, Max length = 255
@@ -166,38 +122,7 @@ namespace DOS_DAL.Models
       [MaxLength(255)]
       [StringLength(255)]
       [System.ComponentModel.Description("Serial Number of order.")]
-      public string SerialNumber
-      {
-         get
-         {
-            string value = _serialNumber;
-            GetSerialNumber(ref value);
-            return (_serialNumber = value);
-         }
-         set
-         {
-            string oldValue = _serialNumber;
-            SetSerialNumber(oldValue, ref value);
-            if (oldValue != value)
-            {
-               _serialNumber = value;
-               OnPropertyChanged();
-            }
-         }
-      }
-
-      /// <summary>
-      /// Backing field for Customer
-      /// </summary>
-      protected string _customer;
-      /// <summary>
-      /// When provided in a partial class, allows value of Customer to be changed before setting.
-      /// </summary>
-      partial void SetCustomer(string oldValue, ref string newValue);
-      /// <summary>
-      /// When provided in a partial class, allows value of Customer to be changed before returning.
-      /// </summary>
-      partial void GetCustomer(ref string result);
+      public string SerialNumber { get; set; }
 
       /// <summary>
       /// Required, Max length = 255
@@ -207,38 +132,7 @@ namespace DOS_DAL.Models
       [MaxLength(255)]
       [StringLength(255)]
       [System.ComponentModel.Description("Customer of order.")]
-      public string Customer
-      {
-         get
-         {
-            string value = _customer;
-            GetCustomer(ref value);
-            return (_customer = value);
-         }
-         set
-         {
-            string oldValue = _customer;
-            SetCustomer(oldValue, ref value);
-            if (oldValue != value)
-            {
-               _customer = value;
-               OnPropertyChanged();
-            }
-         }
-      }
-
-      /// <summary>
-      /// Backing field for Notes
-      /// </summary>
-      protected string _notes;
-      /// <summary>
-      /// When provided in a partial class, allows value of Notes to be changed before setting.
-      /// </summary>
-      partial void SetNotes(string oldValue, ref string newValue);
-      /// <summary>
-      /// When provided in a partial class, allows value of Notes to be changed before returning.
-      /// </summary>
-      partial void GetNotes(ref string result);
+      public string Customer { get; set; }
 
       /// <summary>
       /// Max length = 1023
@@ -247,38 +141,7 @@ namespace DOS_DAL.Models
       [MaxLength(1023)]
       [StringLength(1023)]
       [System.ComponentModel.Description("Notes for order.")]
-      public string Notes
-      {
-         get
-         {
-            string value = _notes;
-            GetNotes(ref value);
-            return (_notes = value);
-         }
-         set
-         {
-            string oldValue = _notes;
-            SetNotes(oldValue, ref value);
-            if (oldValue != value)
-            {
-               _notes = value;
-               OnPropertyChanged();
-            }
-         }
-      }
-
-      /// <summary>
-      /// Backing field for Created
-      /// </summary>
-      protected DateTime _created;
-      /// <summary>
-      /// When provided in a partial class, allows value of Created to be changed before setting.
-      /// </summary>
-      partial void SetCreated(DateTime oldValue, ref DateTime newValue);
-      /// <summary>
-      /// When provided in a partial class, allows value of Created to be changed before returning.
-      /// </summary>
-      partial void GetCreated(ref DateTime result);
+      public string Notes { get; set; }
 
       /// <summary>
       /// Required
@@ -286,38 +149,7 @@ namespace DOS_DAL.Models
       /// </summary>
       [Required]
       [System.ComponentModel.Description("When was Order Created.")]
-      public DateTime Created
-      {
-         get
-         {
-            DateTime value = _created;
-            GetCreated(ref value);
-            return (_created = value);
-         }
-         set
-         {
-            DateTime oldValue = _created;
-            SetCreated(oldValue, ref value);
-            if (oldValue != value)
-            {
-               _created = value;
-               OnPropertyChanged();
-            }
-         }
-      }
-
-      /// <summary>
-      /// Backing field for Edited
-      /// </summary>
-      protected DateTime _edited;
-      /// <summary>
-      /// When provided in a partial class, allows value of Edited to be changed before setting.
-      /// </summary>
-      partial void SetEdited(DateTime oldValue, ref DateTime newValue);
-      /// <summary>
-      /// When provided in a partial class, allows value of Edited to be changed before returning.
-      /// </summary>
-      partial void GetEdited(ref DateTime result);
+      public DateTime Created { get; set; }
 
       /// <summary>
       /// Required
@@ -325,38 +157,7 @@ namespace DOS_DAL.Models
       /// </summary>
       [Required]
       [System.ComponentModel.Description("When was Order last Edited.")]
-      public DateTime Edited
-      {
-         get
-         {
-            DateTime value = _edited;
-            GetEdited(ref value);
-            return (_edited = value);
-         }
-         set
-         {
-            DateTime oldValue = _edited;
-            SetEdited(oldValue, ref value);
-            if (oldValue != value)
-            {
-               _edited = value;
-               OnPropertyChanged();
-            }
-         }
-      }
-
-      /// <summary>
-      /// Backing field for IsDeleted
-      /// </summary>
-      protected bool _isDeleted;
-      /// <summary>
-      /// When provided in a partial class, allows value of IsDeleted to be changed before setting.
-      /// </summary>
-      partial void SetIsDeleted(bool oldValue, ref bool newValue);
-      /// <summary>
-      /// When provided in a partial class, allows value of IsDeleted to be changed before returning.
-      /// </summary>
-      partial void GetIsDeleted(ref bool result);
+      public DateTime Edited { get; set; }
 
       /// <summary>
       /// Required
@@ -364,25 +165,7 @@ namespace DOS_DAL.Models
       /// </summary>
       [Required]
       [System.ComponentModel.Description("Soft deleted flag.")]
-      public bool IsDeleted
-      {
-         get
-         {
-            bool value = _isDeleted;
-            GetIsDeleted(ref value);
-            return (_isDeleted = value);
-         }
-         set
-         {
-            bool oldValue = _isDeleted;
-            SetIsDeleted(oldValue, ref value);
-            if (oldValue != value)
-            {
-               _isDeleted = value;
-               OnPropertyChanged();
-            }
-         }
-      }
+      public bool IsDeleted { get; set; }
 
       /*************************************************************************
        * Navigation properties

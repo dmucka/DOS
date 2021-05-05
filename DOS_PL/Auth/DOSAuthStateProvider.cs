@@ -43,7 +43,7 @@ namespace DOS_PL.Auth
                 return await GenerateAuthenticationState(userSession);
 
             return await GenerateEmptyAuthenticationState();
-        }
+      }
 
         public async Task LoginAsync(AuthData authData)
         {
