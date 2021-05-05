@@ -26,7 +26,7 @@
     <div class="btn-group btn-group-lg mx-5" role="group">
         <a href="/order/add" role="button" class="btn btn-success">Add</a>
         <button class="btn btn-danger" @onclick="OpenDeleteDialog" disabled=@IsSelectionInvalid>Delete</button>
-        <button class="btn btn-secondary">Generate report</button>
+        <button class="btn btn-secondary" @onclick="GenerateReport">Generate report</button>
     </div>
 
     <SfCheckBox CssClass="dos-m-offset-right-p" @bind-Checked="@ShowDeleted" Label="Show deleted" @onchange="OnShowDeletedChanged" />
@@ -43,10 +43,10 @@
     </DialogButtons>
 </SfDialog>
 
-<SfGrid @ref="_grid" TValue="EditOrderDTO" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true">
+<SfGrid @ref="_grid" TValue="EditOrderDTO" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true" AllowExcelExport="true">
     <GridEditSettings AllowEditing="true" />
     <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
-        <MappedServiceAdaptor TModel="Order" 
+        <MappedServiceAdaptor TModel="Order"
                               TMap="EditOrderDTO"
                               DataSource="@OrderService.AsQueryable(true).ProductOnly(SelectedProductId).WithDeleted(ShowDeleted)" />
     </Syncfusion.Blazor.Data.SfDataManager>
@@ -159,5 +159,13 @@
     public void OnDropDownClosed(ClosedEventArgs args)
     {
         _grid.Refresh();
+    }
+
+    public async Task GenerateReport()
+    {
+        var ExportProperties = new ExcelExportProperties();
+        ExportProperties.ExportType = ExportType.CurrentPage;
+
+        await _grid.ExcelExport(ExportProperties);
     }
 }
