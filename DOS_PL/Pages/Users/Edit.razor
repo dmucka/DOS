@@ -1,5 +1,6 @@
 ﻿@page "/users/edit/{Id:int}"
 @layout MainLayout
+@attribute [Authorize(Roles = "Admin")]
 
 @using DOS_BL.Queries;
 @using DOS_DAL.Constants;
@@ -14,6 +15,7 @@
 @inject UserService UserService
 @inject RoleService RoleService
 @inject NavigationManager NavigationManager
+
 
 <div class="d-flex align-items-center justify-content-center">
     <a href="/users" class="btn btn-secondary dos-return-button">Return</a>

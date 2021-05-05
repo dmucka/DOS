@@ -1,5 +1,6 @@
 ﻿@page "/product/edit/{Id:int}"
 @layout MainLayout
+@attribute [Authorize(Roles = "Admin")]
 
 @using DOS_DAL.Models;
 @using DOS_BL.DataObjects;

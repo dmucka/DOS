@@ -1,7 +1,8 @@
 ﻿@page "/tolerance/edit/{Id:int}"
 @layout MainLayout
+@attribute [Authorize(Roles = "Admin")]
 
-@using DOS_BL.Queries; 
+@using DOS_BL.Queries;
 @using DOS_DAL.Models;
 @using DOS_BL.DataObjects;
 @using DOS_PL.Validation;

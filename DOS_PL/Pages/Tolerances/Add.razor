@@ -1,5 +1,6 @@
 ﻿@page "/tolerance/add"
 @layout MainLayout
+@attribute [Authorize(Roles = "Admin")]
 
 @using DOS_BL.Queries;
 @using DOS_DAL.Models;

@@ -12,13 +12,15 @@
 
 <h1 class="display-4 text-center">Tolerances</h1>
 <hr />
-<div class="d-flex justify-content-center mb-3">
-    <div class="btn-group btn-group-lg" role="group">
-        <a href="/tolerance/add" role="button" class="btn btn-success">Add</a>
-        <button class="btn btn-danger" @onclick="OpenDeleteDialog" disabled=@(_selectedTolerance is null)>Delete</button>
-        <a href="/tolerance/edit/@_selectedTolerance?.Id" role="button" class="btn btn-warning @AllowButtonClass">Edit</a>
+<AuthorizeView Roles="Admin">
+    <div class="d-flex justify-content-center mb-3">
+        <div class="btn-group btn-group-lg" role="group">
+            <a href="/tolerance/add" role="button" class="btn btn-success">Add</a>
+            <button class="btn btn-danger" @onclick="OpenDeleteDialog" disabled=@(_selectedTolerance is null)>Delete</button>
+            <a href="/tolerance/edit/@_selectedTolerance?.Id" role="button" class="btn btn-warning @AllowButtonClass">Edit</a>
+        </div>
     </div>
-</div>
+</AuthorizeView>
 
 <SfDialog Width="350px" IsModal="true" @bind-Visible="@IsDeleting">
     <DialogTemplates>
