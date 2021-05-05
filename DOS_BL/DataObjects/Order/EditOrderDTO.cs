@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DOS_BL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DOS_BL.DataObjects
 {
-    public class EditOrderDTO
+    public class EditOrderDTO : IEditDTO
     {
         [Key]
         [Editable(false)]

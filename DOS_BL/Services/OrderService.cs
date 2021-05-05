@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DOS_BL.Services
 {
-    public class OrderService : BaseService<Order>
+    public class OrderService : SoftDeletableService<Order>
     {
         public OrderService(DOSContext dbcontext, IMapper mapper) : base(dbcontext, mapper)
         {
@@ -31,31 +31,6 @@ namespace DOS_BL.Services
             item.Status = product.Processes.FirstOrDefault()?.Name;
 
             return await InsertAsync(item);
-        }
-
-        public async Task<bool> SoftDeleteAsync(Order order)
-        {
-            order.IsDeleted = true;
-
-            // TODO: refactor using DTO
-            var tracked = await AsQueryable().GetByIdAsync(order.Id);
-            if (tracked is not null)
-            {
-                _dbContext.Entry(tracked).State = EntityState.Detached;
-                _dbContext.Entry(order).State = EntityState.Modified;
-                var ok = await _dbContext.CommitAsync();
-
-                if (tracked is not null)
-                {
-                    _dbContext.Entry(tracked).State = EntityState.Detached;
-                    _dbContext.Entry(order).State = EntityState.Detached;
-                    _dbContext.SaveChanges();
-                }
-
-                return ok;
-            }
-
-            return false;
         }
     }
 }

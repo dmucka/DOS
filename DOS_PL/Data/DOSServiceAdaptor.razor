@@ -20,6 +20,9 @@
 
     private System.Threading.SemaphoreSlim _semaphore = new(1, 1);
 
+    public override Task<object> UpdateAsync(DataManager dataManager, object data, string keyField, string key)
+        => throw new NotImplementedException("Use MappedServiceAdaptor.");
+
     public override async Task<object> ReadAsync(DataManagerRequest dm, string key = null)
     {
         var data = DataSource;
@@ -54,34 +57,6 @@
         {
             throw new Exception("Error occured while occupying a lock to the database.", ex);
         }
-
-        // Sorting
-        if (dm.Sorted != null && dm.Sorted.Count > 0)
-            executed = DataOperations.PerformSorting(executed.AsQueryable(), dm.Sorted).ToList();
-
-        return dm.RequiresCounts ? new DataResult() { Result = executed, Count = executed.Count } : executed;
-    }
-
-    public override object Read(DataManagerRequest dm, string key = null)
-    {
-        var data = DataSource;
-
-        // Filtering
-        if (dm.Where != null && dm.Where.Count > 0)
-            data = DataOperations.PerformFiltering(data, dm.Where, dm.Where[0].Operator);
-
-        // Searching
-        if (dm.Search != null && dm.Search.Count > 0)
-            data = DataOperations.PerformSearching(data, dm.Search);
-
-        // Paging
-        if (dm.Skip != 0)
-            data = DataOperations.PerformSkip(data, dm.Skip);
-        if (dm.Take != 0)
-            data = DataOperations.PerformTake(data, dm.Take);
-
-        // cache the data from database
-        var executed = data.ToList();
 
         // Sorting
         if (dm.Sorted != null && dm.Sorted.Count > 0)

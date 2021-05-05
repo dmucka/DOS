@@ -1,17 +1,12 @@
 ﻿@namespace DOS_PL.Data
 @typeparam TModel
-@typeparam TProject
+@typeparam TMap
 
-@using DOS_DAL.Interfaces;
-@using DOS_BL.DataObjects;
 @using DOS_BL.Interfaces;
-@using DOS_BL.Queries;
 @using Syncfusion.Blazor;
 @using Syncfusion.Blazor.Data;
-@using AutoMapper;
 
-@inherits DataAdaptor<TProject>
-@inject IMapper Mapper
+@inherits DataAdaptor<TMap>
 @inject IBaseService<TModel> Service
 
 <CascadingValue Value="@this">
@@ -29,14 +24,10 @@
 
     public override async Task<object> UpdateAsync(DataManager dataManager, object data, string keyField, string key)
     {
-        var item = (TProject)data;
-        var dbItem = await Service.GetAsync((item as dynamic).Id);
-        if (dbItem is null)
+        var item = (TMap)data;
+
+        if (!await Service.UpdateAsync(item))
             return null;
-
-        dbItem = Mapper.Map<TProject, TModel>(item, dbItem);
-
-        await Service.UpdateAsync(dbItem);
 
         return item;
     }
@@ -60,7 +51,7 @@
             data = DataOperations.PerformTake(data, dm.Take);
 
         // cache the data from database
-        List<TModel> executed;
+        List<TMap> executed;
 
         try
         {
@@ -68,7 +59,7 @@
             // the semaphore is needed because the user can
             // spam the input, causing a concurrency issue
             await _semaphore.WaitAsync();
-            executed = await data.ToListAsync();
+            executed = await Service.GetMappedListAsync<TMap>(data);
             _semaphore.Release();
         }
         catch (Exception ex)
@@ -80,38 +71,6 @@
         if (dm.Sorted != null && dm.Sorted.Count > 0)
             executed = DataOperations.PerformSorting(executed.AsQueryable(), dm.Sorted).ToList();
 
-        var projected = Mapper.Map<List<TProject>>(executed);
-
-        return dm.RequiresCounts ? new DataResult() { Result = projected, Count = projected.Count } : projected;
-    }
-
-    public override object Read(DataManagerRequest dm, string key = null)
-    {
-        var data = DataSource;
-
-        // Filtering
-        if (dm.Where != null && dm.Where.Count > 0)
-            data = DataOperations.PerformFiltering(data, dm.Where, dm.Where[0].Operator);
-
-        // Searching
-        if (dm.Search != null && dm.Search.Count > 0)
-            data = DataOperations.PerformSearching(data, dm.Search);
-
-        // Paging
-        if (dm.Skip != 0)
-            data = DataOperations.PerformSkip(data, dm.Skip);
-        if (dm.Take != 0)
-            data = DataOperations.PerformTake(data, dm.Take);
-
-        // cache the data from database
-        var executed = data.ToList();
-
-        // Sorting
-        if (dm.Sorted != null && dm.Sorted.Count > 0)
-            executed = DataOperations.PerformSorting(executed.AsQueryable(), dm.Sorted).ToList();
-
-        var projected = Mapper.Map<List<TProject>>(executed);
-
-        return dm.RequiresCounts ? new DataResult() { Result = projected, Count = projected.Count } : projected;
+        return dm.RequiresCounts ? new DataResult() { Result = executed, Count = executed.Count } : executed;
     }
 }

@@ -9,11 +9,11 @@
 @using DOS_BL.Services
 @using DOS_PL.Data;
 @using DOS_BL.Queries;
-@using DOS_BL.DataObjects; 
+@using DOS_BL.DataObjects;
 
 @inject OrderService OrderService
 @inject ProductService ProductService
-@inject ManufacturingStepService ManufacturingStepService 
+@inject ManufacturingStepService ManufacturingStepService
 
 <h1 class="display-4 text-center">Orders</h1>
 <hr />
@@ -46,8 +46,9 @@
 <SfGrid @ref="_grid" TValue="EditOrderDTO" AllowPaging="true" Height="100%" Width="100%" AllowSorting="true">
     <GridEditSettings AllowEditing="true" />
     <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
-        <ProjectedServiceAdaptor TModel="Order" TProject="EditOrderDTO" 
-                                 DataSource="@OrderService.AsQueryable(true).ProductOnly(SelectedProductId).WithDeleted(ShowDeleted)" />
+        <MappedServiceAdaptor TModel="Order" 
+                              TMap="EditOrderDTO"
+                              DataSource="@OrderService.AsQueryable(true).ProductOnly(SelectedProductId).WithDeleted(ShowDeleted)" />
     </Syncfusion.Blazor.Data.SfDataManager>
 
     <GridEvents RowSelected="OnRowSelected" RowDeselected="OnRowDeselected" TValue="EditOrderDTO" />
@@ -67,7 +68,7 @@
         <GridColumn Field="@nameof(EditOrderDTO.Created)" />
         <GridColumn Field="@nameof(EditOrderDTO.CreatedByUsername)" HeaderText="Created By" />
         <GridColumn Field="@nameof(EditOrderDTO.Edited)" />
-        <GridColumn Field="@nameof(EditOrderDTO.EditedByUsername)" HeaderText="Edited By"/>
+        <GridColumn Field="@nameof(EditOrderDTO.EditedByUsername)" HeaderText="Edited By" />
         <GridColumn Field="@nameof(EditOrderDTO.IsDeleted)" Visible="@ShowDeleted" DisplayAsCheckBox="true" />
     </GridColumns>
     <GridTemplates>
@@ -76,9 +77,9 @@
                 var order = (context as EditOrderDTO);
                 <SfGrid TValue="EditManufacturingStepDTO">
                     <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
-                        <ProjectedServiceAdaptor TModel="ManufacturingStep"
-                                                 TProject="EditManufacturingStepDTO"
-                                                 DataSource="@ManufacturingStepService.AsQueryable().WithProcesses().WithEditTracking().ForOrder(order.Id)" />
+                        <MappedServiceAdaptor TModel="ManufacturingStep"
+                                              TMap="EditManufacturingStepDTO"
+                                              DataSource="@ManufacturingStepService.AsQueryable().WithProcesses().WithEditTracking().ForOrder(order.Id)" />
                     </Syncfusion.Blazor.Data.SfDataManager>
                     <GridEditSettings AllowEditing="true" />
                     <GridColumns>
@@ -131,7 +132,7 @@
         if (_selectedOrder is null)
             return;
 
-        //await OrderService.SoftDeleteAsync(_selectedOrder);
+        await OrderService.SoftDeleteAsync(_selectedOrder);
         CloseDeleteDialog();
 
         _grid.Refresh();

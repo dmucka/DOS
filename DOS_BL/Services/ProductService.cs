@@ -8,7 +8,7 @@ using DOS_BL.DataObjects;
 
 namespace DOS_BL.Services
 {
-    public class ProductService : BaseService<Product>
+    public class ProductService : SoftDeletableService<Product>
     {
         public ProductService(DOSContext dbcontext, IMapper mapper) : base(dbcontext, mapper)
         {
@@ -38,12 +38,6 @@ namespace DOS_BL.Services
         public async Task<EditProductDTO> GetSafeProductAsync(int id)
         {
             return _mapper.Map<EditProductDTO>(await AsQueryable().WithProcesses().GetByIdAsync(id));
-        }
-
-        public Task<bool> SoftDeleteAsync(Product product)
-        {
-            product.IsDeleted = true;
-            return UpdateAsync(product);
         }
     }
 }

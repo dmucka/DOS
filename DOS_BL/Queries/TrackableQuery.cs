@@ -11,15 +11,15 @@ namespace DOS_BL.Queries
 {
     public static class TrackableQuery
     {
-        public static IQueryable<T> WithEditTracking<T>(this IQueryable<T> query) where T : class, IBaseModel, ITrackEdit
+        public static IQueryable<TModel> WithEditTracking<TModel>(this IQueryable<TModel> query) where TModel : class, IBaseModel, ITrackEdit
             => query.Include(x => x.EditedBy)
                     .AsQueryable();
 
-        public static IQueryable<T> WithCreateTracking<T>(this IQueryable<T> query) where T : class, IBaseModel, ITrackCreate
+        public static IQueryable<TModel> WithCreateTracking<TModel>(this IQueryable<TModel> query) where TModel : class, IBaseModel, ITrackCreate
             => query.Include(x => x.CreatedBy)
                     .AsQueryable();
 
-        public static IQueryable<T> WithTracking<T>(this IQueryable<T> query) where T : class, IBaseModel, ITrackCreate, ITrackEdit
+        public static IQueryable<TModel> WithTracking<TModel>(this IQueryable<TModel> query) where TModel : class, IBaseModel, ITrackCreate, ITrackEdit
             => query.Include(x => x.CreatedBy)
                     .Include(x => x.EditedBy)
                     .AsQueryable();

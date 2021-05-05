@@ -8,13 +8,16 @@ using System.Threading.Tasks;
 
 namespace DOS_BL.Interfaces
 {
-    public interface IBaseService<T> where T : class, DOS_DAL.Interfaces.IBaseModel
+    public interface IBaseService<TModel> 
+        where TModel : class, DOS_DAL.Interfaces.IBaseModel
     {
-        IQueryable<T> AsQueryable(bool loadAll = false, bool disableTracking = false, params string[] explicitTypes);
-        Task<List<T>> GetAllAsync();
-        Task<T> GetAsync(int id);
-        Task<bool> InsertAsync(T item);
-        Task<bool> UpdateAsync(T item);
-        Task<bool> DeleteAsync(T item);
+        Task<List<TMap>> GetMappedListAsync<TMap>(IQueryable<TModel> query) where TMap : IEditDTO;
+        IQueryable<TModel> AsQueryable(bool loadAll = false, bool disableTracking = false, params string[] explicitTypes);
+        Task<List<TModel>> GetAllAsync();
+        Task<TModel> GetAsync(int id);
+        Task<bool> InsertAsync(TModel item);
+        Task<bool> UpdateAsync(TModel item);
+        Task<bool> UpdateAsync(IEditDTO dto);
+        Task<bool> DeleteAsync(TModel item);
     }
 }

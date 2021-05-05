@@ -1,19 +1,14 @@
-﻿using DOS_DAL.Models;
-using DOS_DAL;
+﻿using DOS_DAL;
 using DOS_BL.Interfaces;
-using DOS_BL.Queries;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using System.Linq.Expressions;
 
 namespace DOS_BL.Services
 {
-    public abstract class BaseService<T> : IBaseService<T> where T : class, DOS_DAL.Interfaces.IBaseModel
+    public abstract class BaseService<TModel> : IBaseService<TModel> where TModel : class, DOS_DAL.Interfaces.IBaseModel
     {
         protected readonly DOSContext _dbContext;
         protected readonly IMapper _mapper;
@@ -24,15 +19,21 @@ namespace DOS_BL.Services
             _mapper = mapper;
         }
 
-
-        public IQueryable<T> AsQueryable(bool loadAll = false, bool disableTracking = false, params string[] explicitTypes)
+        public async Task<List<TMap>> GetMappedListAsync<TMap>(IQueryable<TModel> query) 
+            where TMap : IEditDTO
         {
-            var query = _dbContext.Set<T>().AsQueryable();
+            var list = await EntityFrameworkQueryableExtensions.ToListAsync(query);
+            return _mapper.Map<List<TMap>>(list);
+        }
+
+        public IQueryable<TModel> AsQueryable(bool loadAll = false, bool disableTracking = false, params string[] explicitTypes)
+        {
+            var query = _dbContext.Set<TModel>().AsQueryable();
 
             // https://stackoverflow.com/questions/44682555/include-all-navigation-properties-using-reflection-in-generic-repository-using-e
             if (loadAll)
             {
-                foreach (var property in _dbContext.Model.FindEntityType(typeof(T)).GetNavigations())
+                foreach (var property in _dbContext.Model.FindEntityType(typeof(TModel)).GetNavigations())
                     query = query.Include(property.Name);
             }
 
@@ -50,23 +51,31 @@ namespace DOS_BL.Services
             return query;
         }
 
-        public Task<List<T>> GetAllAsync() => EntityFrameworkQueryableExtensions.ToListAsync(_dbContext.Set<T>());
+        public Task<List<TModel>> GetAllAsync() => EntityFrameworkQueryableExtensions.ToListAsync(_dbContext.Set<TModel>());
 
-        public async Task<T> GetAsync(int id) => await _dbContext.Set<T>().FindAsync(id);
+        public async Task<TModel> GetAsync(int id) => await _dbContext.Set<TModel>().FindAsync(id);
 
-        public async Task<bool> InsertAsync(T item)
+        public async Task<bool> InsertAsync(TModel item)
         {
             await _dbContext.AddAsync(item);
             return await _dbContext.CommitAsync();
         }
 
-        public async Task<bool> UpdateAsync(T item)
+        public async Task<bool> UpdateAsync(TModel item)
         {
             _dbContext.Update(item);
             return await _dbContext.CommitAsync();
         }
 
-        public async Task<bool> DeleteAsync(T item)
+        public async Task<bool> UpdateAsync(IEditDTO dto)
+        {
+            var real = await GetAsync(dto.Id);
+            var mapped = _mapper.Map(dto, real);
+            _dbContext.Update(mapped);
+            return await _dbContext.CommitAsync();
+        }
+
+        public async Task<bool> DeleteAsync(TModel item)
         {
             _dbContext.Remove(item);
             return await _dbContext.CommitAsync();
