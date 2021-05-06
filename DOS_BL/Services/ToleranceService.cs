@@ -6,6 +6,7 @@ using DOS_BL.DataObjects;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace DOS_BL.Services
 {
@@ -52,6 +53,18 @@ namespace DOS_BL.Services
         public async Task<EditToleranceDTO> GetSafeToleranceAsync(int id)
         {
             return _mapper.Map<EditToleranceDTO>(await AsQueryable().WithProcesses().WithProducts().GetByIdAsync(id));
+        }
+
+        public async Task<EditToleranceDTO> GetSafeToleranceAsync(string valueName, int productId, int processId)
+        {
+            var tolerances = await AsQueryable().Where(x => x.ValueName == valueName && x.Product.Id == productId && x.Process.Id == processId).ToListAsync();
+
+            if (tolerances.Count > 1)
+                throw new Exception($"There are multiple tolerances for column {valueName}, product {productId}, process {processId}.");
+            else if (tolerances.Count == 0)
+                return null;
+
+            return _mapper.Map<EditToleranceDTO>(tolerances.First());
         }
     }
 }

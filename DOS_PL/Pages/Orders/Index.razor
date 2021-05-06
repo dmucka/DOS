@@ -11,6 +11,7 @@
 @using DOS_BL.Queries;
 @using DOS_BL.DataObjects;
 
+@inject ToleranceService ToleranceService
 @inject OrderService OrderService
 @inject ProductService ProductService
 @inject ManufacturingStepService ManufacturingStepService
@@ -76,6 +77,7 @@
             @{
                 var order = (context as EditOrderDTO);
                 <SfGrid TValue="EditManufacturingStepDTO">
+                    <GridEvents TValue="EditManufacturingStepDTO" QueryCellInfo="ConditionalFormatting" />
                     <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
                         <MappedServiceAdaptor TModel="ManufacturingStep"
                                               TMap="EditManufacturingStepDTO"
@@ -102,6 +104,7 @@
     private EditOrderDTO _selectedOrder;
     private SfGrid<EditOrderDTO> _grid;
     private List<Product> _products;
+    private List<EditToleranceDTO> _tolerances;
 
     private int[] PageSizes => new[] { 25, 50, 100, 250 };
     private bool IsSelectionInvalid => _selectedOrder is null || _selectedOrder.IsDeleted;
@@ -115,6 +118,8 @@
     {
         _products = ProductService.AsQueryable().WithDeleted(false).ToList();
         SelectedProductId = _products.FirstOrDefault().Id;
+
+        _tolerances = ToleranceService.GetMappedList<EditToleranceDTO>(ToleranceService.AsQueryable().WithProcesses().WithProducts());
     }
 
     private void OnRowSelected(RowSelectEventArgs<EditOrderDTO> args)
@@ -167,5 +172,27 @@
         ExportProperties.ExportType = ExportType.CurrentPage;
 
         await _grid.ExcelExport(ExportProperties);
+    }
+
+    public void ConditionalFormatting(QueryCellInfoEventArgs<EditManufacturingStepDTO> args)
+    {
+        var fieldName = args.Column.Field;
+        var processId = args.Data.ProcessId;
+        object cellValue = typeof(EditManufacturingStepDTO).GetProperty(fieldName).GetValue(args.Data);
+
+        if (cellValue is decimal decimalValue)
+        {
+            var tolerance = _tolerances.FirstOrDefault(x => x.ValueName == fieldName && x.ProcessId == processId && x.ProductId == SelectedProductId.Value);
+            if (tolerance is null)
+                return;
+
+            var minValue = tolerance.MinValue;
+            var maxValue = tolerance.MaxValue;
+
+            if (decimalValue > maxValue || decimalValue < minValue)
+                args.Cell.AddClass(new[] { "dos-tolerance-fail" });
+            else
+                args.Cell.AddClass(new[] { "dos-tolerance-pass" });
+        }
     }
 }

@@ -34,5 +34,8 @@ namespace DOS_BL.DataObjects
 
         [Editable(false)]
         public string EditedByUsername { get; set; }
+
+        [Editable(false)]
+        public int ProcessId { get; set; }
     }
 }

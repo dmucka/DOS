@@ -19,6 +19,12 @@ namespace DOS_BL.Services
             _mapper = mapper;
         }
 
+        public List<TMap> GetMappedList<TMap>(IQueryable<TModel> query)
+            where TMap : IEditDTO
+        {
+            return _mapper.Map<List<TMap>>(query.ToList());
+        }
+
         public async Task<List<TMap>> GetMappedListAsync<TMap>(IQueryable<TModel> query) 
             where TMap : IEditDTO
         {

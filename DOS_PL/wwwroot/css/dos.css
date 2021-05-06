@@ -32,8 +32,19 @@ html, body, .main {
     border-color: #dc3545;
 }
 
-/* Convenience classes */
+.dos-tolerance-fail {
+    background-color: #C44B4B;
+}
 
+.dos-tolerance-pass {
+    background-color: #A5CF35;
+}
+
+.dos-tolerance-invalid {
+    background-color: #FFFF70;
+}
+
+/* Convenience classes */
 .mw-label {
     min-width: 130px;
 }
