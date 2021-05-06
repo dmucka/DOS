@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.Authorization;
+﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System.Security.Claims;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace DOS_PL.Auth
 {
@@ -43,7 +40,7 @@ namespace DOS_PL.Auth
                 return await GenerateAuthenticationState(userSession);
 
             return await GenerateEmptyAuthenticationState();
-      }
+        }
 
         public async Task LoginAsync(AuthData authData)
         {

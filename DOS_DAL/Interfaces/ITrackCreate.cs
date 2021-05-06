@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DOS_DAL.Models;
+﻿using DOS_DAL.Models;
+using System;
 
 namespace DOS_DAL.Interfaces
 {

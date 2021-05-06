@@ -1,13 +1,10 @@
-﻿using DOS_DAL;
-using DOS_DAL.Models;
-using DOS_DAL.Hashing;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using DOS_BL.DataObjects;
 using DOS_BL.Queries;
-using AutoMapper;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+using DOS_DAL;
+using DOS_DAL.Hashing;
+using DOS_DAL.Models;
+using System.Threading.Tasks;
 
 namespace DOS_BL.Services
 {
@@ -43,7 +40,7 @@ namespace DOS_BL.Services
             var user = await AsQueryable().WithRoles().GetByIdAsync(dto.Id);
 
             user = _mapper.Map(dto, user);
-            
+
             // do not change the entity when password is null
             if (dto.Password is not null)
                 user.Password = PasswordHasher.Hash(dto.Password);

@@ -1,12 +1,12 @@
-﻿using DOS_DAL;
-using DOS_DAL.Models;
-using DOS_BL.Queries;
-using AutoMapper;
+﻿using AutoMapper;
 using DOS_BL.DataObjects;
-using System.Threading.Tasks;
-using System.Linq;
+using DOS_BL.Queries;
+using DOS_DAL;
+using DOS_DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DOS_BL.Services
 {

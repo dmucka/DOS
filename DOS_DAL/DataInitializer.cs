@@ -1,12 +1,7 @@
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DOS_DAL.Constants;
 using DOS_DAL.Hashing;
 using DOS_DAL.Models;
-using DOS_DAL.Constants;
+using Microsoft.EntityFrameworkCore;
 
 namespace DOS_DAL
 {
@@ -26,7 +21,7 @@ namespace DOS_DAL
             // use anonymous class so we can do not need to expose the RoleId property
             modelBuilder.Entity<User>().HasData(new { Id = 1, Username = "admin", Password = PasswordHasher.Hash("admin"), RoleId = adminRole.Id });
 
-            var processes = new[] 
+            var processes = new[]
             {
                 new Process("Vstupná kontrola"),
                 new Process("Medzioperaèná kontrola"),

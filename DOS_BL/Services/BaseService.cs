@@ -1,10 +1,10 @@
-﻿using DOS_DAL;
+﻿using AutoMapper;
 using DOS_BL.Interfaces;
+using DOS_DAL;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
 
 namespace DOS_BL.Services
 {
@@ -25,7 +25,7 @@ namespace DOS_BL.Services
             return _mapper.Map<List<TMap>>(query.ToList());
         }
 
-        public async Task<List<TMap>> GetMappedListAsync<TMap>(IQueryable<TModel> query) 
+        public async Task<List<TMap>> GetMappedListAsync<TMap>(IQueryable<TModel> query)
             where TMap : IEditDTO
         {
             var list = await EntityFrameworkQueryableExtensions.ToListAsync(query);

@@ -1,9 +1,9 @@
-﻿using LightInject;
+﻿using AutoMapper;
+using DOS_BL.DataObjects;
+using DOS_BL.Interfaces;
 using DOS_BL.Services;
 using DOS_DAL.Models;
-using DOS_BL.Interfaces;
-using DOS_BL.DataObjects;
-using AutoMapper;
+using LightInject;
 
 namespace DOS_BL
 {
