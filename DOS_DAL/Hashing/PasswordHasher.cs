@@ -19,8 +19,8 @@ namespace DOS_DAL.Hashing
               Iterations,
               HashAlgorithmName.SHA256))
             {
-                var key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
-                var salt = Convert.ToBase64String(algorithm.Salt);
+                string key = Convert.ToBase64String(algorithm.GetBytes(KeySize));
+                string salt = Convert.ToBase64String(algorithm.Salt);
 
                 return $"{salt}.{key}";
             }
@@ -28,15 +28,15 @@ namespace DOS_DAL.Hashing
 
         public static bool Check(string hash, string password)
         {
-            var parts = hash.Split('.', 2);
+            string[] parts = hash.Split('.', 2);
 
             if (parts.Length != 2)
             {
                 throw new FormatException("Unexpected hash format.");
             }
 
-            var salt = Convert.FromBase64String(parts[0]);
-            var key = Convert.FromBase64String(parts[1]);
+            byte[] salt = Convert.FromBase64String(parts[0]);
+            byte[] key = Convert.FromBase64String(parts[1]);
 
             using (var algorithm = new Rfc2898DeriveBytes(
               password,
@@ -44,7 +44,7 @@ namespace DOS_DAL.Hashing
               Iterations,
               HashAlgorithmName.SHA256))
             {
-                var keyToCheck = algorithm.GetBytes(KeySize);
+                byte[] keyToCheck = algorithm.GetBytes(KeySize);
                 return keyToCheck.SequenceEqual(key);
             }
         }

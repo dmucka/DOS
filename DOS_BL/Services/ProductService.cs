@@ -17,7 +17,7 @@ namespace DOS_BL.Services
         {
             var item = _mapper.Map<Product>(dto);
 
-            foreach (var processId in dto.ProcessIds)
+            foreach (int processId in dto.ProcessIds)
             {
                 var process = await _dbContext.Processes.FindAsync(processId);
                 item.Processes.Add(process);

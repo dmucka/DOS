@@ -39,7 +39,7 @@ namespace DOS_DAL
                 if (GetAuthentication is null)
                     throw new ArgumentNullException(nameof(GetAuthentication));
 
-                var userId = await GetAuthentication();
+                int? userId = await GetAuthentication();
                 if (userId is null)
                     throw new Exception("You must be logged in to commit to the database.");
 

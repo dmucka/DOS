@@ -31,7 +31,7 @@ namespace DOS_DAL
             };
 
             // set index of each process
-            var c = 1;
+            int c = 1;
             foreach (var p in processes)
             {
                 p.Id = c++;

@@ -11,7 +11,7 @@ namespace DOS_PL.Validation
         private ValidationMessageStore _messageStore;
 
         [CascadingParameter]
-        EditContext CurrentEditContext { get; set; }
+        private EditContext CurrentEditContext { get; set; }
 
         /// <inheritdoc />
         protected override void OnInitialized()

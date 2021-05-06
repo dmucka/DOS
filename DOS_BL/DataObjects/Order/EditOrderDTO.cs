@@ -38,7 +38,7 @@ namespace DOS_BL.DataObjects
         public string CreatedByUsername { get; set; }
 
         [Editable(false)]
-        public string CreatedText { get => $"{Created} by {CreatedByUsername}"; }
+        public string CreatedText => $"{Created} by {CreatedByUsername}";
 
         [Editable(false)]
         public DateTime Edited { get; set; }

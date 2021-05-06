@@ -8,7 +8,7 @@ namespace DOS_PL.Validation
     public class OptionalFieldValidator : ComponentBase
     {
         [CascadingParameter]
-        EditContext CurrentEditContext { get; set; }
+        private EditContext CurrentEditContext { get; set; }
 
         /// <inheritdoc />
         protected override void OnInitialized()

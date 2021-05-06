@@ -45,7 +45,7 @@ namespace DOS_BL.Services
 
             if (explicitTypes is not null)
             {
-                foreach (var type in explicitTypes)
+                foreach (string type in explicitTypes)
                 {
                     query = query.Include(type);
                 }

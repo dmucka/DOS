@@ -7,7 +7,7 @@ namespace DOS_PL.Validation
     {
         public override string GetFieldCssClass(EditContext editContext, in FieldIdentifier fieldIdentifier)
         {
-            var isValid = !editContext.GetValidationMessages(fieldIdentifier).Any();
+            bool isValid = !editContext.GetValidationMessages(fieldIdentifier).Any();
 
             if (editContext.IsModified(fieldIdentifier) && isValid)
                 return "is-valid e-success";
