@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DOS_BL.DataObjects
 {
-    public class EditOrderDTO : IEditDTO
+    public class EditOrderDTO : IEditDTO, ITrackEditDTO, ITrackCreateDTO, ISoftDeleteDTO
     {
         [Key]
         [Editable(false)]
@@ -41,10 +41,16 @@ namespace DOS_BL.DataObjects
         public string CreatedByUsername { get; set; }
 
         [Editable(false)]
+        public string CreatedText { get => $"{Created} by {CreatedByUsername}"; }
+
+        [Editable(false)]
         public DateTime Edited { get; set; }
 
         [Editable(false)]
         public string EditedByUsername { get; set; }
+
+        [Editable(false)]
+        public string EditedText => $"{Edited} by {EditedByUsername}";
 
         public bool IsDeleted { get; set; }
 

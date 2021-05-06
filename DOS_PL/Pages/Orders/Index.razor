@@ -60,16 +60,14 @@
         </GridSortColumns>
     </GridSortSettings>
     <GridColumns>
-        <GridColumn Field="@nameof(EditOrderDTO.Id)" />
+        <GridColumn Field="@nameof(EditOrderDTO.Id)" Width="100px" />
         <GridColumn Field="@nameof(EditOrderDTO.ProductName)" HeaderText="Product" />
         <GridColumn Field="@nameof(EditOrderDTO.Status)" />
         <GridColumn Field="@nameof(EditOrderDTO.SerialNumber)" />
         <GridColumn Field="@nameof(EditOrderDTO.Customer)" />
         <GridColumn Field="@nameof(EditOrderDTO.Notes)" />
-        <GridColumn Field="@nameof(EditOrderDTO.Created)" />
-        <GridColumn Field="@nameof(EditOrderDTO.CreatedByUsername)" HeaderText="Created By" />
-        <GridColumn Field="@nameof(EditOrderDTO.Edited)" />
-        <GridColumn Field="@nameof(EditOrderDTO.EditedByUsername)" HeaderText="Edited By" />
+        <GridColumn Field="@nameof(EditOrderDTO.CreatedText)" HeaderText="Created" />
+        <GridColumn Field="@nameof(EditOrderDTO.EditedText)" HeaderText="Edited" />
         <GridColumn Field="@nameof(EditOrderDTO.IsDeleted)" Visible="@ShowDeleted" DisplayAsCheckBox="true" />
     </GridColumns>
     <GridTemplates>
@@ -91,8 +89,7 @@
                         <GridColumn Field="@nameof(EditManufacturingStepDTO.Intensity)" />
                         <GridColumn Field="@nameof(EditManufacturingStepDTO.Temperature)" />
                         <GridColumn Field="@nameof(EditManufacturingStepDTO.Humidity)" />
-                        <GridColumn Field="@nameof(EditManufacturingStepDTO.Edited)" />
-                        <GridColumn Field="@nameof(EditManufacturingStepDTO.EditedByUsername)" HeaderText="Edited By" />
+                        <GridColumn Field="@nameof(EditOrderDTO.EditedText)" HeaderText="Edited" />
                     </GridColumns>
                 </SfGrid>
             }

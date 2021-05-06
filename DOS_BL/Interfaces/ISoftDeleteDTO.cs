@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DOS_DAL.Interfaces
+namespace DOS_BL.Interfaces
 {
-    public interface IBaseModel
+    public interface ISoftDeleteDTO
     {
-        int Id { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

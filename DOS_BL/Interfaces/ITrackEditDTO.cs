@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DOS_DAL.Models;
 
-namespace DOS_DAL.Interfaces
+namespace DOS_BL.Interfaces
 {
-    public interface ITrackEdit
+    public interface ITrackEditDTO
     {
         DateTime Edited { get; set; }
-        User EditedBy { get; set; }
+        string EditedByUsername { get; set; }
+        string EditedText { get; }
     }
 }

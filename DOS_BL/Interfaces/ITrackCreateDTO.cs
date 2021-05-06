@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DOS_DAL.Models;
 
-namespace DOS_DAL.Interfaces
+namespace DOS_BL.Interfaces
 {
-    public interface ITrackCreate
+    public interface ITrackCreateDTO
     {
         DateTime Created { get; set; }
-        User CreatedBy { get; set; }
+        string CreatedByUsername { get; set; }
+        string CreatedText { get; }
     }
 }

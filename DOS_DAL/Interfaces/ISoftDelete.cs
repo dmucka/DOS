@@ -8,6 +8,6 @@ namespace DOS_DAL.Interfaces
 {
     public interface ISoftDelete
     {
-        public bool IsDeleted { get; set; }
+        bool IsDeleted { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DOS_BL.DataObjects
 {
-    public class EditManufacturingStepDTO : IEditDTO
+    public class EditManufacturingStepDTO : IEditDTO, ITrackEditDTO
     {
         [Key]
         [Editable(false)]
@@ -34,6 +34,9 @@ namespace DOS_BL.DataObjects
 
         [Editable(false)]
         public string EditedByUsername { get; set; }
+
+        [Editable(false)]
+        public string EditedText => $"{Edited} by {EditedByUsername}";
 
         [Editable(false)]
         public int ProcessId { get; set; }
