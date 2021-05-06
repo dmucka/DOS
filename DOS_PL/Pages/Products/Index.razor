@@ -1,5 +1,6 @@
 ﻿@page "/products"
 @layout MainLayout
+@attribute [Authorize(Roles = "Admin")]
 
 @using Syncfusion.Blazor.Buttons;
 @using Syncfusion.Blazor.Popups;
