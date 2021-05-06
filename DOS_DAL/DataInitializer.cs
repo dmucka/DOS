@@ -7,6 +7,9 @@ namespace DOS_DAL
 {
     internal static class DataInitializer
     {
+        /// <summary>
+        /// Inserts seed values into the database.
+        /// </summary>
         internal static void Seed(this ModelBuilder modelBuilder)
         {
             var adminRole = new Role(RoleConstants.Admin);

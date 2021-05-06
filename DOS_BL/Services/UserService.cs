@@ -14,6 +14,10 @@ namespace DOS_BL.Services
         {
         }
 
+        /// <summary>
+        /// Checks whether the input auth values are valid. 
+        /// </summary>
+        /// <returns>User object if they are valid, null otherwise.</returns>
         public async Task<(bool Success, User User)> AuthenticateUser(string username, string password)
         {
             var foundUser = await AsQueryable().WithRoles().GetByNameAsync(username);

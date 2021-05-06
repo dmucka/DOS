@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace DOS_PL.Validation
 {
+    /// <summary>
+    /// EditForm validation css class provider that provides Bootstrap 4 style classes.
+    /// </summary>
     public class BootstrapValidationCssClassProvider : FieldCssClassProvider
     {
         public override string GetFieldCssClass(EditContext editContext, in FieldIdentifier fieldIdentifier)

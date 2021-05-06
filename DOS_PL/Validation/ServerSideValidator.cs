@@ -6,6 +6,9 @@ using System.Collections.Generic;
 namespace DOS_PL.Validation
 {
     // https://docs.microsoft.com/en-us/aspnet/core/blazor/forms-validation?view=aspnetcore-5.0#validator-components
+    /// <summary>
+    /// EditForm validator that allows to return messages from server execution.
+    /// </summary>
     public class ServerSideValidator : ComponentBase
     {
         private ValidationMessageStore _messageStore;

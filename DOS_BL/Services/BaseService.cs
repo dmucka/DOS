@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace DOS_BL.Services
 {
+    /// <summary>
+    /// Service that provides basic methods for communicating with the models in database.
+    /// </summary>
     public abstract class BaseService<TModel> : IBaseService<TModel> where TModel : class, DOS_DAL.Interfaces.IBaseModel
     {
         protected readonly DOSContext _dbContext;
@@ -32,6 +35,14 @@ namespace DOS_BL.Services
             return _mapper.Map<List<TMap>>(list);
         }
 
+        /// <summary>
+        /// Get the current set from database as a queryable object.
+        /// This allows to combine different queries.
+        /// </summary>
+        /// <param name="loadAll">Load all navigation properties in depth 1</param>
+        /// <param name="disableTracking">Append AsNoTracking to the query</param>
+        /// <param name="explicitTypes">String paths to properties that need to be loaded explicitly</param>
+        /// <returns></returns>
         public IQueryable<TModel> AsQueryable(bool loadAll = false, bool disableTracking = false, params string[] explicitTypes)
         {
             var query = _dbContext.Set<TModel>().AsQueryable();

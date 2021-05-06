@@ -108,7 +108,6 @@
     private string AllowButtonClass => IsSelectionInvalid ? "disabled" : "";
     private bool IsDeleting { get; set; }
     private bool ShowDeleted { get; set; }
-
     private int? SelectedProductId { get; set; }
 
     protected override void OnInitialized()
@@ -171,6 +170,9 @@
         await _grid.ExcelExport(ExportProperties);
     }
 
+    /// <summary>
+    /// Callback for cells in grid, when they need to check the conditional style. 
+    /// </summary>
     public void ConditionalFormatting(QueryCellInfoEventArgs<EditManufacturingStepDTO> args)
     {
         var fieldName = args.Column.Field;

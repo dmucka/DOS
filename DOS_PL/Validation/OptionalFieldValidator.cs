@@ -5,6 +5,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DOS_PL.Validation
 {
+    /// <summary>
+    /// EditForm validator that checks whether the input field is optional, and updates the css classes automatically.
+    /// </summary>
     public class OptionalFieldValidator : ComponentBase
     {
         [CascadingParameter]

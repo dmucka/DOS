@@ -19,6 +19,9 @@ namespace DOS_PL.Auth
     }
 
     // https://www.indie-dev.at/2020/04/06/custom-authentication-with-asp-net-core-3-1-blazor-server-side/
+    /// <summary>
+    /// Custom AuthStateProvider that uses encrypted values in browser Session Store.
+    /// </summary>
     public class DOSAuthStateProvider : AuthenticationStateProvider
     {
         private const string USER_SESSION_OBJECT_KEY = "user_session_obj";
