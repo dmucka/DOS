@@ -7,7 +7,7 @@
 @using Syncfusion.Blazor.Data;
 
 @inherits DataAdaptor<TMap>
-@inject IBaseService<TModel> Service
+@inject IBaseService<TModel> ModelService
 
 <CascadingValue Value="@this">
     @ChildContent
@@ -26,7 +26,7 @@
     {
         var item = (TMap)data;
 
-        if (!await Service.UpdateAsync(item))
+        if (!await ModelService.UpdateAsync(item))
             return null;
 
         return item;
@@ -59,7 +59,7 @@
             // the semaphore is needed because the user can
             // spam the input, causing a concurrency issue
             await _semaphore.WaitAsync();
-            executed = await Service.GetMappedListAsync<TMap>(data);
+            executed = await ModelService.GetMappedListAsync<TMap>(data);
             _semaphore.Release();
         }
         catch (Exception ex)
