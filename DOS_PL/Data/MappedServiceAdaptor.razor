@@ -22,6 +22,9 @@
 
     private System.Threading.SemaphoreSlim _semaphore = new(1, 1);
 
+    /// <summary>
+    /// Updates the target <see cref="IEditDTO"/> object in the database by mapping it to the real entity.
+    /// </summary>
     public override async Task<object> UpdateAsync(DataManager dataManager, object data, string keyField, string key)
     {
         var item = (TMap)data;
@@ -32,6 +35,10 @@
         return item;
     }
 
+    /// <summary>
+    /// Executes query asynchronously on the database.
+    /// </summary>
+    /// <returns>Maps the input query into output list of <see cref="IEditDTO"/>.</returns>
     public override async Task<object> ReadAsync(DataManagerRequest dm, string key = null)
     {
         var data = DataSource;

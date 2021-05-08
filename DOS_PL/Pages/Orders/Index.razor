@@ -110,6 +110,9 @@
     private bool ShowDeleted { get; set; }
     private int? SelectedProductId { get; set; }
 
+    /// <summary>
+    /// Callback for page load.
+    /// </summary>
     protected override void OnInitialized()
     {
         _products = ProductService.AsQueryable().WithDeleted(false).ToList();
@@ -118,17 +121,26 @@
         _tolerances = ToleranceService.GetMappedList<EditToleranceDTO>(ToleranceService.AsQueryable().WithProcesses().WithProducts());
     }
 
+    /// <summary>
+    /// Callback when user select a row in SfGrid.
+    /// </summary>
     private void OnRowSelected(RowSelectEventArgs<EditOrderDTO> args)
     {
         _selectedOrder = args.Data;
     }
 
+    /// <summary>
+    /// Callback when user deselects a row in SfGrid.
+    /// </summary>
     private void OnRowDeselected(RowDeselectEventArgs<EditOrderDTO> args)
     {
         _selectedOrder = null;
     }
 
-    public async Task PerformDeleteProduct()
+    /// <summary>
+    /// Callback for delete dialog OK button.
+    /// </summary>
+    private async Task PerformDeleteProduct()
     {
         if (_selectedOrder is null)
             return;
@@ -139,7 +151,10 @@
         _grid.Refresh();
     }
 
-    public void OpenDeleteDialog()
+    /// <summary>
+    /// Callback for delete button.
+    /// </summary>
+    private void OpenDeleteDialog()
     {
         if (_selectedOrder is null)
             return;
@@ -147,22 +162,34 @@
         IsDeleting = true;
     }
 
-    public void CloseDeleteDialog()
+    /// <summary>
+    /// Callback for delete dialog close event.
+    /// </summary>
+    private void CloseDeleteDialog()
     {
         IsDeleting = false;
     }
 
-    public void OnShowDeletedChanged(ChangeEventArgs args)
+    /// <summary>
+    /// Callback for Show Deleted checkbox.
+    /// </summary>
+    private void OnShowDeletedChanged(ChangeEventArgs args)
     {
         _grid.Refresh();
     }
 
-    public void OnDropDownClosed(ClosedEventArgs args)
+    /// <summary>
+    /// Callback when product dropdown is closed.
+    /// </summary>
+    private void OnDropDownClosed(ClosedEventArgs args)
     {
         _grid.Refresh();
     }
 
-    public async Task GenerateReport()
+    /// <summary>
+    /// Callback for button, uses the SfGrid export to excel function.
+    /// </summary>
+    private async Task GenerateReport()
     {
         var ExportProperties = new ExcelExportProperties();
         ExportProperties.ExportType = ExportType.CurrentPage;
@@ -173,7 +200,7 @@
     /// <summary>
     /// Callback for cells in grid, when they need to check the conditional style. 
     /// </summary>
-    public void ConditionalFormatting(QueryCellInfoEventArgs<EditManufacturingStepDTO> args)
+    private void ConditionalFormatting(QueryCellInfoEventArgs<EditManufacturingStepDTO> args)
     {
         var fieldName = args.Column.Field;
         var processId = args.Data.ProcessId;

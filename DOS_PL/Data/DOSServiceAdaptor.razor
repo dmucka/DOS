@@ -20,9 +20,15 @@
 
     private System.Threading.SemaphoreSlim _semaphore = new(1, 1);
 
+    /// <summary>
+    /// Not implemented. Use <see cref="MappedServiceAdaptor{TModel, TMap}"/> if you need to update values to the database.
+    /// </summary>
     public override Task<object> UpdateAsync(DataManager dataManager, object data, string keyField, string key)
         => throw new NotImplementedException("Use MappedServiceAdaptor.");
 
+    /// <summary>
+    /// Executes query asynchronously on the database.
+    /// </summary>
     public override async Task<object> ReadAsync(DataManagerRequest dm, string key = null)
     {
         var data = DataSource;
