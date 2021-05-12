@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AngleSharp;
-using AngleSharp.Dom;
+﻿using AngleSharp.Dom;
 using Bunit;
 using Microsoft.AspNetCore.Components;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DOS_TEST
 {
@@ -36,14 +33,14 @@ namespace DOS_TEST
 
         internal static void Shuffle<T>(this IList<T> list)
         {
-            Random random = new Random();
+            var random = new Random();
             int n = list.Count;
 
             for (int i = list.Count - 1; i > 1; i--)
             {
                 int rnd = random.Next(i + 1);
 
-                T value = list[rnd];
+                var value = list[rnd];
                 list[rnd] = list[i];
                 list[i] = value;
             }
@@ -51,7 +48,7 @@ namespace DOS_TEST
 
         internal static string RandomString(int length)
         {
-            Random random = new Random();
+            var random = new Random();
 
             const string chars = ".,-+@#:!?=\'\"|\\><^&()*%$`~abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
@@ -59,14 +56,14 @@ namespace DOS_TEST
 
         internal static decimal RandomDecimal(decimal min, decimal max)
         {
-            Random random = new Random();
+            var random = new Random();
 
             return (decimal)random.NextDouble() * (max - min) + min;
         }
 
         internal static int RandomInt(int min, int max)
         {
-            Random random = new Random();
+            var random = new Random();
             return random.Next(min, max + 1);
         }
     }

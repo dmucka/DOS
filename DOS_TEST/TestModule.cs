@@ -2,12 +2,6 @@
 using DOS_PL.Auth;
 using LightInject;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DOS_TEST
 {

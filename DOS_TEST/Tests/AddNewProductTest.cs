@@ -1,10 +1,7 @@
 ﻿using Bunit;
 using DOS_BL.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DOS_TEST
@@ -142,7 +139,7 @@ namespace DOS_TEST
             var cut = RenderComponent<DOS_PL.Pages.Products.Add>();
             var form = cut.GetForm();
 
-            var nameText = CommonTestFunctions.RandomString(smallLength);
+            string nameText = CommonTestFunctions.RandomString(smallLength);
 
             var listView = cut.FindComponent<Syncfusion.Blazor.Lists.SfListView<DOS_PL.Pages.Products.Add.CheckedProcess>>();
             listView.Instance.DataSource.ElementAt(CommonTestFunctions.RandomInt(1, 5)).IsChecked = true;
@@ -168,8 +165,8 @@ namespace DOS_TEST
             var cut = RenderComponent<DOS_PL.Pages.Products.Add>();
             var form = cut.GetForm();
 
-            var nameText = CommonTestFunctions.RandomString(smallLength);
-            var descriptionText = CommonTestFunctions.RandomString(longLength);
+            string nameText = CommonTestFunctions.RandomString(smallLength);
+            string descriptionText = CommonTestFunctions.RandomString(longLength);
 
             var listView = cut.FindComponent<Syncfusion.Blazor.Lists.SfListView<DOS_PL.Pages.Products.Add.CheckedProcess>>();
             listView.Instance.DataSource.ElementAt(CommonTestFunctions.RandomInt(1, 5)).IsChecked = true;

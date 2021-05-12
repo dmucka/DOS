@@ -120,7 +120,7 @@ namespace DOS_TEST
         {
             var products = new List<string> { "TestProduct1", "TestProduct2", "TestProduct3" };
             var productService = TestContext.Services.GetService<ProductService>();
-            foreach (var p in products)
+            foreach (string p in products)
                 await productService.InsertAsync(new Product(p, false));
             products.Shuffle();
 
@@ -149,7 +149,7 @@ namespace DOS_TEST
 
             var products = new List<string> { "TestProduct1", "TestProduct2", "TestProduct3" };
             var productService = TestContext.Services.GetService<ProductService>();
-            foreach (var p in products)
+            foreach (string p in products)
                 await productService.InsertAsync(new Product(p, false));
             products.Shuffle();
 
@@ -179,7 +179,7 @@ namespace DOS_TEST
 
             var products = new List<string> { "TestProduct1", "TestProduct2", "TestProduct3" };
             var productService = TestContext.Services.GetService<ProductService>();
-            foreach (var p in products)
+            foreach (string p in products)
                 await productService.InsertAsync(new Product(p, false));
             products.Shuffle();
 
@@ -210,7 +210,7 @@ namespace DOS_TEST
 
             var products = new List<string> { "TestProduct1", "TestProduct2", "TestProduct3" };
             var productService = TestContext.Services.GetService<ProductService>();
-            foreach (var p in products)
+            foreach (string p in products)
                 await productService.InsertAsync(new Product(p, false));
             products.Shuffle();
 
@@ -241,7 +241,7 @@ namespace DOS_TEST
 
             var products = new List<string> { "TestProduct1", "TestProduct2", "TestProduct3" };
             var productService = TestContext.Services.GetService<ProductService>();
-            foreach (var p in products)
+            foreach (string p in products)
                 await productService.InsertAsync(new Product(p, false));
             products.Shuffle();
 
@@ -272,16 +272,16 @@ namespace DOS_TEST
 
             var products = new List<string> { "TestProduct1", "TestProduct2", "TestProduct3" };
             var productService = TestContext.Services.GetService<ProductService>();
-            foreach (var p in products)
+            foreach (string p in products)
                 await productService.InsertAsync(new Product(p, false));
             products.Shuffle();
 
             var cut = RenderComponent<DOS_PL.Pages.Tolerances.Add>();
             var form = cut.GetForm();
 
-            var valueNameText = CommonTestFunctions.RandomString(smallLength);
-            var minValue = CommonTestFunctions.RandomDecimal(minDecimal, maxDecimal);
-            var maxValue = CommonTestFunctions.RandomDecimal(minDecimal, maxDecimal);
+            string valueNameText = CommonTestFunctions.RandomString(smallLength);
+            decimal minValue = CommonTestFunctions.RandomDecimal(minDecimal, maxDecimal);
+            decimal maxValue = CommonTestFunctions.RandomDecimal(minDecimal, maxDecimal);
 
             cut.GetDropDownList("Process").Change(processes.First());
             cut.GetDropDownList("Product").Change(products.First());
