@@ -116,7 +116,9 @@
     protected override void OnInitialized()
     {
         _products = ProductService.AsQueryable().WithDeleted(false).ToList();
-        SelectedProductId = _products.FirstOrDefault().Id;
+
+        if (_products.Count > 0)
+            SelectedProductId = _products.First().Id;
 
         _tolerances = ToleranceService.GetMappedList<EditToleranceDTO>(ToleranceService.AsQueryable().WithProcesses().WithProducts());
     }

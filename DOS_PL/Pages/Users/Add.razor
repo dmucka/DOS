@@ -113,7 +113,8 @@
         _editContext.SetFieldCssClassProvider(new BootstrapValidationCssClassProvider());
 
         _roles = RoleService.AsQueryable().OrderById().ToList();
-        _createUserDTO.RoleId = _roles.FirstOrDefault(x => x.Name == RoleConstants.Operator).Id;
+        if (_roles.Count > 0)
+            _createUserDTO.RoleId = _roles.First(x => x.Name == RoleConstants.Operator).Id;
 
         _editContext.OnFieldChanged += (s, e) =>
         {

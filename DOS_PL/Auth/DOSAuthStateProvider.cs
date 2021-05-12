@@ -29,6 +29,11 @@ namespace DOS_PL.Auth
         private readonly ProtectedSessionStorage _protectedSessionStore;
         private AuthData _cachedAuthData;
 
+        public DOSAuthStateProvider()
+        {
+            // for mocking
+        }
+
         public DOSAuthStateProvider(ProtectedSessionStorage protectedSessionStorage)
         {
             _protectedSessionStore = protectedSessionStorage;
@@ -98,7 +103,7 @@ namespace DOS_PL.Auth
             }
         }
 
-        private async Task SetUserSession(AuthData authData)
+        public async Task SetUserSession(AuthData authData)
         {
             // buffer the current session into the user object,
             // in order to avoid fetching the user object from JS.
@@ -107,7 +112,7 @@ namespace DOS_PL.Auth
             await _protectedSessionStore.SetAsync(USER_SESSION_OBJECT_KEY, JsonSerializer.Serialize(authData));
         }
 
-        private AuthData RefreshUserSession(AuthData authData) => _cachedAuthData = authData;
+        public AuthData RefreshUserSession(AuthData authData) => _cachedAuthData = authData;
 
         private Task<AuthenticationState> GenerateAuthenticationState(AuthData authData)
         {

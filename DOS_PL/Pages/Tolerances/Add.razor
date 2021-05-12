@@ -110,8 +110,11 @@
         _products = ProductService.AsQueryable().OrderById().ToList();
         _processes = ProcessService.AsQueryable().OrderById().ToList();
 
-        _createToleranceDTO.ProcessId = _processes.FirstOrDefault().Id;
-        _createToleranceDTO.ProductId = _products.FirstOrDefault().Id;
+        if (_processes.Count > 0)
+            _createToleranceDTO.ProcessId = _processes.First().Id;
+
+        if (_products.Count > 0)
+            _createToleranceDTO.ProductId = _products.First().Id;
 
         _editContext.OnFieldChanged += (s, e) =>
         {
