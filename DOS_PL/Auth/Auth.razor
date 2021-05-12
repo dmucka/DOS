@@ -2,6 +2,7 @@
 @layout EmptyLayout
 @attribute [AllowAnonymous]
 
+@using Syncfusion.Blazor.Spinner; 
 @using DOS_BL.Services;
 @using DOS_PL.Validation;
 @using DOS_BL.DataObjects;
@@ -21,6 +22,7 @@
                     Welcome, please log in
                 </div>
                 <div class="card-body">
+                    <SfSpinner @bind-Visible="IsAuthenticating" />
                     <EditForm EditContext="@_editContext" OnSubmit="PerformLogin">
                         <DataAnnotationsValidator />
                         <ValidationSummary />
@@ -47,24 +49,6 @@
     </NotAuthorized>
 </AuthorizeView>
 
-<style>
-    .dos-loginform {
-        width: 500px;
-        height: auto;
-        display: flex;
-        justify-content: center;
-        align-self: center;
-    }
-
-    .dos-loginform-main {
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-</style>
-
 @code {
     [CascadingParameter]
     private Task<AuthenticationState> AuthenticationStateTask { get; set; }
@@ -72,16 +56,26 @@
     private LoginUserDTO _loginUserDTO = new();
     private EditContext _editContext;
     private ServerSideValidator _serverSideValidator;
+    private bool IsAuthenticating { get; set; }
 
     private async Task PerformLogin()
     {
-        if (!_editContext.Validate())
+        if (IsAuthenticating)
             return;
+
+        IsAuthenticating = true;
+
+        if (!_editContext.Validate())
+        {
+            IsAuthenticating = false;
+            return;
+        }
 
         var (authenticated, user) = await UserService.AuthenticateUser(_loginUserDTO.Username, _loginUserDTO.Password);
 
         if (user == null)
         {
+            IsAuthenticating = false;
             _serverSideValidator.DisplayError("Username", "User not found.");
             return;
         }
@@ -93,6 +87,7 @@
         }
         else
         {
+            IsAuthenticating = false;
             _serverSideValidator.DisplayError("Password", "Invalid password.");
         }
     }

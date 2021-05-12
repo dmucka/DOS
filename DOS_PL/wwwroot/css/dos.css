@@ -14,6 +14,27 @@ html, body, .main {
     /* background-color: var(--dosgreen); */
 }
 
+.dos-loginform-main {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .dos-loginform-main .dos-loginform {
+        width: 500px;
+        height: auto;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+    }
+
+    .dos-loginform-main .e-spinner-pane {
+        background-color: #0000002e !important;
+        z-index: 100 !important;
+    }
+
 .dos-return-button {
     margin-left: -192px;
     margin-right: 120px;
@@ -45,6 +66,7 @@ html, body, .main {
 }
 
 /* Convenience classes */
+
 .mw-label {
     min-width: 130px;
 }
